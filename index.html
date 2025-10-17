@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dylan Winters | Software Engineer</title>
@@ -96,6 +99,13 @@
         form button { width:150px; padding:.75rem; border:none; border-radius:5px; background:#1e90ff; color:#fff; }
         form button:hover { background:#1c86ee; transform: scale(1.05); }
         footer { background: #333; color: #fff; text-align: center; padding: 1rem 0; margin-top: 2rem; }
+        h2 {position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #CCCCCC;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -116,7 +126,12 @@
     <section id="about" class="reveal">
         <div class="container">
             <h2>About Me</h2>
-            <p>Self describe pls.</p>
+            <br>
+            <p>MEng Imperial College London (2022-2026)</p>
+            <br>
+            <p>Electrical and Electronic Engineering (First Class Honours)</p>
+            <br>
+            <p>Specialisation in Robotics and Machine Learning</p>
         </div>
     </section>
     <section id="projects" class="reveal">
@@ -124,35 +139,41 @@
             <h2>Projects</h2>
             <div class="filter-controls">
                 <button data-filter="all" class="active">All</button>
-                <button data-filter="database">Database</button>
-                <button data-filter="web-scraper">Web Scraper</button>
+                <button data-filter="database">Data</button>
                 <button data-filter="quant">Quant</button>
                 <button data-filter="robotics">Robotics</button>
+                <button data-filter="hardware">Hardware</button>
             </div>
             <div class="projects-grid">
+                
+                <div class="project-card" data-category="robotics">
+                    <img src="charis.jpg" alt="Charis Screenshot">
+                    <h3>Smart Robot Assistant for Children with disabilities</h3>
+                    <p>Description.</p>
+                </div>
+                <div class="project-card" data-category="robotics">
+                    <img src="project7.jpeg" alt="ChessBot" Screenshot">
+                    <h3>Adaptive Chess Coach Robotic Arm</h3>
+                    <p>Description.</p>
+                </div>
+                <div class="project-card" data-category="hardware">
+                    <img src="project4.png" alt="Mandelbrot Screenshot">
+                    <h3>FPGA Mandelbrot Set Accelerator</h3>
+                    <p>Description.</p>
+                </div>
                 <div class="project-card" data-category="database">
                     <img src="project1.png" alt="Project 1 Screenshot">
                     <h3>Database</h3>
                     <p>Description.</p>
                 </div>
                 <div class="project-card" data-category="web-scraper">
-                    <img src="project4.png" alt="Project 4 Screenshot">
+                    <img src="project.png" alt="Web Scraper Screenshot">
                     <h3>Web Scraper</h3>
                     <p>Description.</p>
                 </div>
                 <div class="project-card" data-category="quant">
                     <img src="project5.png" alt="Project 5 Screenshot">
                     <h3>Quant</h3>
-                    <p>Description.</p>
-                </div>
-                <div class="project-card" data-category="robotics">
-                    <img src="project6.png" alt="Project 6 Screenshot">
-                    <h3>Robotics 2</h3>
-                    <p>Description.</p>
-                </div>
-                <div class="project-card" data-category="robotics">
-                    <img src="project3.png" alt="Project 2 Screenshot">
-                    <h3>Robotics</h3>
                     <p>Description.</p>
                 </div>
             </div>
@@ -191,7 +212,7 @@
     <script>
     // Typewriter
     document.addEventListener("DOMContentLoaded", () => {
-        const phrases = ["Hi, I'm Dylan.", "I'm a Software Engineer.", "Welcome!"];
+        const phrases = ["Hi, I'm Dylan.", "Welcome!"];
         let current=0, idx=0, deleting=false;
         const speed=100, pause=2000;
         const target=document.getElementById("hero-text");
