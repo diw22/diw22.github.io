@@ -113,6 +113,16 @@
             border-bottom: 2px solid #CCCCCC;
             width: 100%;
         }
+        .project-link {
+          display: block;         
+          text-decoration: none;  
+          color: inherit;        
+        }
+
+        .project-link:hover .project-card {
+          transform: translateY(-5px) scale(1.02);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -154,39 +164,51 @@
             </div>
             <div class="projects-grid">
                 
-                <div class="project-card" data-category="robotics">
-                    <img src="charis.jpg" alt="Charis Screenshot">
-                    <h3>Smart Robot Assistant</h3>
-                    <p>Built a friendly interactive robotic companion capable of autonomously aiding children with disabilities with activies of daily living (ADL) and equipped with adaptive game playing capabilities.</p>
-                </div>
-                <div class="project-card" data-category="robotics">
-                    <img src="project7.jpeg" alt="ChessBot" Screenshot">
-                    <h3>Adaptive Chess Coach Robotic Arm</h3>
-                    <p>Built and programmed a robotic chess coach that replicates virtual chess moves into a real chess game. Provides real-time assistance and adjusts gameplay difficulty according to user needs.</p>
-                </div>
-                <div class="project-card" data-category="hardware">
-                    <img src="project5.jpg" alt="Mandelbrot Screenshot">
-                    <h3>FPGA Mandelbrot Set Accelerator</h3>
-                    <p>Designed and implemented an FPGA for hardware acceleration of the
-                                mathematical
-                                operations involved in computing the Mandelbrot set. This enabled a real time
-                                exploration of the Mandelbrot set, with x600 speed-up over a regular CPU implementation.</p>
-                </div>
-                <div class="project-card" data-category="database">
-                    <img src="database.png" alt="Project 1 Screenshot">
-                    <h3>Database</h3>
-                    <p>Built a database filter to isolate search results using 12 search criteria from 800000+ items.</p>
-                </div>
-                <div class="project-card" data-category="web-scraper">
-                    <img src="webscraper.png" alt="Web Scraper Screenshot">
-                    <h3>Web Scraper</h3>
-                    <p>Built an automated NLP tool that uses text embeddings to identify and scrape relevant Google search results based on user prompts.</p>
-                </div>
-                <!-- <div class="project-card" data-category="quant"> -->
-                    <!-- <img src="project5.png" alt="Project 5 Screenshot"> -->
-                    <!-- <h3>Quant</h3> -->
-                    <!-- <p>Description.</p> -->
-                <!-- </div> -->
+                <a href="https://github.com/diw22/Robots4ChildrenWithDisabilities" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="robotics">
+                        <img src="charis.jpg" alt="Charis Screenshot">
+                        <h3>Smart Robot Assistant</h3>
+                        <p>Built a friendly interactive robotic companion capable of autonomously aiding children with disabilities with activies of daily living (ADL) and equipped with adaptive game playing capabilities.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=49rMlOqr8tw" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="robotics">
+                        <img src="project7.jpeg" alt="ChessBot" Screenshot">
+                        <h3>Adaptive Chess Coach Robotic Arm</h3>
+                        <p>Built and programmed a robotic chess coach that replicates virtual chess moves into a real chess game. Provides real-time assistance and adjusts gameplay difficulty according to user needs.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/tianqi13/Mathematical-Accelerator" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="hardware">
+                        <img src="project5.jpg" alt="Mandelbrot Screenshot">
+                        <h3>FPGA Mandelbrot Set Accelerator</h3>
+                        <p>Designed and implemented an FPGA for hardware acceleration of the
+                                    mathematical
+                                    operations involved in computing the Mandelbrot set. This enabled a real time
+                                    exploration of the Mandelbrot set, with x600 speed-up over a regular CPU implementation.</p>
+                    </div>
+                </a>
+                <a href="https://example.com" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="database">
+                        <img src="database.png" alt="Project 1 Screenshot">
+                        <h3>Database</h3>
+                        <p>Built a database filter to isolate search results using 12 search criteria from 800000+ items.</p>
+                    </div>
+                </a>
+                <a href="https://example.com" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="web-scraper">
+                        <img src="webscraper.png" alt="Web Scraper Screenshot">
+                        <h3>Web Scraper</h3>
+                        <p>Built an automated NLP tool that uses text embeddings to identify and scrape relevant Google search results based on user prompts.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/diw22/marketmakingalgo" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <div class="project-card" data-category="quant">
+                        <img src="Options.png" alt="Project 5 Screenshot">
+                        <h3>Market Making Algorithm</h3>
+                        <p>Developed an algorithmic trading model that ranked 3rd place in the Optiver trading competition at Imperial College London, against 100 participants.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
