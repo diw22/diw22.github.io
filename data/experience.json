@@ -1,0 +1,42 @@
+[
+  {
+    "month": "Jan",
+    "year": 2025,
+    "side": "left",
+    "title": "Robotics Research / Project Lead",
+    "org": "Imperial College London",
+    "summary": "Built assistive robotics systems and autonomy tooling across perception, control, and embedded integration.",
+    "bullets": [
+      "Implemented real-time control + safety constraints for human interaction.",
+      "Integrated sensors/actuators + low-level comms for reliable deployments.",
+      "Iterated with users to improve usability and task success rate."
+    ],
+    "tags": ["Python", "Robotics", "Embedded"]
+  },
+  {
+    "month": "May",
+    "year": 2024,
+    "side": "right",
+    "title": "FPGA / Hardware Acceleration",
+    "org": "Coursework + Labs",
+    "summary": "Designed an FPGA accelerator for compute-heavy workloads and explored performance/latency tradeoffs.",
+    "bullets": [
+      "Designed pipelined arithmetic blocks and memory interfaces.",
+      "Measured throughput/latency vs CPU baselines and optimised bottlenecks."
+    ],
+    "tags": ["FPGA", "Verilog/VHDL", "Performance"]
+  },
+  {
+    "month": "Oct",
+    "year": 2023,
+    "side": "left",
+    "title": "Quant / Trading Competitions",
+    "org": "Optiver @ Imperial",
+    "summary": "Built market-making strategies and tooling to evaluate risk, execution quality, and performance under noise.",
+    "bullets": [
+      "Developed quoting logic + inventory/risk controls.",
+      "Ran experiments and tuned parameters for stability and PnL."
+    ],
+    "tags": ["Python", "Quant", "Statistics"]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Smart Robot Assistant",
+    "description": "Built a friendly interactive robotic companion capable of autonomously aiding children with disabilities with activities of daily living (ADL) and equipped with adaptive game playing capabilities.",
+    "category": "robotics",
+    "image": "assets/img/projects/charis.jpg",
+    "href": "https://github.com/diw22/Robots4ChildrenWithDisabilities"
+  },
+  {
+    "title": "Adaptive Chess Coach Robotic Arm",
+    "description": "Built and programmed a robotic chess coach that replicates virtual chess moves into a real chess game. Provides real-time assistance and adjusts gameplay difficulty according to user needs.",
+    "category": "robotics",
+    "image": "assets/img/projects/project7.jpeg",
+    "href": "https://www.youtube.com/watch?v=49rMlOqr8tw"
+  },
+  {
+    "title": "FPGA Mandelbrot Set Accelerator",
+    "description": "Designed and implemented an FPGA for hardware acceleration of the mathematical operations involved in computing the Mandelbrot set. This enabled a real time exploration of the Mandelbrot set, with x600 speed-up over a regular CPU implementation.",
+    "category": "hardware",
+    "image": "assets/img/projects/project5.jpg",
+    "href": "https://github.com/tianqi13/Mathematical-Accelerator"
+  },
+  {
+    "title": "Database",
+    "description": "Built a database filter to isolate search results using 12 search criteria from 800000+ items.",
+    "category": "data",
+    "image": "assets/img/projects/database.png"
+  },
+  {
+    "title": "Web Scraper",
+    "description": "Built an automated NLP tool that uses text embeddings to identify and scrape relevant Google search results based on user prompts.",
+    "category": "data",
+    "image": "assets/img/projects/webscraper.png"
+  },
+  {
+    "title": "Market Making Algorithm",
+    "description": "Developed an algorithmic trading model that ranked 3rd place in the Optiver trading competition at Imperial College London, against 100 participants.",
+    "category": "quant",
+    "image": "assets/img/projects/Options.png",
+    "href": "https://github.com/diw22/marketmakingalgo"
+  }
+]
