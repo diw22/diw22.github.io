@@ -438,6 +438,7 @@ section p{
   grid-template-columns: 1fr 120px 1fr;
   align-items: start;
   margin: 1.25rem 0;
+  --anchor-y: 1.7rem;
 }
 .t-left .t-card{ grid-column: 1; justify-self: end; }
 .t-right .t-card{ grid-column: 3; justify-self: start; }
@@ -486,11 +487,12 @@ section p{
 .t-right .t-card::after{
   content: "";
   position: absolute;
-  top: 1.3rem;
+  top: var(--anchor-y);
   width: 34px;
   height: 1px;
   background: rgba(255,255,255,0.10);
 }
+
 .t-left .t-card::after{ right: -34px; }
 .t-right .t-card::after{ left: -34px; }
 
@@ -498,7 +500,7 @@ section p{
   content: "";
   position: absolute;
   left: 50%;
-  top: 1.35rem;
+  top: var(--anchor-y);
   width: 10px;
   height: 10px;
   border-radius: 999px;
@@ -507,6 +509,7 @@ section p{
   box-shadow: 0 0 0 5px rgba(18,17,23,1);
   z-index: 1;
 }
+
 
 .t-head{
   display: flex;
@@ -573,7 +576,9 @@ section p{
   background-color: #1e1d24;
   box-shadow: 0 20px 60px rgba(0,0,0,0.55);
 }
-
+.t-left .t-card{
+  margin-top: calc(-1.8rem - var(--anchor-y));
+}
 /* ===== Highlights ===== */
 .highlights-grid{
   display: grid;
