@@ -862,61 +862,420 @@ footer{
 .edu-bullets li{ margin: 0.35rem 0; }
 
 /* ===== Responsive ===== */
+
+/* Base tweaks that help on touch devices */
 @media (max-width: 900px){
+  section{ padding: 3.25rem 1.25rem; }
+  .container{ max-width: 100%; }
+
+  /* Nav */
+  header{ backdrop-filter: blur(14px); }
+  nav{
+    justify-content: center;
+    padding: 0.85rem 1.1rem;
+  }
+  nav ul{
+    gap: 1.15rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  nav ul li a{
+    font-size: 0.78rem;
+    padding: 0.25rem 0;
+  }
+
+  /* Hero (prevent overlap + make text readable) */
+  .hero{ height: 92vh; }
+  .hero-tagline-top{
+    top: 9vh;
+    padding: 0 1.1rem;
+    max-width: 520px;
+  }
+  .hero-eyebrow{ letter-spacing: 0.16em; }
+
+  .hero-name-large{
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 12vh;
+    font-size: clamp(2.6rem, 10.5vw, 4.2rem);
+    line-height: 0.92;
+    max-width: 92vw;
+  }
+  .hero-meta{
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 4.5vh;
+    font-size: 0.72rem;
+    gap: 0.5rem;
+    opacity: 0.9;
+  }
+
   /* About */
+  #about .container{ max-width: 100%; }
   .about-grid{
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 1.75rem;
     margin-left: 0;
     padding-left: 0;
     border-left: none;
+    padding-top: 0.25rem;
   }
-  .about-body, .about-kicker{ max-width: none; }
+  #about h2{
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .about-kicker{
+    max-width: 100%;
+    font-size: 1.02rem;
+  }
+  .about-right{ max-width: 100%; }
+  .about-body{
+    max-width: 100%;
+    margin-bottom: 1.35rem;
+  }
+  .about-fact{
+    grid-template-columns: 110px 1fr;
+    gap: 0.75rem;
+  }
+  .fact-label{ font-size: 0.74rem; }
+  .fact-value{ font-size: 0.92rem; }
+
+  /* Projects (full width cards, better tap targets) */
+  .filter-controls{ margin-top: 0.75rem; }
+  .filter-controls button{
+    padding: 0.5rem 0.9rem;
+    font-size: 0.74rem;
+  }
+  .projects-grid{
+    gap: 1.1rem;
+    margin-top: 1.5rem;
+  }
+  .project-link{ width: 100%; }
+  .project-card{
+    padding: 1.1rem;
+    border-radius: 16px;
+  }
+  .project-card img{
+    height: 180px;
+    border-radius: 12px;
+  }
+
+  /* Modal */
+  .modal-content{
+    padding: 1.35rem;
+    border-radius: 16px;
+    width: min(560px, 92vw);
+  }
+  .modal-close{
+    top: 14px;
+    right: 16px;
+  }
+
+  /* Skills */
+  .skills-intro{ max-width: 100%; }
+  #skills .skills-list{ gap: 0.45rem; }
+  .skill{
+    padding: 0.35rem 0.75rem;
+    font-size: 0.76rem;
+  }
 
   /* Education */
-  .edu-hero{ grid-template-columns: 1fr; }
+  .edu-hero{
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
   .edu-hero-right{
     border-left: none;
     padding-left: 0;
     border-top: 1px solid rgba(255,255,255,0.06);
-    padding-top: 1rem;
+    padding-top: 0.9rem;
   }
   .edu-tabs{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .edu-tab{ padding: 0.55rem 0.8rem; }
   .edu-panel-grid{ grid-template-columns: 1fr; }
+  .edu-panel{ padding: 1.25rem; }
 
   /* Design carousel */
-  .design-carousel{ grid-template-columns: 44px 1fr 44px; }
-  .design-nav{ width: 44px; height: 44px; }
-  .design-track{ height: 320px; }
-  .design-card{ height: 320px; width: min(540px, 92vw); }
-
-  /* Timeline center -> stacked */
-  .timeline--center::before{ left: 18px; transform: none; }
-  .t-item{ grid-template-columns: 1fr; padding-left: 42px; }
-  .t-item::before{ left: 18px; transform: none; }
-  .t-date{
-    grid-column: auto;
-    justify-self: start;
-    margin-bottom: 0.75rem;
-    margin-left: -6px;
+  .design-carousel{
+    grid-template-columns: 44px 1fr 44px;
+    gap: 0.65rem;
   }
-  .t-left .t-card, .t-right .t-card{
-    grid-column: auto;
+  .design-nav{ width: 44px; height: 44px; }
+  .design-track{ height: 310px; }
+  .design-card{
+    height: 310px;
+    width: min(560px, 92vw);
+    border-radius: 16px;
+  }
+  .design-meta{ padding: 0.85rem 0.95rem; }
+
+  /* Timeline: center -> clean stacked (no hover reliance) */
+  .timeline--center{ margin-top: 1.5rem; }
+  .timeline--center::before{
+    left: 16px;
+    transform: none;
+  }
+  .t-item{
+    grid-template-columns: 1fr;
+    padding-left: 40px;
+    margin: 1.15rem 0;
+    --anchor-y: 1.35rem;
+  }
+  .t-item::before{
+    left: 16px;
+    transform: none;
+    width: 9px;
+    height: 9px;
+  }
+  .t-date{
+    justify-self: start;
+    margin-left: -8px;
+    margin-bottom: 0.6rem;
+    width: 86px;
+    padding: 0.5rem 0.55rem;
+  }
+  .t-left .t-card,
+  .t-right .t-card{
     justify-self: stretch;
     width: 100%;
+    margin-top: 0;
   }
-  .t-left .t-card::after, .t-right .t-card::after{ display: none; }
-  .t-more{ grid-template-rows: 1fr; transition-delay: 0ms; }
-  .t-more-inner > *{ opacity: 1; transform: none; transition-delay: 0ms; }
-  .t-card:hover{ transform: none; box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+  .t-left .t-card::after,
+  .t-right .t-card::after{ display: none; }
+
+  /* Make “more” content always visible on mobile */
+  .t-more{ grid-template-rows: 1fr; transition: none; }
+  .t-more-inner > *{ opacity: 1; transform: none; transition: none; }
+  .t-card:hover{
+    transform: none;
+    background-color: #18171d;
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  }
+
+  /* Highlights */
+  .highlights-grid{ gap: 1rem; }
+  .highlight-card{ padding: 1.1rem; }
 }
 
-@media (max-width: 768px){
-  nav{ justify-content: center; }
-  section{ padding: 3rem 1.35rem; }
-  .projects-grid{ gap: 1.3rem; }
+/* Extra-small phones */
+@media (max-width: 520px){
+  section{ padding: 3rem 1.05rem; }
 
-  /* About hover expansion not needed on mobile (already disabled in #about, but keep safe) */
-  .fact-extra{ opacity: 1; transform: none; }
-  .hover-card:hover{ transform: none; box-shadow: none; }
+  /* Hero: prevent bottom text from colliding */
+  .hero{ height: 90vh; }
+  .hero-tagline-top{ top: 8vh; }
+  .hero-name-large{
+    bottom: 14vh;
+    font-size: clamp(2.35rem, 11.5vw, 3.6rem);
+  }
+  .hero-meta{
+    bottom: 4vh;
+    font-size: 0.7rem;
+    gap: 0.45rem;
+  }
+  .hero-meta .dot{ width: 3px; height: 3px; }
+
+  /* Projects */
+  .project-card img{ height: 165px; }
+
+  /* Education tabs -> 1 column if needed */
+  .edu-tabs{ grid-template-columns: 1fr; }
+
+  /* Contact buttons: full width */
+  .contact-actions{ gap: 0.6rem; }
+  .contact-button{
+    width: 100%;
+    justify-content: center;
+    padding: 0.7rem 1.1rem;
+  }
+}
+/* ===== Mobile polish patch (paste at end of CSS) ===== */
+
+/* --- HERO: prevent name overlap on narrow screens --- */
+@media (max-width: 560px){
+  .hero-name-large{
+    left: 1rem;
+    right: 1rem;
+    bottom: 18vh;                 /* pushes name up away from meta */
+    max-width: 92vw;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-wrap: balance;           /* safe: ignored where unsupported */
+  }
+  /* Stack first/last so long italic surnames never collide */
+  .hero-first, .hero-last{
+    display: block;
+    margin-left: 0 !important;
+  }
+  .hero-first{ opacity: 0.7; }
+  .hero-last{ opacity: 0.95; }
+
+  .hero-meta{
+    left: 1rem;
+    right: 1rem;
+    bottom: 5vh;
+    max-width: 92vw;
+  }
+}
+
+/* Extra-short devices (where absolute positioning gets tight) */
+@media (max-width: 560px) and (max-height: 740px){
+  .hero{ height: 94vh; }
+  .hero-tagline-top{ top: 7vh; }
+  .hero-name-large{ bottom: 20vh; font-size: clamp(2.1rem, 10.5vw, 3.2rem); }
+  .hero-meta{ bottom: 4.5vh; font-size: 0.7rem; }
+}
+
+
+/* =========================
+   MOBILE REFINEMENTS
+   ========================= */
+
+/* ----- <= 900px: Experience (stacked timeline) ----- */
+@media (max-width: 900px){
+  .timeline--center::before{ display: none; }
+
+  .t-item{
+    display: block;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .t-item::before{ display: none; }
+
+  .t-date{
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.7rem;
+    margin: 0 0 0.65rem 0;
+    border-radius: 999px;
+  }
+
+  .t-month,
+  .t-year{
+    display: inline;
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+  }
+  .t-year{ opacity: 0.95; }
+
+  .t-card{
+    width: 100%;
+    padding: 1rem 1.05rem;
+    border-radius: 16px;
+  }
+  .t-left .t-card,
+  .t-right .t-card{
+    margin-top: 0 !important;
+  }
+  .t-left .t-card::after,
+  .t-right .t-card::after{ display: none; }
+
+  .t-more{ grid-template-rows: 1fr; transition: none; }
+  .t-more-inner > *{ opacity: 1; transform: none; transition: none; }
+}
+
+
+/* ----- <= 760px: Design Portfolio (swipe gallery) ----- */
+@media (max-width: 760px){
+  .design-nav{ display: none !important; }
+
+  .design-carousel{
+    display: block;
+  }
+
+  .design-viewport{
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding: 0.25rem 0 0.75rem !important;
+  }
+
+  .design-track{
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    gap: 0.9rem;
+    padding: 0 0.25rem;
+  }
+
+  .design-card{
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+
+    flex: 0 0 88%;
+    max-width: 520px;
+    height: auto !important;
+
+    scroll-snap-align: center;
+    border-radius: 16px;
+  }
+
+  .design-card img{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .design-meta{
+    padding: 0.9rem 1rem;
+  }
+
+  .design-hint{
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+  }
+
+  .design-viewport::-webkit-scrollbar{ height: 8px; }
+  .design-viewport::-webkit-scrollbar-track{
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+  }
+  .design-viewport::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.16);
+    border-radius: 999px;
+  }
+}
+
+@media (max-width: 420px){
+  .design-card{ flex-basis: 92%; }
+  .design-card img{ height: 205px; }
+}
+
+
+/* ----- <= 720px: Highlights + Projects spacing ----- */
+@media (max-width: 720px){
+  .highlights-grid{ gap: 0.85rem; }
+  .highlight-card{
+    padding: 0.95rem;
+    border-radius: 14px;
+  }
+  .highlight-metric{
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+  .highlight-title{
+    font-size: 0.85rem;
+    margin-bottom: 0.45rem;
+  }
+  .highlight-desc{
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .projects-grid{ gap: 1rem; }
+  .project-link{ width: 100%; }
+  .project-card{ padding: 1.05rem; }
+  .project-card img{ height: 190px; }
 }

@@ -1,43 +1,81 @@
 [
     {
-        "month": "Jan",
+        "month": "Apr",
         "year": 2025,
-        "side": "left",
-        "title": "Robotics Research / Project Lead",
-        "org": "Imperial College London",
-        "summary": "Built assistive robotics systems and autonomy tooling across perception, control, and embedded integration.",
+        "side": "right",
+        "title": "Project Manager & Software Developer",
+        "org": "Robots4ChildrenWithDisabilities",
+        "summary": "Led development of a predictive assistive robotic companion for children with motor disabilities.",
         "bullets": [
-            "Implemented real-time control + safety constraints for human interaction.",
-            "Integrated sensors/actuators + low-level comms for reliable deployments.",
-            "Iterated with users to improve usability and task success rate."
+            "Led a multidisciplinary team to design and deliver an assistive robotic system.",
+            "Built an adaptive ML system to dynamically tune gameplay difficulty based on user behaviour.",
+            "Developed UI and head-tracking perception pipeline using OpenCV and MediaPipe.",
+            "Delivered final demo and technical pitch to stakeholders."
         ],
         "tags": [
-            "Python",
             "Robotics",
-            "Embedded"
+            "Machine Learning",
+            "Computer Vision"
         ]
     },
     {
-        "month": "May",
+        "month": "Sep",
         "year": 2024,
-        "side": "right",
-        "title": "FPGA / Hardware Acceleration",
-        "org": "Coursework + Labs",
-        "summary": "Designed an FPGA accelerator for compute-heavy workloads and explored performance/latency tradeoffs.",
+        "side": "left",
+        "title": "Data Intern",
+        "org": "Pactio Technologies",
+        "summary": "Prepared and analysed transaction data to support ML-driven document understanding.",
         "bullets": [
-            "Designed pipelined arithmetic blocks and memory interfaces.",
-            "Measured throughput/latency vs CPU baselines and optimised bottlenecks."
+            "Cleaned and structured transaction-proposal data for ML training pipelines.",
+            "Analysed document structure and metadata to support template-learning models.",
+            "Evaluated early model outputs to improve consistency and reliability."
         ],
         "tags": [
-            "FPGA",
-            "Verilog/VHDL",
-            "Performance"
+            "Python",
+            "Data",
+            "Machine Learning"
+        ]
+    },
+    {
+        "month": "Jun",
+        "year": 2024,
+        "side": "right",
+        "title": "Private Equity Analyst / Software Engineering Intern",
+        "org": "Gaman Succession (Search Fund)",
+        "summary": "Built ML and data pipelines to improve valuation robustness and acquisition discovery.",
+        "bullets": [
+            "Trained supervised ML models to improve consistency of company valuation scoring.",
+            "Built predictive web-scraping pipelines to surface high-potential acquisition targets.",
+            "Automated processing of 700K+ records to accelerate data-driven investment decisions."
+        ],
+        "tags": [
+            "Python",
+            "Machine Learning",
+            "Finance"
+        ]
+    },
+    {
+        "month": "Dec",
+        "year": 2023,
+        "side": "left",
+        "title": "Consultant",
+        "org": "180 Degrees Consulting",
+        "summary": "Delivered analytics-driven UX improvements and growth experiments for client platforms.",
+        "bullets": [
+            "Led data-driven UX improvements increasing website visits by 85%.",
+            "Improved user retention by 49% through experimentation and KPI-driven iteration.",
+            "Worked with stakeholders to translate business goals into measurable metrics."
+        ],
+        "tags": [
+            "Analytics",
+            "Consulting",
+            "UX"
         ]
     },
     {
         "month": "Oct",
         "year": 2023,
-        "side": "left",
+        "side": "right",
         "title": "Quant / Trading Competitions",
         "org": "Optiver @ Imperial",
         "summary": "Built market-making strategies and tooling to evaluate risk, execution quality, and performance under noise.",

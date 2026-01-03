@@ -24,7 +24,8 @@
         "title": "Database",
         "description": "Built a database filter to isolate search results using 12 search criteria from 800000+ items.",
         "category": "data",
-        "image": "assets/img/projects/database.png"
+        "image": "assets/img/projects/gamanlogo.png",
+        "href": "https://github.com/diw22/searchfundportfolio"
     },
     {
         "title": "Web Scraper",
