@@ -376,15 +376,111 @@ function initDesignCarousel() {
 }
 
 /* =========================
+   Education (modular JSON + tabs)
+========================= */
+function renderEducation(data) {
+    const edu = data.education ?? data; // supports wrapped or unwrapped
+
+    const yearTabs = (edu.yearsOfStudy || []).map((y, i) => `
+      <button class="edu-tab ${i === 0 ? "active" : ""}"
+              data-year="${escapeHtml(y.id)}"
+              role="tab"
+              aria-selected="${i === 0}">
+        ${escapeHtml(y.year)}
+      </button>
+    `).join("");
+
+    const panels = (edu.yearsOfStudy || []).map((y, i) => {
+        const highlights = (y.highlights || []).map(h => `<li>${escapeHtml(h)}</li>`).join("");
+        const modules = (y.modules || []).map(m => `<span class="edu-pill">${escapeHtml(m)}</span>`).join("");
+        const societies = (y.societies || []).join(" • ");
+
+        return `
+        <div class="edu-panel ${i === 0 ? "active" : ""}" id="${escapeHtml(y.id)}" role="tabpanel">
+          <div class="edu-panel-grid">
+            <div class="edu-panel-left">
+              <div class="edu-panel-title">${escapeHtml(y.year)}</div>
+              <div class="edu-panel-sub">${escapeHtml(y.subtitle || "")}</div>
+
+              <div class="edu-block">
+                <div class="edu-block-label">Highlights</div>
+                ${highlights ? `<ul class="edu-bullets">${highlights}</ul>` : ""}
+              </div>
+            </div>
+
+            <div class="edu-panel-right">
+              <div class="edu-block">
+                <div class="edu-block-label">Modules</div>
+                <div class="edu-pills">${modules}</div>
+              </div>
+
+              <div class="edu-block">
+                <div class="edu-block-label">Societies</div>
+                <div class="edu-text">${escapeHtml(societies)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="edu-hero">
+        <div>
+          <div class="edu-school">${escapeHtml(edu.institution)}</div>
+          <div class="edu-degree">${escapeHtml(edu.degree)}</div>
+          <div class="edu-years">${escapeHtml(edu.years)}</div>
+        </div>
+
+        <div class="edu-hero-right">
+          <div class="edu-grade-label">Grade</div>
+          <div class="edu-grade">${escapeHtml(edu.grade?.classification || "")}</div>
+          <div class="edu-grade-note">${escapeHtml((edu.grade?.focusAreas || []).join(" • "))}</div>
+        </div>
+      </div>
+
+      <div class="edu-tabs" role="tablist" aria-label="Year of study">
+        ${yearTabs}
+      </div>
+
+      <!-- Full-width details panel -->
+      <div class="edu-panel-wrap">
+        <div class="container">
+          ${panels}
+        </div>
+      </div>
+    `;
+}
+
+async function loadEducation() {
+    const mount = document.getElementById("education-root");
+    if (!mount) return;
+
+    try {
+        const data = await fetchJson("data/education.json"); // ✅ your path
+        mount.innerHTML = renderEducation(data);
+
+        // Now tabs exist, wire them up
+        initEducationTabs();
+
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+    } catch (err) {
+        console.error(err);
+        mount.innerHTML = `<p style="color:#b9b9b9">Unable to load education.</p>`;
+    }
+}
+
+
+/* =========================
    Boot
 ========================= */
 document.addEventListener("DOMContentLoaded", async () => {
     initModal();
     initReveal();
-    initEducationTabs();
     initDesignCarousel();
 
     // Load data-driven sections
     await loadExperience();
     await loadProjects();
+    await loadEducation();
 });

@@ -1,0 +1,104 @@
+{
+  "education": {
+    "institution": "Imperial College London",
+    "degree": "MEng Electrical & Electronic Engineering",
+    "years": "2022 – 2026",
+    "grade": {
+      "classification": "First Class",
+      "focusAreas": [
+        "Intelligent Systems",
+        "Robotics",
+        "Embedded Control"
+      ]
+    },
+    "yearsOfStudy": [
+      {
+        "id": "y1",
+        "year": "Year 1",
+        "subtitle": "Engineering Foundations",
+        "highlights": [
+          "Built strong maths + programming foundation for systems work.",
+          "Early circuits + electronics labs."
+        ],
+        "modules": [
+          "Mathematics",
+          "C++ Programming for Engineers",
+          "Analysis and Design of Circuits",
+          "Digital Electronics and Computer Architecture",
+          "Electronics Design Project",
+          "Topics in Electrical Engineering"
+        ],
+        "societies": [
+          "Imperial Swiss Society"
+        ]
+      },
+      {
+        "id": "y2",
+        "year": "Year 2",
+        "subtitle": "Systems, Signals and Control",
+        "highlights": [
+          "Achieved 3rd place in the Optiver Trading Academy during first term.",
+          "Undertook part-time consulting during second term while maintaining full academic workload."
+        ],
+        "modules": [
+          "Circuits and Systems",
+          "Communications",
+          "Control Systems",
+          "Mathematics 2",
+          "Statistics and Probability",
+          "Electromagnetism",
+          "Power Electronics and Systems",
+          "Signals and Systems",
+          "Electronics Design Project"
+        ],
+        "societies": [
+          "Beta Sigma Club",
+          "180 Degrees Consulting",
+          "Imperial Investment Society"
+        ]
+      },
+      {
+        "id": "y3",
+        "year": "Year 3",
+        "subtitle": "Intelligent Systems and Learning",
+        "highlights": [
+          "Focused on Machine Learning."
+        ],
+        "modules": [
+          "Machine Learning",
+          "Deep Learning",
+          "Maths for Signals and Systems",
+          "Robotics",
+          "Statistical Signal Processing",
+          "Control Engineering",
+          "Semiconductor Devices"
+        ],
+        "societies": [
+          "Imperial Futsal Society",
+          "Robotics Society"
+        ]
+      },
+      {
+        "id": "y4",
+        "year": "Year 4",
+        "subtitle": "Advanced Intelligent Systems",
+        "highlights": [
+          "Achieved Highest Grade in Neuroscience for Machine Learners and Topics in Large Dimensional Data Processing.",
+          "Won Futsal League with my team."
+        ],
+        "modules": [
+          "Optimisation",
+          "Hardware-Software Verification",
+          "ML in Neuroscience",
+          "Human-Centred Robotics",
+          "Advanced Deep Learning Systems",
+          "Large-Dimensional Data Processing"
+        ],
+        "societies": [
+          "Imperial Investment Society",
+          "Imperial Futsal Society"
+        ]
+      }
+    ]
+  }
+}
