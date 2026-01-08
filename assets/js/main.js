@@ -457,7 +457,7 @@ async function loadEducation() {
     if (!mount) return;
 
     try {
-        const data = await fetchJson("data/education.json"); // ✅ your path
+        const data = await fetchJson("data/education.json");
         mount.innerHTML = renderEducation(data);
 
         // Now tabs exist, wire them up
