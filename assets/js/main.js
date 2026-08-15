@@ -1,6 +1,3 @@
-/* =========================
-   Helpers
-========================= */
 function escapeHtml(s = "") {
     return String(s).replace(/[&<>"']/g, (c) => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -13,9 +10,6 @@ async function fetchJson(path) {
     return res.json();
 }
 
-/* =========================
-   Experience (modular JSON)
-========================= */
 function renderExperienceItem(item) {
     const sideClass = item.side === "right" ? "t-right" : "t-left";
 
@@ -55,7 +49,6 @@ async function loadExperience() {
         const items = await fetchJson("data/experience.json");
         mount.innerHTML = items.map(renderExperienceItem).join("");
 
-        // Refresh ScrollTrigger calculations after injecting DOM
         if (window.ScrollTrigger) ScrollTrigger.refresh();
     } catch (err) {
         console.error(err);
@@ -63,9 +56,7 @@ async function loadExperience() {
     }
 }
 
-/* =========================
-   Projects (modular JSON + filters + modal)
-========================= */
+
 const CATEGORY_LABELS = {
     all: "All",
     data: "Data",
@@ -74,30 +65,36 @@ const CATEGORY_LABELS = {
     hardware: "Hardware"
 };
 
-function renderProjectCard(p) {
+function renderProjectCard(p, variant = "grid") {
+    const tags = (p.tags || []).map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join("");
+    const featured = p.featured ? `<div class="project-badge">Featured</div>` : "";
+
     const cardInner = `
-    <div class="project-card"
+    <div class="project-card ${variant === "featured" ? "project-card--featured" : ""}"
          data-category="${escapeHtml(p.category)}"
+         data-featured="${p.featured ? "true" : "false"}"
          data-title="${escapeHtml(p.title)}"
          data-desc="${escapeHtml(p.description)}"
          data-image="${escapeHtml(p.image)}"
          ${p.href ? `data-href="${escapeHtml(p.href)}"` : ""}>
-      <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)} Screenshot">
+      <div class="project-media">
+        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)} Screenshot">
+        ${featured}
+      </div>
       <h3>${escapeHtml(p.title)}</h3>
       <p>${escapeHtml(p.description)}</p>
+      ${tags ? `<div class="project-tags">${tags}</div>` : ""}
     </div>
   `;
 
-    // Link projects behave exactly like before
     if (p.href) {
         return `
-      <a href="${escapeHtml(p.href)}" class="project-link" target="_blank" rel="noopener noreferrer">
+      <a href="${escapeHtml(p.href)}" class="project-link ${variant === "featured" ? "project-link--featured" : ""}" target="_blank" rel="noopener noreferrer">
         ${cardInner}
       </a>
     `;
     }
 
-    // No href -> keep layout, but open modal
     return `
     <a class="project-link" role="button" tabindex="0">
       ${cardInner}
@@ -121,6 +118,7 @@ function renderProjectFilters(categories) {
 
 function applyProjectFilter(filter) {
     const links = document.querySelectorAll("#projectsGrid .project-link");
+
     links.forEach(link => {
         const card = link.querySelector(".project-card");
         const category = card?.dataset.category;
@@ -157,20 +155,22 @@ function openProjectModalFromCard(card) {
 
 async function loadProjects() {
     const grid = document.getElementById("projectsGrid");
+    const featuredMount = document.getElementById("featuredProjects");
     const filtersEl = document.getElementById("projectsFilters");
-    if (!grid || !filtersEl) return;
+    if (!grid || !featuredMount || !filtersEl) return;
 
     try {
         const projects = await fetchJson("data/projects.json");
+        const featuredProjects = projects.filter(p => p.featured);
+        const regularProjects = projects.filter(p => !p.featured);
 
-        // Render cards
-        grid.innerHTML = projects.map(renderProjectCard).join("");
+        featuredMount.innerHTML = featuredProjects.map(p => renderProjectCard(p, "featured")).join("");
+        grid.innerHTML = regularProjects.map(p => renderProjectCard(p, "grid")).join("");
 
-        // Filters from data
-        const cats = Array.from(new Set(projects.map(p => p.category))).filter(Boolean);
+        const cats = Array.from(new Set(regularProjects.map(p => p.category))).filter(Boolean);
         renderProjectFilters(["all", ...cats]);
+        applyProjectFilter("all");
 
-        // Filter click handler (event delegation)
         filtersEl.addEventListener("click", (e) => {
             const btn = e.target.closest("button[data-filter]");
             if (!btn) return;
@@ -181,13 +181,12 @@ async function loadProjects() {
             applyProjectFilter(btn.dataset.filter);
         });
 
-        // Modal for projects without href (event delegation)
         grid.addEventListener("click", (e) => {
             const card = e.target.closest(".project-card");
             if (!card) return;
 
             const href = card.dataset.href;
-            if (href) return; // let normal <a> click occur
+            if (href) return;
 
             e.preventDefault();
             openProjectModalFromCard(card);
@@ -200,9 +199,6 @@ async function loadProjects() {
     }
 }
 
-/* =========================
-   GSAP Reveal (unchanged)
-========================= */
 function initReveal() {
     if (!window.gsap || !window.ScrollTrigger) return;
 
@@ -223,9 +219,7 @@ function initReveal() {
     });
 }
 
-/* =========================
-   Education tabs (unchanged)
-========================= */
+
 function initEducationTabs() {
     const eduTabs = document.querySelectorAll(".edu-tab");
     const eduPanels = document.querySelectorAll(".edu-panel");
@@ -246,9 +240,6 @@ function initEducationTabs() {
     });
 }
 
-/* =========================
-   Design carousel (unchanged)
-========================= */
 function initDesignCarousel() {
     const designCards = Array.from(document.querySelectorAll(".design-card"));
     const prevBtn = document.querySelector(".design-prev");
@@ -375,11 +366,9 @@ function initDesignCarousel() {
     layoutDesignCarousel(true, 1);
 }
 
-/* =========================
-   Education (modular JSON + tabs)
-========================= */
+
 function renderEducation(data) {
-    const edu = data.education ?? data; // supports wrapped or unwrapped
+    const edu = data.education ?? data;
 
     const yearTabs = (edu.yearsOfStudy || []).map((y, i) => `
       <button class="edu-tab ${i === 0 ? "active" : ""}"
@@ -424,6 +413,14 @@ function renderEducation(data) {
       `;
     }).join("");
 
+    const achievements = (edu.achievements || []).map(a => `
+      <div class="edu-achievement">
+        <div class="edu-achievement-label">${escapeHtml(a.label || "")}</div>
+        <div class="edu-achievement-value">${escapeHtml(a.value || "")}</div>
+        <p>${escapeHtml(a.note || "")}</p>
+      </div>
+    `).join("");
+
     return `
       <div class="edu-hero">
         <div>
@@ -439,6 +436,8 @@ function renderEducation(data) {
         </div>
       </div>
 
+      ${achievements ? `<div class="edu-achievements">${achievements}</div>` : ""}
+
       <div class="edu-tabs" role="tablist" aria-label="Year of study">
         ${yearTabs}
       </div>
@@ -452,6 +451,26 @@ function renderEducation(data) {
     `;
 }
 
+function addEducationPhotos(data) {
+    const edu = data.education ?? data;
+
+    (edu.yearsOfStudy || []).forEach((year) => {
+        if (!year.photos?.length) return;
+
+        const panel = document.getElementById(year.id);
+        const left = panel?.querySelector(".edu-panel-left");
+        if (!left) return;
+
+        const photos = year.photos.map(photo => `
+          <figure class="edu-photo">
+            <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || "")}">
+          </figure>
+        `).join("");
+
+        left.insertAdjacentHTML("beforeend", `<div class="edu-photo-row">${photos}</div>`);
+    });
+}
+
 async function loadEducation() {
     const mount = document.getElementById("education-root");
     if (!mount) return;
@@ -459,6 +478,7 @@ async function loadEducation() {
     try {
         const data = await fetchJson("data/education.json");
         mount.innerHTML = renderEducation(data);
+        addEducationPhotos(data);
 
         // Now tabs exist, wire them up
         initEducationTabs();
@@ -471,15 +491,11 @@ async function loadEducation() {
 }
 
 
-/* =========================
-   Boot
-========================= */
+
 document.addEventListener("DOMContentLoaded", async () => {
     initModal();
-    initReveal();
     initDesignCarousel();
 
-    // Load data-driven sections
     await loadExperience();
     await loadProjects();
     await loadEducation();

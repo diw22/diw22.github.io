@@ -2,23 +2,36 @@
   "education": {
     "institution": "Imperial College London",
     "degree": "MEng Electrical & Electronic Engineering",
-    "years": "2022 – 2026",
+    "years": "2022 - 2026",
     "grade": {
       "classification": "First Class",
       "focusAreas": [
+        "Dean's List, Final Year",
         "Intelligent Systems",
         "Robotics",
         "Embedded Control"
       ]
     },
+    "achievements": [
+      {
+        "label": "Final Year",
+        "value": "Dean's List",
+        "note": "Academic recognition in the final year of the MEng."
+      },
+      {
+        "label": "FYP",
+        "value": "RIGBY",
+        "note": "Low-cost assistive mobile bimanual manipulator for household tasks."
+      }
+    ],
     "yearsOfStudy": [
       {
         "id": "y1",
         "year": "Year 1",
         "subtitle": "Engineering Foundations",
         "highlights": [
-          "Built strong maths + programming foundation for systems work.",
-          "Early circuits + electronics labs."
+          "Built strong maths and programming foundations for systems work",
+          "Completed early circuits and electronics labs"
         ],
         "modules": [
           "Mathematics",
@@ -29,7 +42,18 @@
           "Topics in Electrical Engineering"
         ],
         "societies": [
-          "Imperial Swiss Society"
+          "Imperial Swiss Society",
+          "Imperial Poker Society"
+        ],
+        "photos": [
+          {
+            "src": "assets/img/photos/8bitmango.png",
+            "alt": "8-bit mango graphic"
+          },
+          {
+            "src": "assets/img/photos/test_image.jpg",
+            "alt": "Early project test image"
+          }
         ]
       },
       {
@@ -37,8 +61,8 @@
         "year": "Year 2",
         "subtitle": "Systems, Signals and Control",
         "highlights": [
-          "Achieved 3rd place in the Optiver Trading Academy during first term.",
-          "Undertook part-time consulting during second term while maintaining full academic workload."
+          "Achieved 3rd place in the Optiver Trading Academy during first term",
+          "Undertook part-time consulting during second term while maintaining full academic workload"
         ],
         "modules": [
           "Circuits and Systems",
@@ -55,6 +79,16 @@
           "Beta Sigma Club",
           "180 Degrees Consulting",
           "Imperial Investment Society"
+        ],
+        "photos": [
+          {
+            "src": "assets/img/photos/minimap.png",
+            "alt": "Second-year GUI minimap"
+          },
+          {
+            "src": "assets/img/photos/futsalwin.jpeg",
+            "alt": "Futsal league win"
+          }
         ]
       },
       {
@@ -62,7 +96,7 @@
         "year": "Year 3",
         "subtitle": "Intelligent Systems and Learning",
         "highlights": [
-          "Focused on Machine Learning."
+          "Focused on Machine Learning, Deep Learning and Robotics"
         ],
         "modules": [
           "Machine Learning",
@@ -83,8 +117,10 @@
         "year": "Year 4",
         "subtitle": "Advanced Intelligent Systems",
         "highlights": [
-          "Achieved Highest Grade in Neuroscience for Machine Learners and Topics in Large Dimensional Data Processing.",
-          "Won Futsal League with my team."
+          "Named to the Dean's List for final-year academic performance",
+          "Developed RIGBY, a low-cost assistive mobile bimanual manipulator",
+          "Achieved highest grade in Neuroscience for Machine Learners and Topics in Large Dimensional Data Processing",
+          "Won the Futsal League with my team"
         ],
         "modules": [
           "Optimisation",

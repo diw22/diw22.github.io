@@ -13,7 +13,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dylan Winters | Software Engineer</title>
+    <title>Dylan Winters | Robotics & Intelligent Systems Engineer</title>
 
     <link rel="stylesheet" href="assets/css/styles.css">
 
@@ -57,13 +57,13 @@
 
     <header>
         <nav>
-            <br>
             <ul>
                 <li><a href="#about">About</a></li>
                 <li><a href="#education">Education</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#highlights">Highlights</a></li>
+                <li><a href="#skills">Skills</a></li>
                 <li><a href="#design">Design</a></li>
                 <li><a href="#contact">Contact</a></li>
 
@@ -77,6 +77,9 @@
             <!-- left column -->
             <div class="about-left">
                 <h2>About Me</h2>
+                <figure class="about-portrait">
+                    <img src="assets/img/photos/dylan.jpeg" alt="Dylan Winters">
+                </figure>
                 <p class="about-kicker">
                     I design and build intelligent systems at the intersection of software,
                     robotics, and data.
@@ -85,12 +88,19 @@
 
             <!-- right column -->
             <div class="about-right">
-                <p class="about-body">
-                    I’m an MEng student at Imperial College London studying Electrical and
-                    Electronic Engineering. My work centres on robotics and intelligent systems. This ranges from
-                    assistive robots for children with
-                    disabilities to FPGA accelerators and market-making algorithms.
-                </p>
+                <div class="about-intro">
+                    <p class="about-body">
+                        I'm a final-year MEng Electrical and Electronic Engineering student at
+                        Imperial College London. My work centres on robotics and intelligent
+                        systems, from low-cost assistive mobile manipulators and adaptive robot
+                        interfaces to FPGA accelerators and market-making algorithms.
+                    </p>
+                    <div class="about-photo-stack" aria-label="Selected personal photos">
+                        <figure class="about-stack-photo stack-futsal">
+                            <img src="assets/img/photos/futsalwin.jpeg" alt="Futsal league win">
+                        </figure>
+                    </div>
+                </div>
                 <div class="about-facts">
 
                     <!-- Education -->
@@ -117,11 +127,11 @@
 
                         <div class="fact-content">
                             <span class="fact-value">
-                                2022&nbsp;–&nbsp;2026
+                                2022&nbsp;-&nbsp;2026
                             </span>
 
                             <p class="fact-extra">
-                                Currently in the final years of an integrated master’s programme,
+                                Currently in the final year of an integrated master's programme,
                                 combining theoretical engineering foundations with applied systems work.
                             </p>
                         </div>
@@ -139,6 +149,21 @@
                             <p class="fact-extra">
                                 Interested in building intelligent, real-world systems spanning autonomy,
                                 perception, optimisation, and high-performance computation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="about-fact hover-card">
+                        <span class="fact-label">Recognition</span>
+
+                        <div class="fact-content">
+                            <span class="fact-value">
+                                Dean's List, Final Year
+                            </span>
+
+                            <p class="fact-extra">
+                                Recognised for final-year academic performance while completing
+                                a robotics-focused individual project.
                             </p>
                         </div>
                     </div>
@@ -161,8 +186,9 @@
     <section id="projects" class="reveal">
         <div class="container">
             <h2>Projects</h2>
-            <div class="filter-controls" id="projectsFilters"></div>
 
+            <div class="featured-projects" id="featuredProjects"></div>
+            <div class="filter-controls" id="projectsFilters"></div>
             <div class="projects-grid" id="projectsGrid"></div>
         </div>
     </section>
@@ -189,7 +215,7 @@
                     rel="noopener noreferrer">
                     <div class="highlight-metric">3rd / 100</div>
                     <div class="highlight-title">Optiver Trading Competition</div>
-                    <p class="highlight-desc">Built a market-making strategy and ranked 3rd at Imperial’s competition.
+                    <p class="highlight-desc">Built a market-making strategy and ranked 3rd at Imperial's competition.
                     </p>
                 </a>
 
@@ -201,12 +227,11 @@
                         exploration.</p>
                 </a>
 
-                <a class="highlight-card" href="https://github.com/diw22/Robots4ChildrenWithDisabilities"
-                    target="_blank" rel="noopener noreferrer">
-                    <div class="highlight-metric">Robotics</div>
-                    <div class="highlight-title">Assistive Robot Companion</div>
-                    <p class="highlight-desc">Interactive robot supporting ADLs and adaptive assistance for children.
-                    </p>
+                <a class="highlight-card" href="assets/docs/RIGBY_final_year_project_report.pdf" target="_blank"
+                    rel="noopener noreferrer">
+                    <div class="highlight-metric">Dean's List</div>
+                    <div class="highlight-title">Final Year Project</div>
+                    <p class="highlight-desc">Built RIGBY, a low-cost mobile bimanual manipulator for accessible household assistance.</p>
                 </a>
 
             </div>
@@ -222,7 +247,7 @@
 
             <div class="design-carousel" aria-label="Design portfolio carousel">
                 <button class="design-nav design-prev" aria-label="Previous design">
-                    ‹
+                    &lsaquo;
                 </button>
 
                 <div class="design-viewport">
@@ -246,7 +271,16 @@
                             </div>
                         </a>
 
-                        <!-- Card 3
+                        <!-- Card 3 -->
+                        <a class="design-card" target="_blank" rel="noopener noreferrer" data-title="RIGBY Home Interface">
+                            <img src="assets/img/designs/rigby-gui-home.png" alt="RIGBY home interface preview">
+                            <div class="design-meta">
+                                <div class="design-title">RIGBY Home Interface</div>
+                                <div class="design-sub">Accessible task request screen for voice, text, and touchscreen control</div>
+                            </div>
+                        </a>
+
+                        <!-- Card 4
           <a class="design-card"
              href="assets/designs/poster-3.pdf"
              target="_blank"
@@ -263,7 +297,7 @@
                 </div>
 
                 <button class="design-nav design-next" aria-label="Next design">
-                    ›
+                    &rsaquo;
                 </button>
             </div>
 
@@ -275,16 +309,63 @@
             <h2>Skills</h2>
 
             <p class="skills-intro">
-                Tools I use to build robotics systems, quantitative models, and production software.
+                Robotics sits at the centre of my engineering work: mechanical design, embedded control,
+                perception, imitation learning, and interfaces that make robots usable.
             </p>
 
+            <div class="robotics-skill-board">
+                <figure class="robotics-hero-visual">
+                    <img src="assets/img/photos/withrigby.jpeg" alt="Dylan with RIGBY">
+                    <figcaption>RIGBY mobile bimanual manipulator</figcaption>
+                </figure>
+
+                <div class="skills-visuals" aria-label="Selected visual skill references">
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/leftarmspecs.png" alt="Left arm CAD specification">
+                        <figcaption>CAD &amp; mechanism design</figcaption>
+                    </figure>
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/rigby_left.png" alt="RIGBY left arm render">
+                        <figcaption>Robot prototyping</figcaption>
+                    </figure>
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/Rigby_Cameras.png" alt="RIGBY camera layout">
+                        <figcaption>Perception hardware</figcaption>
+                    </figure>
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/oak_grabbing_pen.jpg" alt="Robot arm grasping a pen">
+                        <figcaption>Manipulation testing</figcaption>
+                    </figure>
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/Rigby_System.drawio.png" alt="RIGBY system architecture">
+                        <figcaption>System architecture</figcaption>
+                    </figure>
+                    <figure class="skill-visual">
+                        <img src="assets/img/photos/Rigby_Render_Front.png" alt="RIGBY front render">
+                        <figcaption>Robot platform design</figcaption>
+                    </figure>
+                </div>
+            </div>
+
             <div class="skills-groups">
+                <div class="skills-group">
+                    <div class="skills-label">Robotics</div>
+                    <div class="skills-list">
+                        <span class="skill">Bimanual Manipulation</span>
+                        <span class="skill">Teleoperation</span>
+                        <span class="skill">Imitation Learning</span>
+                        <span class="skill">Computer Vision</span>
+                        <span class="skill">CAD</span>
+                    </div>
+                </div>
+
                 <div class="skills-group">
                     <div class="skills-label">Core Languages</div>
                     <div class="skills-list">
                         <span class="skill">Python</span>
                         <span class="skill">SQL</span>
                         <span class="skill">JavaScript</span>
+                        <span class="skill">Julia</span>
                     </div>
                 </div>
 
@@ -293,14 +374,18 @@
                     <div class="skills-list">
                         <span class="skill">pandas</span>
                         <span class="skill">TensorFlow</span>
+                        <span class="skill">PyTorch</span>
                     </div>
                 </div>
 
                 <div class="skills-group">
-                    <div class="skills-label">Web &amp; Interfaces</div>
+                    <div class="skills-label">Interfaces &amp; Systems</div>
                     <div class="skills-list">
                         <span class="skill">HTML</span>
                         <span class="skill">CSS</span>
+                        <span class="skill">Touchscreen UI</span>
+                        <span class="skill">Voice Control</span>
+                        <span class="skill">Jetson</span>
                     </div>
                 </div>
             </div>
@@ -326,7 +411,7 @@
                     LinkedIn
                 </a>
 
-                <a class="contact-button" href="assets/docs/DWinters_CV.pdf" target="_blank" rel="noopener noreferrer">
+                <a class="contact-button" href="assets/docs/DylanWinters_CV.pdf" target="_blank" rel="noopener noreferrer">
                     View CV
                 </a>
             </div>
@@ -334,7 +419,7 @@
     </section>
 
     <footer class="reveal">
-        <p>&copy; 2025 Dylan Winters. All Rights Reserved.</p>
+        <p>&copy; 2026 Dylan Winters. All Rights Reserved.</p>
     </footer>
     <div id="modal" class="modal">
         <div class="modal-content">
