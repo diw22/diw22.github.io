@@ -181,37 +181,19 @@ function renderProjectPage() {
     return gallery[index] || gallery[index - 1] || gallery[0] || projectImage;
   }
 
-  const reportSections = [
-    {
-      label: "Robot",
+  const reportSections = (project.sections || []).map((section, index) => ({
+    label: section.title || `Section ${index + 1}`,
+    image: galleryItem(index),
+    paragraphs: [section.body].filter(Boolean)
+  }));
+
+  if (!reportSections.length) {
+    reportSections.push({
+      label: project.category || "Project",
       image: galleryItem(0),
-      paragraphs: [
-        project.sections?.[0]?.body || project.description
-      ]
-    },
-    {
-      label: "Task",
-      image: galleryItem(1),
-      paragraphs: [
-        project.subtitle,
-        project.sections?.[1]?.body || project.description
-      ]
-    },
-    {
-      label: "Control",
-      image: galleryItem(2),
-      paragraphs: [
-        project.sections?.[2]?.body || project.description
-      ]
-    },
-    {
-      label: "Results",
-      image: galleryItem(3),
-      paragraphs: [
-        project.sections?.[3]?.body || project.description
-      ]
-    }
-  ];
+      paragraphs: [project.description].filter(Boolean)
+    });
+  }
 
   const reportSectionMarkup = reportSections.map((section, index) => `
     <section class="report-section report-split ${index % 2 ? "report-split-reverse" : ""}">
