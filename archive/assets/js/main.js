@@ -1,0 +1,502 @@
+function escapeHtml(s = "") {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+}
+
+async function fetchJson(path) {
+    const res = await fetch(path, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to fetch ${path} (${res.status})`);
+    return res.json();
+}
+
+function renderExperienceItem(item) {
+    const sideClass = item.side === "right" ? "t-right" : "t-left";
+
+    const bullets = (item.bullets || []).map(b => `<li>${escapeHtml(b)}</li>`).join("");
+    const tags = (item.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+
+    return `
+    <article class="t-item ${sideClass}">
+      <div class="t-date">
+        <span class="t-month">${escapeHtml(item.month)}</span>
+        <span class="t-year">${escapeHtml(item.year)}</span>
+      </div>
+
+      <div class="t-card">
+        <div class="t-head">
+          <div class="t-title">${escapeHtml(item.title)}</div>
+          <div class="t-org">${escapeHtml(item.org)}</div>
+        </div>
+
+        <div class="t-more">
+          <div class="t-more-inner">
+            <p class="t-summary">${escapeHtml(item.summary || "")}</p>
+            ${bullets ? `<ul>${bullets}</ul>` : ""}
+            ${tags ? `<div class="t-tags">${tags}</div>` : ""}
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+async function loadExperience() {
+    const mount = document.getElementById("experienceTimeline");
+    if (!mount) return;
+
+    try {
+        const items = await fetchJson("data/experience.json");
+        mount.innerHTML = items.map(renderExperienceItem).join("");
+
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+    } catch (err) {
+        console.error(err);
+        mount.innerHTML = `<p style="color:#b9b9b9">Unable to load experience.</p>`;
+    }
+}
+
+
+const CATEGORY_LABELS = {
+    all: "All",
+    data: "Data",
+    quant: "Quant",
+    robotics: "Robotics",
+    hardware: "Hardware"
+};
+
+function renderProjectCard(p, variant = "grid") {
+    const tags = (p.tags || []).map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join("");
+    const featured = p.featured ? `<div class="project-badge">Featured</div>` : "";
+
+    const cardInner = `
+    <div class="project-card ${variant === "featured" ? "project-card--featured" : ""}"
+         data-category="${escapeHtml(p.category)}"
+         data-featured="${p.featured ? "true" : "false"}"
+         data-title="${escapeHtml(p.title)}"
+         data-desc="${escapeHtml(p.description)}"
+         data-image="${escapeHtml(p.image)}"
+         ${p.href ? `data-href="${escapeHtml(p.href)}"` : ""}>
+      <div class="project-media">
+        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)} Screenshot">
+        ${featured}
+      </div>
+      <h3>${escapeHtml(p.title)}</h3>
+      <p>${escapeHtml(p.description)}</p>
+      ${tags ? `<div class="project-tags">${tags}</div>` : ""}
+    </div>
+  `;
+
+    if (p.href) {
+        return `
+      <a href="${escapeHtml(p.href)}" class="project-link ${variant === "featured" ? "project-link--featured" : ""}" target="_blank" rel="noopener noreferrer">
+        ${cardInner}
+      </a>
+    `;
+    }
+
+    return `
+    <a class="project-link" role="button" tabindex="0">
+      ${cardInner}
+    </a>
+  `;
+}
+
+function renderProjectFilters(categories) {
+    const filtersEl = document.getElementById("projectsFilters");
+    if (!filtersEl) return;
+
+    const preferred = ["data", "quant", "robotics", "hardware"];
+    const extras = categories.filter(c => c !== "all" && !preferred.includes(c));
+    const finalCats = ["all", ...preferred.filter(c => categories.includes(c)), ...extras];
+
+    filtersEl.innerHTML = finalCats.map((cat, idx) => {
+        const label = CATEGORY_LABELS[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
+        return `<button data-filter="${escapeHtml(cat)}" class="${idx === 0 ? "active" : ""}">${escapeHtml(label)}</button>`;
+    }).join("");
+}
+
+function applyProjectFilter(filter) {
+    const links = document.querySelectorAll("#projectsGrid .project-link");
+
+    links.forEach(link => {
+        const card = link.querySelector(".project-card");
+        const category = card?.dataset.category;
+        const hide = filter !== "all" && category !== filter;
+        link.classList.toggle("hidden", hide);
+    });
+}
+
+function initModal() {
+    const modal = document.getElementById("modal");
+    const modalClose = document.getElementById("modal-close");
+
+    if (!modal || !modalClose) return;
+
+    modalClose.addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("show");
+    });
+}
+
+function openProjectModalFromCard(card) {
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalTitle = document.getElementById("modal-title");
+    const modalDesc = document.getElementById("modal-desc");
+
+    if (!modal || !modalImg || !modalTitle || !modalDesc) return;
+
+    modalImg.src = card.dataset.image || "";
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
+    modal.classList.add("show");
+}
+
+async function loadProjects() {
+    const grid = document.getElementById("projectsGrid");
+    const featuredMount = document.getElementById("featuredProjects");
+    const filtersEl = document.getElementById("projectsFilters");
+    if (!grid || !featuredMount || !filtersEl) return;
+
+    try {
+        const projects = await fetchJson("data/projects.json");
+        const featuredProjects = projects.filter(p => p.featured);
+        const regularProjects = projects.filter(p => !p.featured);
+
+        featuredMount.innerHTML = featuredProjects.map(p => renderProjectCard(p, "featured")).join("");
+        grid.innerHTML = regularProjects.map(p => renderProjectCard(p, "grid")).join("");
+
+        const cats = Array.from(new Set(regularProjects.map(p => p.category))).filter(Boolean);
+        renderProjectFilters(["all", ...cats]);
+        applyProjectFilter("all");
+
+        filtersEl.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-filter]");
+            if (!btn) return;
+
+            filtersEl.querySelector("button.active")?.classList.remove("active");
+            btn.classList.add("active");
+
+            applyProjectFilter(btn.dataset.filter);
+        });
+
+        grid.addEventListener("click", (e) => {
+            const card = e.target.closest(".project-card");
+            if (!card) return;
+
+            const href = card.dataset.href;
+            if (href) return;
+
+            e.preventDefault();
+            openProjectModalFromCard(card);
+        });
+
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+    } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<p style="color:#b9b9b9">Unable to load projects.</p>`;
+    }
+}
+
+function initReveal() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll(".reveal").forEach(el => {
+        gsap.from(el, {
+            y: 50,
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: el,
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
+    });
+}
+
+
+function initEducationTabs() {
+    const eduTabs = document.querySelectorAll(".edu-tab");
+    const eduPanels = document.querySelectorAll(".edu-panel");
+    if (!eduTabs.length || !eduPanels.length) return;
+
+    eduTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            eduTabs.forEach(t => {
+                t.classList.remove("active");
+                t.setAttribute("aria-selected", "false");
+            });
+            tab.classList.add("active");
+            tab.setAttribute("aria-selected", "true");
+
+            const target = tab.dataset.year;
+            eduPanels.forEach(p => p.classList.toggle("active", p.id === target));
+        });
+    });
+}
+
+function initDesignCarousel() {
+    const designCards = Array.from(document.querySelectorAll(".design-card"));
+    const prevBtn = document.querySelector(".design-prev");
+    const nextBtn = document.querySelector(".design-next");
+
+    if (!designCards.length) return;
+
+    let centerIndex = 0;
+
+    function clampIndex(i) {
+        const n = designCards.length;
+        return (i % n + n) % n;
+    }
+
+    function layoutDesignCarousel(animate = true, dir = 1) {
+        const n = designCards.length;
+        if (n === 0) return;
+
+        const leftX = -320;
+        const rightX = 320;
+        const sideScale = 0.82;
+        const sideOpacity = 0.45;
+        const sideBlur = 1.5;
+
+        const centerScale = 1.0;
+        const centerOpacity = 1.0;
+        const centerBlur = 0;
+
+        designCards.forEach(c => c.classList.remove("is-center"));
+
+        for (let i = 0; i < n; i++) {
+            const card = designCards[i];
+            const offset = ((i - centerIndex) % n + n) % n;
+
+            let state = "hidden";
+            if (offset === 0) state = "center";
+            else if (offset === 1) state = "right";
+            else if (offset === n - 1) state = "left";
+
+            let x = 0, scale = 0.7, opacity = 0, z = 0, blur = 6;
+
+            if (state === "center") {
+                x = 0; scale = centerScale; opacity = centerOpacity; z = 3; blur = centerBlur;
+                card.classList.add("is-center");
+                card.setAttribute("aria-hidden", "false");
+                card.tabIndex = 0;
+            } else if (state === "left") {
+                x = leftX; scale = sideScale; opacity = sideOpacity; z = 2; blur = sideBlur;
+                card.setAttribute("aria-hidden", "true");
+                card.tabIndex = -1;
+            } else if (state === "right") {
+                x = rightX; scale = sideScale; opacity = sideOpacity; z = 2; blur = sideBlur;
+                card.setAttribute("aria-hidden", "true");
+                card.tabIndex = -1;
+            } else {
+                x = dir > 0 ? rightX * 1.8 : leftX * 1.8;
+                scale = 0.72;
+                opacity = 0;
+                z = 1;
+                blur = 8;
+                card.setAttribute("aria-hidden", "true");
+                card.tabIndex = -1;
+            }
+
+            card.style.zIndex = z;
+
+            if (animate && window.gsap) {
+                gsap.to(card, {
+                    duration: 0.45,
+                    ease: "power3.out",
+                    x,
+                    scale,
+                    opacity,
+                    filter: `blur(${blur}px)`
+                });
+            } else {
+                card.style.transform = `translateX(calc(-50% + ${x}px)) scale(${scale})`;
+                card.style.opacity = opacity;
+                card.style.filter = `blur(${blur}px)`;
+            }
+        }
+    }
+
+    function goNext() {
+        centerIndex = clampIndex(centerIndex + 1);
+        layoutDesignCarousel(true, 1);
+    }
+
+    function goPrev() {
+        centerIndex = clampIndex(centerIndex - 1);
+        layoutDesignCarousel(true, -1);
+    }
+
+    function enforceCenterClick() {
+        designCards.forEach((card, i) => {
+            card.addEventListener("click", (e) => {
+                if (i !== centerIndex) {
+                    e.preventDefault();
+                    const n = designCards.length;
+                    const offset = ((i - centerIndex) % n + n) % n;
+                    if (offset === 1) goNext();
+                    else if (offset === n - 1) goPrev();
+                }
+            });
+        });
+    }
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") goNext();
+        if (e.key === "ArrowLeft") goPrev();
+    });
+
+    nextBtn?.addEventListener("click", goNext);
+    prevBtn?.addEventListener("click", goPrev);
+
+    enforceCenterClick();
+
+    designCards.forEach(c => {
+        c.style.transform = "translateX(-50%) scale(0.72)";
+        c.style.opacity = 0;
+        c.style.filter = "blur(8px)";
+    });
+
+    layoutDesignCarousel(true, 1);
+}
+
+
+function renderEducation(data) {
+    const edu = data.education ?? data;
+
+    const yearTabs = (edu.yearsOfStudy || []).map((y, i) => `
+      <button class="edu-tab ${i === 0 ? "active" : ""}"
+              data-year="${escapeHtml(y.id)}"
+              role="tab"
+              aria-selected="${i === 0}">
+        ${escapeHtml(y.year)}
+      </button>
+    `).join("");
+
+    const panels = (edu.yearsOfStudy || []).map((y, i) => {
+        const highlights = (y.highlights || []).map(h => `<li>${escapeHtml(h)}</li>`).join("");
+        const modules = (y.modules || []).map(m => `<span class="edu-pill">${escapeHtml(m)}</span>`).join("");
+        const societies = (y.societies || []).join(" • ");
+
+        return `
+        <div class="edu-panel ${i === 0 ? "active" : ""}" id="${escapeHtml(y.id)}" role="tabpanel">
+          <div class="edu-panel-grid">
+            <div class="edu-panel-left">
+              <div class="edu-panel-title">${escapeHtml(y.year)}</div>
+              <div class="edu-panel-sub">${escapeHtml(y.subtitle || "")}</div>
+
+              <div class="edu-block">
+                <div class="edu-block-label">Highlights</div>
+                ${highlights ? `<ul class="edu-bullets">${highlights}</ul>` : ""}
+              </div>
+            </div>
+
+            <div class="edu-panel-right">
+              <div class="edu-block">
+                <div class="edu-block-label">Modules</div>
+                <div class="edu-pills">${modules}</div>
+              </div>
+
+              <div class="edu-block">
+                <div class="edu-block-label">Societies</div>
+                <div class="edu-text">${escapeHtml(societies)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const achievements = (edu.achievements || []).map(a => `
+      <div class="edu-achievement">
+        <div class="edu-achievement-label">${escapeHtml(a.label || "")}</div>
+        <div class="edu-achievement-value">${escapeHtml(a.value || "")}</div>
+        <p>${escapeHtml(a.note || "")}</p>
+      </div>
+    `).join("");
+
+    return `
+      <div class="edu-hero">
+        <div>
+          <div class="edu-school">${escapeHtml(edu.institution)}</div>
+          <div class="edu-degree">${escapeHtml(edu.degree)}</div>
+          <div class="edu-years">${escapeHtml(edu.years)}</div>
+        </div>
+
+        <div class="edu-hero-right">
+          <div class="edu-grade-label">Grade</div>
+          <div class="edu-grade">${escapeHtml(edu.grade?.classification || "")}</div>
+          <div class="edu-grade-note">${escapeHtml((edu.grade?.focusAreas || []).join(" • "))}</div>
+        </div>
+      </div>
+
+      ${achievements ? `<div class="edu-achievements">${achievements}</div>` : ""}
+
+      <div class="edu-tabs" role="tablist" aria-label="Year of study">
+        ${yearTabs}
+      </div>
+
+      <!-- Full-width details panel -->
+      <div class="edu-panel-wrap">
+        <div class="container">
+          ${panels}
+        </div>
+      </div>
+    `;
+}
+
+function addEducationPhotos(data) {
+    const edu = data.education ?? data;
+
+    (edu.yearsOfStudy || []).forEach((year) => {
+        if (!year.photos?.length) return;
+
+        const panel = document.getElementById(year.id);
+        const left = panel?.querySelector(".edu-panel-left");
+        if (!left) return;
+
+        const photos = year.photos.map(photo => `
+          <figure class="edu-photo">
+            <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || "")}">
+          </figure>
+        `).join("");
+
+        left.insertAdjacentHTML("beforeend", `<div class="edu-photo-row">${photos}</div>`);
+    });
+}
+
+async function loadEducation() {
+    const mount = document.getElementById("education-root");
+    if (!mount) return;
+
+    try {
+        const data = await fetchJson("data/education.json");
+        mount.innerHTML = renderEducation(data);
+        addEducationPhotos(data);
+
+        // Now tabs exist, wire them up
+        initEducationTabs();
+
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+    } catch (err) {
+        console.error(err);
+        mount.innerHTML = `<p style="color:#b9b9b9">Unable to load education.</p>`;
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    initModal();
+    initDesignCarousel();
+
+    await loadExperience();
+    await loadProjects();
+    await loadEducation();
+});

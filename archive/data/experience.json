@@ -1,0 +1,92 @@
+[
+    {
+        "month": "Apr",
+        "year": 2025,
+        "side": "right",
+        "title": "Project Manager & Software Developer",
+        "org": "Robots4ChildrenWithDisabilities",
+        "summary": "Led development of a predictive assistive robotic companion for children with motor disabilities.",
+        "bullets": [
+            "Led a multidisciplinary team to design and deliver an assistive robotic system.",
+            "Built an adaptive ML system to dynamically tune gameplay difficulty based on user behaviour.",
+            "Developed UI and head-tracking perception pipeline using OpenCV and MediaPipe.",
+            "Delivered final demo and technical pitch to stakeholders."
+        ],
+        "tags": [
+            "Robotics",
+            "Machine Learning",
+            "Computer Vision"
+        ]
+    },
+    {
+        "month": "Sep",
+        "year": 2024,
+        "side": "left",
+        "title": "Data Intern",
+        "org": "Pactio Technologies",
+        "summary": "Prepared and analysed transaction data to support ML-driven document understanding.",
+        "bullets": [
+            "Cleaned and structured transaction-proposal data for ML training pipelines.",
+            "Analysed document structure and metadata to support template-learning models.",
+            "Evaluated early model outputs to improve consistency and reliability."
+        ],
+        "tags": [
+            "Python",
+            "Data",
+            "Machine Learning"
+        ]
+    },
+    {
+        "month": "Jun",
+        "year": 2024,
+        "side": "right",
+        "title": "Private Equity Analyst / Software Engineering Intern",
+        "org": "Gaman Succession (Search Fund)",
+        "summary": "Built ML and data pipelines to improve valuation robustness and acquisition discovery.",
+        "bullets": [
+            "Trained supervised ML models to improve consistency of company valuation scoring.",
+            "Built predictive web-scraping pipelines to surface high-potential acquisition targets.",
+            "Automated processing of 700K+ records to accelerate data-driven investment decisions."
+        ],
+        "tags": [
+            "Python",
+            "Machine Learning",
+            "Finance"
+        ]
+    },
+    {
+        "month": "Dec",
+        "year": 2023,
+        "side": "left",
+        "title": "Consultant",
+        "org": "180 Degrees Consulting",
+        "summary": "Delivered analytics-driven UX improvements and growth experiments for client platforms.",
+        "bullets": [
+            "Led data-driven UX improvements increasing website visits by 85%.",
+            "Improved user retention by 49% through experimentation and KPI-driven iteration.",
+            "Worked with stakeholders to translate business goals into measurable metrics."
+        ],
+        "tags": [
+            "Analytics",
+            "Consulting",
+            "UX"
+        ]
+    },
+    {
+        "month": "Oct",
+        "year": 2023,
+        "side": "right",
+        "title": "Quant / Trading Competitions",
+        "org": "Optiver @ Imperial",
+        "summary": "Built market-making strategies and tooling to evaluate risk, execution quality, and performance under noise.",
+        "bullets": [
+            "Developed quoting logic + inventory/risk controls.",
+            "Ran experiments and tuned parameters for stability and PnL."
+        ],
+        "tags": [
+            "Python",
+            "Quant",
+            "Statistics"
+        ]
+    }
+]

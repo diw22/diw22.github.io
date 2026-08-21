@@ -1,502 +1,368 @@
-function escapeHtml(s = "") {
-    return String(s).replace(/[&<>"']/g, (c) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[c]));
+const state = { projects: [], selected: 0, isProjectView: false };
+
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
 }
 
-async function fetchJson(path) {
-    const res = await fetch(path, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Failed to fetch ${path} (${res.status})`);
-    return res.json();
+async function fetchProjects() {
+  const response = await fetch("data/projects.json", { cache: "no-store" });
+  if (!response.ok) throw new Error(`Unable to load projects (${response.status})`);
+  return response.json();
 }
 
-function renderExperienceItem(item) {
-    const sideClass = item.side === "right" ? "t-right" : "t-left";
+function projectUrl(project) {
+  return `#project/${encodeURIComponent(project.slug)}`;
+}
 
-    const bullets = (item.bullets || []).map(b => `<li>${escapeHtml(b)}</li>`).join("");
-    const tags = (item.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+function getProjectIndexFromHash() {
+  const match = window.location.hash.match(/^#project\/(.+)$/);
+  if (!match) return 0;
+  const slug = decodeURIComponent(match[1]);
+  const index = state.projects.findIndex((project) => project.slug === slug);
+  return index >= 0 ? index : 0;
+}
 
+function getRoute() {
+  return window.location.hash.startsWith("#project/") ? "project" : "home";
+}
+
+function renderCarousel() {
+  const carousel = document.getElementById("projectCarousel");
+  if (!carousel) return;
+
+  carousel.innerHTML = state.projects.map((project, index) => `
+    <button class="project-card ${index === state.selected ? "is-selected" : ""}"
+            type="button"
+            data-index="${index}">
+      <span class="project-count">${String(index + 1).padStart(2, "0")}</span>
+      <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} preview">
+      <span class="project-card-copy">
+        <span class="project-card-title">${escapeHtml(project.title)}</span>
+        <span class="project-card-meta">${escapeHtml(project.category)} / ${escapeHtml(project.year)}</span>
+      </span>
+    </button>
+  `).join("");
+}
+
+function renderDockCarousel() {
+  const carousel = document.getElementById("projectDockCarousel");
+  if (!carousel) return;
+
+  carousel.innerHTML = state.projects.map((project, index) => `
+    <button class="dock-project-card ${index === state.selected ? "is-selected" : ""}"
+            type="button"
+            data-index="${index}">
+      <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} preview">
+      <span>
+        <strong>${escapeHtml(project.title)}</strong>
+        <small>${escapeHtml(project.category)} / ${escapeHtml(project.year)}</small>
+      </span>
+    </button>
+  `).join("");
+}
+
+function layoutCarousel() {
+  const cards = Array.from(document.querySelectorAll(".project-card"));
+  const dockCards = Array.from(document.querySelectorAll(".dock-project-card"));
+  const count = state.projects.length || cards.length || dockCards.length;
+  if (!count) return;
+
+  cards.forEach((card, index) => {
+    const selected = index === state.selected;
+    card.classList.toggle("is-selected", selected);
+    card.setAttribute("aria-pressed", String(selected));
+  });
+  if (cards.length) {
+    centerCardInScroller(document.getElementById("projectCarousel"), cards[state.selected]);
+  }
+
+  dockCards.forEach((card, index) => {
+    card.classList.toggle("is-selected", index === state.selected);
+  });
+  if (dockCards.length) {
+    centerCardInScroller(document.getElementById("projectDockCarousel"), dockCards[state.selected]);
+  }
+}
+
+function centerCardInScroller(scroller, card) {
+  if (!scroller || !card) return;
+
+  const target = card.offsetLeft - (scroller.clientWidth - card.offsetWidth) / 2;
+  scroller.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+}
+
+function scrollToProjectHero(behavior = "smooth") {
+  window.scrollTo({ top: 0, behavior });
+}
+
+function settleProjectHeroScroll(behavior = "smooth") {
+  window.requestAnimationFrame(() => {
+    scrollToProjectHero(behavior);
+    window.setTimeout(() => scrollToProjectHero("auto"), behavior === "smooth" ? 320 : 80);
+  });
+}
+
+function renderProjectPage() {
+  const mount = document.getElementById("projectPage");
+  const project = state.projects[state.selected];
+  if (!mount || !project) return;
+
+  const tags = (project.tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+  const specs = (project.specs || []).map((spec) => `
+    <div class="report-stat">
+      <dt>${escapeHtml(spec.label)}</dt>
+      <dd>${escapeHtml(spec.value)}</dd>
+    </div>
+  `).join("");
+  const heroLinks = (project.links || []).filter((link) => !/report|presentation|slides/i.test(link.label || ""));
+  const documentLinks = (project.links || []).filter((link) => /report|presentation|slides/i.test(link.label || ""));
+  const heroActions = heroLinks.map((link) => `
+    <a class="project-link-button" href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">
+      ${escapeHtml(link.label)}
+    </a>
+  `).join("");
+  const documentActions = documentLinks.map((link) => `
+    <a class="project-link-button project-link-button-dark" href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">
+      ${escapeHtml(link.label)}
+    </a>
+  `).join("");
+  const references = (project.references || ["Primary project artefacts are linked below where available."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  const disclosures = (project.disclosures || ["Summarised for portfolio presentation; third-party assets, datasets, and tools remain with their respective owners."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  const gallery = project.gallery || [];
+  const projectImage = { src: project.image, alt: `${project.title} project image` };
+  const specContext = (project.specs || [])
+    .slice(0, 3)
+    .map((spec) => `${spec.label.toLowerCase()}: ${spec.value}`)
+    .join("; ");
+  const resultSpec = (project.specs || []).find((spec) => /result|output|speed|scale|outcome/i.test(spec.label));
+  const tagContext = (project.tags || []).join(", ");
+  const recognitionItems = [
+    ...(project.recognitions || []),
+    ...(project.tags || []).filter((tag) => /dean|award|list|competition|final year/i.test(tag)),
+    ...(resultSpec ? [`${resultSpec.label}: ${resultSpec.value}`] : [])
+  ];
+  const recognitions = (recognitionItems.length ? recognitionItems : ["Selected project for portfolio presentation."])
+    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .join("");
+
+  function reportFigure(item) {
     return `
-    <article class="t-item ${sideClass}">
-      <div class="t-date">
-        <span class="t-month">${escapeHtml(item.month)}</span>
-        <span class="t-year">${escapeHtml(item.year)}</span>
-      </div>
+      <figure class="report-figure">
+        <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || project.title)}">
+      </figure>
+    `;
+  }
 
-      <div class="t-card">
-        <div class="t-head">
-          <div class="t-title">${escapeHtml(item.title)}</div>
-          <div class="t-org">${escapeHtml(item.org)}</div>
-        </div>
+  function galleryItem(index) {
+    return gallery[index] || gallery[index - 1] || gallery[0] || projectImage;
+  }
 
-        <div class="t-more">
-          <div class="t-more-inner">
-            <p class="t-summary">${escapeHtml(item.summary || "")}</p>
-            ${bullets ? `<ul>${bullets}</ul>` : ""}
-            ${tags ? `<div class="t-tags">${tags}</div>` : ""}
-          </div>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-async function loadExperience() {
-    const mount = document.getElementById("experienceTimeline");
-    if (!mount) return;
-
-    try {
-        const items = await fetchJson("data/experience.json");
-        mount.innerHTML = items.map(renderExperienceItem).join("");
-
-        if (window.ScrollTrigger) ScrollTrigger.refresh();
-    } catch (err) {
-        console.error(err);
-        mount.innerHTML = `<p style="color:#b9b9b9">Unable to load experience.</p>`;
+  const reportSections = [
+    {
+      label: "Robot",
+      image: galleryItem(0),
+      paragraphs: [
+        project.sections?.[0]?.body || project.description,
+        `This section introduces the physical system and the constraints it had to satisfy. For ${project.title}, the important question was not only what the object looked like, but how the platform, sensing, interface, and build decisions supported the intended interaction.`,
+        specContext ? `The core specification was anchored by ${specContext}. These details define the operating envelope before the task logic or evaluation layer is considered.` : `The core specification was shaped by the available hardware, implementation time, and the need to make the finished system legible to a reviewer.`
+      ]
+    },
+    {
+      label: "Task",
+      image: galleryItem(1),
+      paragraphs: [
+        project.subtitle,
+        project.sections?.[1]?.body || project.description,
+        `The task was framed around a clear user-facing outcome: make the system understandable, repeatable, and easy to evaluate. That meant translating the broad project idea into a sequence of behaviours, interfaces, and success criteria that could be demonstrated without needing extra explanation.`
+      ]
+    },
+    {
+      label: "Control",
+      image: galleryItem(2),
+      paragraphs: [
+        project.sections?.[2]?.body || `The control layer connects the project intent to the working implementation. In practice this meant coordinating data flow, decision logic, interfaces, and feedback so that the system behaved consistently rather than only working in isolated demos.`,
+        specContext ? `The relevant technical structure included ${specContext}. Where appropriate, this section is where theory, plots, algorithms, or control diagrams sit so the page can explain why the implementation behaves the way it does.` : `Where appropriate, this section is where theory, plots, algorithms, or control diagrams sit so the page can explain why the implementation behaves the way it does.`,
+        tagContext ? `The implementation is connected to ${tagContext}, which gives the project its technical identity and helps distinguish the control problem from the broader presentation layer.` : `The implementation choices give the project its technical identity and separate the control problem from the broader presentation layer.`
+      ]
+    },
+    {
+      label: "Results",
+      image: galleryItem(3),
+      paragraphs: [
+        project.sections?.[3]?.body || project.description,
+        resultSpec ? `The clearest measured result was ${resultSpec.label.toLowerCase()}: ${resultSpec.value}. This is treated as the headline outcome because it turns the project from a build exercise into something that can be compared, inspected, or defended.` : `The result is presented through the finished behaviour, the supporting artefacts, and the evidence that the system could carry the intended task end to end.`,
+        `The final page keeps the outcome close to the implementation details so a recruiter can quickly see what was built, what role it served, and what evidence supports the claim.`
+      ]
     }
-}
+  ];
 
-
-const CATEGORY_LABELS = {
-    all: "All",
-    data: "Data",
-    quant: "Quant",
-    robotics: "Robotics",
-    hardware: "Hardware"
-};
-
-function renderProjectCard(p, variant = "grid") {
-    const tags = (p.tags || []).map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join("");
-    const featured = p.featured ? `<div class="project-badge">Featured</div>` : "";
-
-    const cardInner = `
-    <div class="project-card ${variant === "featured" ? "project-card--featured" : ""}"
-         data-category="${escapeHtml(p.category)}"
-         data-featured="${p.featured ? "true" : "false"}"
-         data-title="${escapeHtml(p.title)}"
-         data-desc="${escapeHtml(p.description)}"
-         data-image="${escapeHtml(p.image)}"
-         ${p.href ? `data-href="${escapeHtml(p.href)}"` : ""}>
-      <div class="project-media">
-        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)} Screenshot">
-        ${featured}
+  const reportSectionMarkup = reportSections.map((section, index) => `
+    <section class="report-section report-split ${index % 2 ? "report-split-reverse" : ""}">
+      ${index % 2 ? "" : reportFigure(section.image)}
+      <div class="report-copy">
+        <p class="section-label">${escapeHtml(section.label)}</p>
+        ${section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
       </div>
-      <h3>${escapeHtml(p.title)}</h3>
-      <p>${escapeHtml(p.description)}</p>
-      ${tags ? `<div class="project-tags">${tags}</div>` : ""}
+      ${index % 2 ? reportFigure(section.image) : ""}
+    </section>
+  `).join("");
+
+  mount.style.setProperty("--accent", project.accent || "#fff");
+  mount.innerHTML = `
+    <div class="project-hero">
+      <video class="project-hero-video" autoplay muted loop playsinline poster="${escapeHtml(project.image)}">
+        <source src="${escapeHtml(project.heroVideo || "")}" type="video/mp4">
+      </video>
+      <div class="project-hero-shade"></div>
+      <div class="project-hero-copy">
+        <p class="kicker">${escapeHtml(project.category)} / ${escapeHtml(project.year)}</p>
+        <h2>${escapeHtml(project.title)}</h2>
+        <p>${escapeHtml(project.subtitle)}</p>
+        ${heroActions ? `<div class="project-actions">${heroActions}</div>` : ""}
+      </div>
+    </div>
+
+    <div class="project-body">
+      ${reportSectionMarkup}
+
+      <section class="report-section report-recognition">
+        <p class="section-label">Recognitions</p>
+        <ul>${recognitions}</ul>
+        <div class="tag-row">${tags}</div>
+        <dl class="report-stats">${specs}</dl>
+      </section>
+
+      <section class="report-section report-notes">
+        <div>
+          <p class="section-label">References</p>
+          <ul>${references}</ul>
+        </div>
+        <div>
+          <p class="section-label">Disclosures</p>
+          <ul>${disclosures}</ul>
+        </div>
+      </section>
+
+      ${documentActions ? `
+        <section class="report-section report-links">
+          <p class="section-label">Links</p>
+          <div class="project-actions">${documentActions}</div>
+        </section>
+      ` : ""}
     </div>
   `;
 
-    if (p.href) {
-        return `
-      <a href="${escapeHtml(p.href)}" class="project-link ${variant === "featured" ? "project-link--featured" : ""}" target="_blank" rel="noopener noreferrer">
-        ${cardInner}
-      </a>
-    `;
-    }
-
-    return `
-    <a class="project-link" role="button" tabindex="0">
-      ${cardInner}
-    </a>
-  `;
+  document.title = `${project.title} | Dylan Winters`;
 }
 
-function renderProjectFilters(categories) {
-    const filtersEl = document.getElementById("projectsFilters");
-    if (!filtersEl) return;
-
-    const preferred = ["data", "quant", "robotics", "hardware"];
-    const extras = categories.filter(c => c !== "all" && !preferred.includes(c));
-    const finalCats = ["all", ...preferred.filter(c => categories.includes(c)), ...extras];
-
-    filtersEl.innerHTML = finalCats.map((cat, idx) => {
-        const label = CATEGORY_LABELS[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
-        return `<button data-filter="${escapeHtml(cat)}" class="${idx === 0 ? "active" : ""}">${escapeHtml(label)}</button>`;
-    }).join("");
+function renderHomePage() {
+  state.isProjectView = false;
+  document.body.classList.remove("is-project-view");
+  document.body.classList.remove("is-carousel-open");
+  document.body.classList.remove("is-project-dock-open");
+  const mount = document.getElementById("projectPage");
+  if (mount) mount.innerHTML = "";
+  document.title = "Dylan Winters | Projects";
+  layoutCarousel();
 }
 
-function applyProjectFilter(filter) {
-    const links = document.querySelectorAll("#projectsGrid .project-link");
-
-    links.forEach(link => {
-        const card = link.querySelector(".project-card");
-        const category = card?.dataset.category;
-        const hide = filter !== "all" && category !== filter;
-        link.classList.toggle("hidden", hide);
-    });
+function focusCarouselProject(index) {
+  const count = state.projects.length;
+  if (!count) return;
+  state.selected = (index % count + count) % count;
+  layoutCarousel();
 }
 
-function initModal() {
-    const modal = document.getElementById("modal");
-    const modalClose = document.getElementById("modal-close");
+function selectProject(index, options = {}) {
+  const count = state.projects.length;
+  if (!count) return;
+  state.isProjectView = true;
+  state.selected = (index % count + count) % count;
+  document.body.classList.add("is-project-view");
+  document.body.classList.remove("is-carousel-open");
+  document.body.classList.remove("is-project-dock-open");
+  layoutCarousel();
+  renderProjectPage();
 
-    if (!modal || !modalClose) return;
-
-    modalClose.addEventListener("click", () => modal.classList.remove("show"));
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) modal.classList.remove("show");
-    });
+  const project = state.projects[state.selected];
+  if (!options.fromHash && project) {
+    history.pushState(null, "", projectUrl(project));
+    settleProjectHeroScroll("smooth");
+  }
 }
 
-function openProjectModalFromCard(card) {
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalTitle = document.getElementById("modal-title");
-    const modalDesc = document.getElementById("modal-desc");
+function bindInteractions() {
+  const carousel = document.getElementById("projectCarousel");
+  const dock = document.getElementById("projectDock");
+  const dockCarousel = document.getElementById("projectDockCarousel");
+  const jumpButton = document.getElementById("projectJumpButton");
 
-    if (!modal || !modalImg || !modalTitle || !modalDesc) return;
+  carousel?.addEventListener("click", (event) => {
+    const card = event.target.closest(".project-card");
+    if (!card) return;
 
-    modalImg.src = card.dataset.image || "";
-    modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
-    modal.classList.add("show");
+    selectProject(Number(card.dataset.index));
+  });
+
+  jumpButton?.addEventListener("click", () => {
+    document.body.classList.toggle("is-project-dock-open");
+  });
+
+  dock?.addEventListener("pointerenter", () => {
+    document.body.classList.add("is-project-dock-open");
+  });
+
+  dock?.addEventListener("pointerleave", () => {
+    document.body.classList.remove("is-project-dock-open");
+  });
+
+  dockCarousel?.addEventListener("click", (event) => {
+    const card = event.target.closest(".dock-project-card");
+    if (!card) return;
+
+    selectProject(Number(card.dataset.index));
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") document.body.classList.remove("is-project-dock-open");
+    if (event.key === "ArrowLeft") focusCarouselProject(state.selected - 1);
+    if (event.key === "ArrowRight") focusCarouselProject(state.selected + 1);
+  });
+  document.getElementById("prevProject")?.addEventListener("click", () => focusCarouselProject(state.selected - 1));
+  document.getElementById("nextProject")?.addEventListener("click", () => focusCarouselProject(state.selected + 1));
+  window.addEventListener("hashchange", () => {
+    if (getRoute() === "project") selectProject(getProjectIndexFromHash(), { fromHash: true });
+    else renderHomePage();
+  });
+  window.addEventListener("resize", () => {
+    layoutCarousel();
+  });
 }
-
-async function loadProjects() {
-    const grid = document.getElementById("projectsGrid");
-    const featuredMount = document.getElementById("featuredProjects");
-    const filtersEl = document.getElementById("projectsFilters");
-    if (!grid || !featuredMount || !filtersEl) return;
-
-    try {
-        const projects = await fetchJson("data/projects.json");
-        const featuredProjects = projects.filter(p => p.featured);
-        const regularProjects = projects.filter(p => !p.featured);
-
-        featuredMount.innerHTML = featuredProjects.map(p => renderProjectCard(p, "featured")).join("");
-        grid.innerHTML = regularProjects.map(p => renderProjectCard(p, "grid")).join("");
-
-        const cats = Array.from(new Set(regularProjects.map(p => p.category))).filter(Boolean);
-        renderProjectFilters(["all", ...cats]);
-        applyProjectFilter("all");
-
-        filtersEl.addEventListener("click", (e) => {
-            const btn = e.target.closest("button[data-filter]");
-            if (!btn) return;
-
-            filtersEl.querySelector("button.active")?.classList.remove("active");
-            btn.classList.add("active");
-
-            applyProjectFilter(btn.dataset.filter);
-        });
-
-        grid.addEventListener("click", (e) => {
-            const card = e.target.closest(".project-card");
-            if (!card) return;
-
-            const href = card.dataset.href;
-            if (href) return;
-
-            e.preventDefault();
-            openProjectModalFromCard(card);
-        });
-
-        if (window.ScrollTrigger) ScrollTrigger.refresh();
-    } catch (err) {
-        console.error(err);
-        grid.innerHTML = `<p style="color:#b9b9b9">Unable to load projects.</p>`;
-    }
-}
-
-function initReveal() {
-    if (!window.gsap || !window.ScrollTrigger) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    document.querySelectorAll(".reveal").forEach(el => {
-        gsap.from(el, {
-            y: 50,
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: el,
-                start: "top 80%",
-                toggleActions: "play none none none"
-            }
-        });
-    });
-}
-
-
-function initEducationTabs() {
-    const eduTabs = document.querySelectorAll(".edu-tab");
-    const eduPanels = document.querySelectorAll(".edu-panel");
-    if (!eduTabs.length || !eduPanels.length) return;
-
-    eduTabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            eduTabs.forEach(t => {
-                t.classList.remove("active");
-                t.setAttribute("aria-selected", "false");
-            });
-            tab.classList.add("active");
-            tab.setAttribute("aria-selected", "true");
-
-            const target = tab.dataset.year;
-            eduPanels.forEach(p => p.classList.toggle("active", p.id === target));
-        });
-    });
-}
-
-function initDesignCarousel() {
-    const designCards = Array.from(document.querySelectorAll(".design-card"));
-    const prevBtn = document.querySelector(".design-prev");
-    const nextBtn = document.querySelector(".design-next");
-
-    if (!designCards.length) return;
-
-    let centerIndex = 0;
-
-    function clampIndex(i) {
-        const n = designCards.length;
-        return (i % n + n) % n;
-    }
-
-    function layoutDesignCarousel(animate = true, dir = 1) {
-        const n = designCards.length;
-        if (n === 0) return;
-
-        const leftX = -320;
-        const rightX = 320;
-        const sideScale = 0.82;
-        const sideOpacity = 0.45;
-        const sideBlur = 1.5;
-
-        const centerScale = 1.0;
-        const centerOpacity = 1.0;
-        const centerBlur = 0;
-
-        designCards.forEach(c => c.classList.remove("is-center"));
-
-        for (let i = 0; i < n; i++) {
-            const card = designCards[i];
-            const offset = ((i - centerIndex) % n + n) % n;
-
-            let state = "hidden";
-            if (offset === 0) state = "center";
-            else if (offset === 1) state = "right";
-            else if (offset === n - 1) state = "left";
-
-            let x = 0, scale = 0.7, opacity = 0, z = 0, blur = 6;
-
-            if (state === "center") {
-                x = 0; scale = centerScale; opacity = centerOpacity; z = 3; blur = centerBlur;
-                card.classList.add("is-center");
-                card.setAttribute("aria-hidden", "false");
-                card.tabIndex = 0;
-            } else if (state === "left") {
-                x = leftX; scale = sideScale; opacity = sideOpacity; z = 2; blur = sideBlur;
-                card.setAttribute("aria-hidden", "true");
-                card.tabIndex = -1;
-            } else if (state === "right") {
-                x = rightX; scale = sideScale; opacity = sideOpacity; z = 2; blur = sideBlur;
-                card.setAttribute("aria-hidden", "true");
-                card.tabIndex = -1;
-            } else {
-                x = dir > 0 ? rightX * 1.8 : leftX * 1.8;
-                scale = 0.72;
-                opacity = 0;
-                z = 1;
-                blur = 8;
-                card.setAttribute("aria-hidden", "true");
-                card.tabIndex = -1;
-            }
-
-            card.style.zIndex = z;
-
-            if (animate && window.gsap) {
-                gsap.to(card, {
-                    duration: 0.45,
-                    ease: "power3.out",
-                    x,
-                    scale,
-                    opacity,
-                    filter: `blur(${blur}px)`
-                });
-            } else {
-                card.style.transform = `translateX(calc(-50% + ${x}px)) scale(${scale})`;
-                card.style.opacity = opacity;
-                card.style.filter = `blur(${blur}px)`;
-            }
-        }
-    }
-
-    function goNext() {
-        centerIndex = clampIndex(centerIndex + 1);
-        layoutDesignCarousel(true, 1);
-    }
-
-    function goPrev() {
-        centerIndex = clampIndex(centerIndex - 1);
-        layoutDesignCarousel(true, -1);
-    }
-
-    function enforceCenterClick() {
-        designCards.forEach((card, i) => {
-            card.addEventListener("click", (e) => {
-                if (i !== centerIndex) {
-                    e.preventDefault();
-                    const n = designCards.length;
-                    const offset = ((i - centerIndex) % n + n) % n;
-                    if (offset === 1) goNext();
-                    else if (offset === n - 1) goPrev();
-                }
-            });
-        });
-    }
-
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight") goNext();
-        if (e.key === "ArrowLeft") goPrev();
-    });
-
-    nextBtn?.addEventListener("click", goNext);
-    prevBtn?.addEventListener("click", goPrev);
-
-    enforceCenterClick();
-
-    designCards.forEach(c => {
-        c.style.transform = "translateX(-50%) scale(0.72)";
-        c.style.opacity = 0;
-        c.style.filter = "blur(8px)";
-    });
-
-    layoutDesignCarousel(true, 1);
-}
-
-
-function renderEducation(data) {
-    const edu = data.education ?? data;
-
-    const yearTabs = (edu.yearsOfStudy || []).map((y, i) => `
-      <button class="edu-tab ${i === 0 ? "active" : ""}"
-              data-year="${escapeHtml(y.id)}"
-              role="tab"
-              aria-selected="${i === 0}">
-        ${escapeHtml(y.year)}
-      </button>
-    `).join("");
-
-    const panels = (edu.yearsOfStudy || []).map((y, i) => {
-        const highlights = (y.highlights || []).map(h => `<li>${escapeHtml(h)}</li>`).join("");
-        const modules = (y.modules || []).map(m => `<span class="edu-pill">${escapeHtml(m)}</span>`).join("");
-        const societies = (y.societies || []).join(" • ");
-
-        return `
-        <div class="edu-panel ${i === 0 ? "active" : ""}" id="${escapeHtml(y.id)}" role="tabpanel">
-          <div class="edu-panel-grid">
-            <div class="edu-panel-left">
-              <div class="edu-panel-title">${escapeHtml(y.year)}</div>
-              <div class="edu-panel-sub">${escapeHtml(y.subtitle || "")}</div>
-
-              <div class="edu-block">
-                <div class="edu-block-label">Highlights</div>
-                ${highlights ? `<ul class="edu-bullets">${highlights}</ul>` : ""}
-              </div>
-            </div>
-
-            <div class="edu-panel-right">
-              <div class="edu-block">
-                <div class="edu-block-label">Modules</div>
-                <div class="edu-pills">${modules}</div>
-              </div>
-
-              <div class="edu-block">
-                <div class="edu-block-label">Societies</div>
-                <div class="edu-text">${escapeHtml(societies)}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    const achievements = (edu.achievements || []).map(a => `
-      <div class="edu-achievement">
-        <div class="edu-achievement-label">${escapeHtml(a.label || "")}</div>
-        <div class="edu-achievement-value">${escapeHtml(a.value || "")}</div>
-        <p>${escapeHtml(a.note || "")}</p>
-      </div>
-    `).join("");
-
-    return `
-      <div class="edu-hero">
-        <div>
-          <div class="edu-school">${escapeHtml(edu.institution)}</div>
-          <div class="edu-degree">${escapeHtml(edu.degree)}</div>
-          <div class="edu-years">${escapeHtml(edu.years)}</div>
-        </div>
-
-        <div class="edu-hero-right">
-          <div class="edu-grade-label">Grade</div>
-          <div class="edu-grade">${escapeHtml(edu.grade?.classification || "")}</div>
-          <div class="edu-grade-note">${escapeHtml((edu.grade?.focusAreas || []).join(" • "))}</div>
-        </div>
-      </div>
-
-      ${achievements ? `<div class="edu-achievements">${achievements}</div>` : ""}
-
-      <div class="edu-tabs" role="tablist" aria-label="Year of study">
-        ${yearTabs}
-      </div>
-
-      <!-- Full-width details panel -->
-      <div class="edu-panel-wrap">
-        <div class="container">
-          ${panels}
-        </div>
-      </div>
-    `;
-}
-
-function addEducationPhotos(data) {
-    const edu = data.education ?? data;
-
-    (edu.yearsOfStudy || []).forEach((year) => {
-        if (!year.photos?.length) return;
-
-        const panel = document.getElementById(year.id);
-        const left = panel?.querySelector(".edu-panel-left");
-        if (!left) return;
-
-        const photos = year.photos.map(photo => `
-          <figure class="edu-photo">
-            <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || "")}">
-          </figure>
-        `).join("");
-
-        left.insertAdjacentHTML("beforeend", `<div class="edu-photo-row">${photos}</div>`);
-    });
-}
-
-async function loadEducation() {
-    const mount = document.getElementById("education-root");
-    if (!mount) return;
-
-    try {
-        const data = await fetchJson("data/education.json");
-        mount.innerHTML = renderEducation(data);
-        addEducationPhotos(data);
-
-        // Now tabs exist, wire them up
-        initEducationTabs();
-
-        if (window.ScrollTrigger) ScrollTrigger.refresh();
-    } catch (err) {
-        console.error(err);
-        mount.innerHTML = `<p style="color:#b9b9b9">Unable to load education.</p>`;
-    }
-}
-
-
 
 document.addEventListener("DOMContentLoaded", async () => {
-    initModal();
-    initDesignCarousel();
-
-    await loadExperience();
-    await loadProjects();
-    await loadEducation();
+  try {
+    state.projects = await fetchProjects();
+    state.selected = getProjectIndexFromHash();
+    renderCarousel();
+    renderDockCarousel();
+    layoutCarousel();
+    bindInteractions();
+    if (getRoute() === "project") {
+      selectProject(state.selected, { fromHash: true });
+      settleProjectHeroScroll("auto");
+    } else {
+      renderHomePage();
+      if (!window.location.hash) history.replaceState(null, "", "#home");
+    }
+  } catch (error) {
+    console.error(error);
+    const mount = document.getElementById("projectPage");
+    if (mount) mount.innerHTML = `<p class="load-error">Unable to load projects.</p>`;
+  }
 });
