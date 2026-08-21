@@ -1,176 +1,259 @@
 [
   {
     "slug": "rigby",
+
     "title": "RIGBY",
-    "subtitle": "Low-cost mobile bimanual manipulator for accessible household assistance.",
-    "description": "A final-year robotics system combining a mobile base, asymmetric bimanual arms, imitation learning from demonstration, and a web, touch, and voice interface for non-expert users.",
+
+    "subtitle": "£1,951 mobile bimanual robot for learning assistive manipulation from demonstration.",
+
+    "description": "An end-to-end robotics platform combining custom asymmetric manipulators, whole-body teleoperation, imitation learning, simulation models, and accessible multimodal interaction.",
+
     "category": "Robotics",
+
     "year": "2026",
+
     "image": "assets/img/projects/rigby-gui-home.png",
-    "heroVideo": "assets/video/backvid5.mp4",
+    "thumbnail": "assets/img/photos/Rigby_Render_Front.png",
+    "thumbnailPosition": "50% 50%",
+    "thumbnailBackground": "#d8d2c4",
+
+    "heroVideo": "assets/video/dom_final.mp4",
+
     "accent": "#c9ff4a",
-    "tags": ["Final Year Project", "Dean's List", "ACT", "Jetson", "Assistive Robotics"],
+
+    "tags": ["Master's Thesis", "DOM-ACT", "Imitation Learning", "LeRobot", "Assistive Robotics"],
+
     "specs": [
-      { "label": "Platform", "value": "Mobile bimanual manipulator" },
-      { "label": "Learning", "value": "Action Chunking Transformer imitation policy" },
-      { "label": "Interface", "value": "Web, touchscreen, voice, and teleoperation" },
-      { "label": "Compute", "value": "NVIDIA Jetson-class edge deployment" }
+      { "label": "Platform", "value": "£1,951 mobile bimanual manipulator" },
+      { "label": "Learning", "value": "ACT and custom dominant-support DOM-ACT policies" },
+      { "label": "Interface", "value": "Whole-body teleoperation, web, touchscreen, and voice" },
+      { "label": "Compute", "value": "NVIDIA Jetson Orin Nano onboard deployment" }
     ],
+
     "sections": [
-      { "title": "System", "body": "RIGBY was designed as an accessible research platform for household assistance: a mobile base, two low-cost arms, calibrated cameras, and a task interface that lets a user request or demonstrate actions." },
-      { "title": "Contribution", "body": "The work covered mechanical integration, dataset recording, imitation-learning training, robot control, and the user-facing GUI that ties the system together." }
+      { "title": "System", "body": "Built RIGBY end-to-end around a mobile base and asymmetric bimanual architecture, including a custom 7-DOF dominant arm, parallel-jaw grippers, onboard vision, whole-body teleoperation, and URDF/MJCF models." },
+
+      { "title": "Contribution", "body": "Proposed DOM-ACT, extending Action Chunking with Transformers with an explicit dominant-support structure. On sequential bimanual tasks, task success increased from 65% with ACT to 80% with DOM-ACT." }
     ],
+
     "gallery": [
-      { "src": "assets/img/photos/withrigby.jpeg", "alt": "Dylan with RIGBY" },
-      { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" },
-      { "src": "assets/img/photos/Rigby_System.drawio.png", "alt": "RIGBY system architecture" },
-      { "src": "assets/img/photos/Rigby_Cameras.png", "alt": "RIGBY camera layout" }
+      { "type": "video", "src": "assets/video/teleopfinal.mp4", "alt": "RIGBY whole-body teleoperation demonstration" },
+      { "type": "video", "src": "assets/video/file-000.mp4", "alt": "RIGBY learned manipulation rollout" },
+      { "type": "video", "src": "assets/video/dom_final.mp4", "alt": "RIGBY DOM-ACT policy rollout" },
+      { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" }
     ],
-    "links": [{ "label": "Read Report", "href": "assets/docs/RIGBY_final_year_project_report.pdf" }]
+
+    "extraGallery": [
+      { "src": "assets/img/photos/leftarmspecs.png", "alt": "RIGBY left arm specifications" },
+      { "src": "assets/img/photos/Rigby_Cameras.png", "alt": "RIGBY camera layout" },
+      { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" }
+    ],
+
+    "links": [
+      { "label": "Read Report", "href": "assets/docs/RIGBY_final_year_project_report.pdf" }
+    ]
   },
   {
-    "slug": "smart-robot-assistant",
-    "title": "Smart Robot Assistant",
-    "subtitle": "Friendly companion robot for adaptive support and play.",
-    "description": "An interactive robotic companion built to aid children with disabilities through game-playing support, computer vision, and approachable human-robot interaction.",
+    "slug": "charis",
+
+    "title": "CHARIS",
+
+    "subtitle": "Low-cost assistive robot for accessible play and child-centred interaction.",
+
+    "description": "A team-built robotic companion for children with motor disabilities, combining accessible control, computer vision, autonomous behaviours, and adaptive interactive games.",
+
     "category": "Robotics",
+
     "year": "2025",
+
     "image": "assets/img/projects/charis.jpg",
+    "thumbnail": "assets/img/designs/project6.png",
+    "thumbnailPosition": "50% 50%",
+
     "heroVideo": "assets/video/backvid5.mp4",
+
     "accent": "#ff6b6b",
-    "tags": ["Computer Vision", "Accessibility", "Interaction"],
+
+    "tags": ["Assistive Robotics", "Computer Vision", "ROS 2", "Human-Robot Interaction"],
+
     "specs": [
-      { "label": "Role", "value": "Assistive companion robot" },
-      { "label": "Input", "value": "Vision-driven user and board-state sensing" },
-      { "label": "Output", "value": "Adaptive prompts and physical interaction" },
-      { "label": "Focus", "value": "Accessible child-centred robotics" }
+      { "label": "Role", "value": "Project Manager and Software Developer" },
+      { "label": "Interaction", "value": "Head tracking, adaptive controllers, and GUI" },
+      { "label": "Perception", "value": "OpenCV, MediaPipe, object detection, and LiDAR" },
+      { "label": "Platform", "value": "Modified low-cost XLeRobot mobile manipulator" }
     ],
+
     "sections": [
-      { "title": "Intent", "body": "The project explored how a robot can be useful without feeling clinical: expressive enough for play, structured enough for assistance, and adaptive enough for different user needs." },
-      { "title": "Build", "body": "The system combined sensing, control, and interface design so the robot could respond to the task context and support a child through a guided activity." }
+      { "title": "Intent", "body": "CHARIS explored how low-cost robotics could make play and everyday interaction more accessible for children with motor disabilities through intuitive controls, adaptive games, and assistive autonomous behaviours." },
+
+      { "title": "Build", "body": "Led the project team and developed the frontend stack, including a modular child-friendly interface, real-time adaptive difficulty model, and OpenCV/MediaPipe head tracking, integrated with the wider ROS 2 robotic system." }
     ],
+
     "gallery": [
-      { "src": "assets/img/projects/charisface.png", "alt": "Robot assistant face interface" },
-      { "src": "assets/img/projects/charis.jpg", "alt": "Smart robot assistant" }
+      { "src": "assets/img/projects/charisface.png", "alt": "CHARIS child-friendly interface" },
+      { "src": "assets/img/projects/charis.jpg", "alt": "CHARIS assistive robot" }
     ],
-    "links": [{ "label": "View Code", "href": "https://github.com/diw22/Robots4ChildrenWithDisabilities" }]
+
+    "links": [
+      { "label": "View Code", "href": "https://github.com/diw22/Robots4ChildrenWithDisabilities" }
+    ]
   },
   {
     "slug": "tflbot",
-    "title": "TFLbot",
-    "subtitle": "A helping hand around underground transport networks.",
-    "description": "A human-centred robotics prototype exploring whether a mobile Pepper assistant can reduce the friction of underground travel through autonomous guidance, speech, visual feedback, multilingual interaction, and British Sign Language support.",
+
+    "title": "TFLBot",
+
+    "subtitle": "Assistive guidance robot for underground transport networks.",
+
+    "description": "A human-centred robotics project extending a SoftBank Pepper with autonomous navigation, LiDAR perception, multimodal interaction, and synchronised speech and gesture for accessible passenger guidance.",
+
     "category": "Robotics",
-    "year": "2025",
+
+    "year": "2026",
+
     "image": "assets/img/projects/tflbot/base.png",
+    "thumbnail": "assets/img/projects/tflbot/pepperbot.png",
+    "thumbnailPosition": "50% 18%",
+    "thumbnailBackground": "#d8d2c4",
+
     "heroVideo": "assets/video/tflbot.mp4",
+
     "accent": "#78a6d8",
-    "tags": ["Human-Centred Robotics", "Pepper", "Accessibility", "Navigation", "Multimodal Interaction"],
+
+    "tags": ["ROS 2", "SLAM", "Computer Vision", "Human-Robot Interaction", "Accessibility"],
+
     "specs": [
-      { "label": "Robot", "value": "Pepper humanoid platform" },
-      { "label": "Stack", "value": "ROS2 Humble, NAOqi bridge, Flask UI" },
-      { "label": "Perception", "value": "Orbbec RGB-D, RPLIDAR, speech, and BSL cues" },
-      { "label": "Result", "value": "Compared no aid, static aid, and mobile aid conditions" }
+      { "label": "Platform", "value": "SoftBank Pepper with upgraded sensing and compute" },
+      { "label": "Navigation", "value": "LiDAR mapping, collision avoidance, and autonomous guidance" },
+      { "label": "Interaction", "value": "Speech, gesture, touchscreen, multilingual, and BSL" },
+      { "label": "Result", "value": "Mean cognitive load reduced from 2.0 to 1.4" }
     ],
+
     "sections": [
-      { "title": "Robot", "body": "TFLbot used Pepper as the public-facing robot, then extended the platform with an Orbbec Femto Bolt RGB-D camera, RPLIDAR A2M12, ReSpeaker microphone array, Jetson Orin Nano, Raspberry Pi 5, and custom mounting so the robot could perceive users, speak, gesture, and move as a coherent guide." },
-      { "title": "Task", "body": "The task was framed around accessible underground navigation: help passengers request route information, receive TFL-style status updates, choose languages, and interact through speech, tablet feedback, or BSL mode rather than relying only on static signs or staff availability." },
-      { "title": "Control", "body": "The control architecture used ROS2 Humble with a NAOqi bridge running on the Jetson to process and publish speech, wheel, and upper-body movement commands. A Flask UI inside a ROS2 wrapper connected user commands to the bridge, while LLM output was published as structured task-manager messages for speech, gesture, and navigation behaviours." },
-      { "title": "Results", "body": "The evaluation compared no aid, static aid, and mobile aid conditions using task completion time and workload-style measures. The results made the trade-off visible: robotic guidance can improve clarity and accessibility, but mobility and interaction timing must be controlled carefully so assistance does not become additional overhead." }
+      { "title": "Robot", "body": "Extended Pepper with a Jetson Orin Nano, Orbbec RGB-D camera, ReSpeaker microphone array, RPLIDAR A2M12, and custom mounts, overcoming limitations in the robot's onboard perception and compute." },
+
+      { "title": "Task", "body": "TFLBot explored whether an embodied robot could make underground navigation more accessible by combining physical guidance with speech, visual feedback, multilingual interaction, and British Sign Language support." },
+
+      { "title": "Control", "body": "Implemented LiDAR collision avoidance using DBSCAN obstacle clustering and built occupancy maps from scan-matched odometry. I also developed a library of deictic gestures through kinaesthetic teaching and synchronised them with spoken guidance." },
+
+      { "title": "Results", "body": "A comparative user study evaluated no aid, stationary robotic guidance, and mobile guidance. The mobile robot reduced mean cognitive load from 2.0 to 1.4 and achieved the highest satisfaction, although conservative navigation substantially increased completion time." }
     ],
+
     "gallery": [
-      { "src": "assets/img/projects/tflbot/pepperbot.png", "alt": "Pepper robot hardware diagram" },
-      { "src": "assets/img/projects/tflbot/base.png", "alt": "Multilingual and BSL mode task interface" },
-      { "src": "assets/img/projects/tflbot/SystemDesign.png", "alt": "TFLbot control system design" },
-      { "src": "assets/img/projects/tflbot/time_taken.png", "alt": "Task completion time by condition" }
+      { "src": "assets/img/projects/tflbot/pepperbot.png", "alt": "TFLBot upgraded Pepper hardware" },
+      { "src": "assets/img/projects/tflbot/base.png", "alt": "TFLBot multilingual and BSL interface" },
+      { "src": "assets/img/projects/tflbot/SystemDesign.png", "alt": "TFLBot ROS 2 system architecture" },
+      { "src": "assets/img/projects/tflbot/time_taken.png", "alt": "TFLBot task completion time evaluation" }
     ],
+
     "recognitions": ["Human-Centred Robotics final project"],
+
     "references": [
-      "Human Centred Robotics final report.",
-      "Project assets include Pepper hardware diagrams, system architecture, perception screenshots, and evaluation plots."
+      "Human-Centred Robotics final report.",
+      "Project assets include system architecture, perception, navigation, interaction, and evaluation results."
     ],
+
     "disclosures": [
-      "Portfolio summary based on the submitted report and project artefacts.",
-      "TFL is referenced as the transport-service context; this project is an academic prototype and not an official TFL product."
+      "Academic team project completed at Imperial College London.",
+      "TfL is referenced as the transport-service context; TFLBot is an academic prototype and not an official TfL product."
     ],
-    "links": [{ "label": "Read Report", "href": "assets/docs/HumanCenteredRoboticsfinal.pdf" }]
+
+    "links": [
+      { "label": "Read Report", "href": "assets/docs/HumanCenteredRoboticsfinal.pdf" }
+    ]
   },
   {
-    "slug": "adaptive-chess-coach",
-    "title": "Adaptive Chess Coach",
-    "subtitle": "Robotic arm that turns virtual chess into a physical assisted game.",
-    "description": "A robotic chess coach that transfers virtual moves to a real board, provides real-time help, and adjusts game difficulty according to user needs.",
+    "slug": "chessbot",
+
+    "title": "ChessBot",
+
+    "subtitle": "Analytical kinematics, workspace calibration, and trajectory control for a 4-DOF manipulator.",
+
+    "description": "A robotics project taking a 4-DOF arm from analytical modelling to physical task execution through closed-form inverse kinematics, empirical workspace calibration, trajectory generation, and a custom task-specific gripper.",
+
     "category": "Robotics",
+
     "year": "2025",
+
     "image": "assets/img/projects/project7.jpeg",
-    "heroVideo": "assets/video/backvid5.mp4",
+    "thumbnail": "assets/img/projects/project7.jpeg",
+    "thumbnailPosition": "50% 58%",
+
+    "heroVideo": "assets/video/A2_Video.mp4",
+
     "accent": "#4fd1ff",
-    "tags": ["Robotics", "Control", "Human-Robot Interaction"],
+
+    "tags": ["ChessBot", "Kinematics", "MATLAB", "Python", "CAD"],
+
     "specs": [
-      { "label": "Robot", "value": "Desktop manipulator" },
-      { "label": "Task", "value": "Move replication and coaching" },
-      { "label": "Interface", "value": "Virtual chess to physical board" },
-      { "label": "Behaviour", "value": "Adaptive difficulty and assistance" }
+      { "label": "Robot", "value": "4-DOF Dynamixel manipulator" },
+      { "label": "Kinematics", "value": "DH forward and closed-form inverse kinematics" },
+      { "label": "Calibration", "value": "Measured workspace correction using RBF interpolation" },
+      { "label": "Planning", "value": "Task-specific Cartesian trajectory generation" }
     ],
+
     "sections": [
-      { "title": "Experience", "body": "The system connects software gameplay to physical manipulation, letting the user play on a tangible board while the robot executes, demonstrates, or assists with moves." },
-      { "title": "Engineering", "body": "The main challenge was coordinating board-state interpretation, safe arm motion, and assistance logic into one reliable interaction loop." }
+      { "title": "Experience", "body": "The system translated Cartesian task points into physical manipulation sequences, coordinating approach, grasp, transfer, and release motions across several tasks while compensating for the difference between the ideal kinematic model and the real robot." },
+
+      { "title": "Engineering", "body": "Derived the DH model and closed-form inverse kinematics, validated them in MATLAB, and deployed them to Dynamixel hardware. I then built Python tools for trajectory generation and empirical workspace calibration, using measured errors to correct commanded positions before execution." }
     ],
-    "gallery": [{ "src": "assets/img/projects/project7.jpeg", "alt": "Adaptive chess coach robotic arm" }],
-    "links": [{ "label": "Watch Demo", "href": "https://www.youtube.com/watch?v=49rMlOqr8tw" }]
-  },
-  {
-    "slug": "prompt-aware-web-scraper",
-    "title": "Prompt-Aware Web Scraper",
-    "subtitle": "Embedding-based web discovery from natural-language prompts.",
-    "description": "An automated NLP tool that uses text embeddings to identify and scrape relevant Google search results from a user prompt.",
-    "category": "Data",
-    "year": "2024",
-    "image": "assets/img/projects/webscraper.png",
-    "heroVideo": "assets/video/backvid5.mp4",
-    "accent": "#44f0b7",
-    "tags": ["NLP", "Embeddings", "Automation", "Scraping"],
-    "specs": [
-      { "label": "Input", "value": "Natural-language prompt" },
-      { "label": "Ranking", "value": "Embedding similarity" },
-      { "label": "Output", "value": "Relevant scraped pages" },
-      { "label": "Use", "value": "Research automation" }
-    ],
-    "sections": [
-      { "title": "Pipeline", "body": "The scraper converts a prompt into an embedding search problem, ranks candidate results by semantic relevance, and extracts the pages most likely to matter." },
-      { "title": "Value", "body": "It turns search from a brittle keyword exercise into a more intent-aware collection workflow." }
-    ],
+
     "gallery": [
-      { "src": "assets/img/projects/webscraper.png", "alt": "Prompt-aware web scraper preview" },
-      { "src": "assets/img/projects/graph.jpg", "alt": "Graph output" }
+      { "src": "assets/img/projects/project7.jpeg", "alt": "ChessBot during chess piece manipulation" },
+      { "src": "assets/img/projects/robotic-manipulation/report-001.png", "alt": "Dimensioned CAD views of ChessBot" },
+      { "src": "assets/img/projects/robotic-manipulation/report-005.png", "alt": "CAD model of the custom gripper for the manipulation task" },
+      { "src": "assets/img/projects/robotic-manipulation/report-007.png", "alt": "Alternate CAD view of the custom gripper for the manipulation task" }
     ],
-    "links": []
+
+    "links": [
+      { "label": "Watch Demo", "href": "https://www.youtube.com/watch?v=49rMlOqr8tw" }
+    ]
   },
   {
     "slug": "market-making-algorithm",
-    "title": "Market Making Algorithm",
-    "subtitle": "Competition strategy ranked third at Imperial.",
-    "description": "An algorithmic trading model for an Optiver-style market-making competition, ranking 3rd out of roughly 100 participants at Imperial College London.",
+
+    "title": "Options Market Making Algorithm",
+
+    "subtitle": "Delta-aware trading strategy ranked 3rd in an Imperial Optiver competition.",
+
+    "description": "A Python market-making strategy combining order-book fair-value estimation, Black–Scholes option pricing, inventory and delta-aware quote sizing, and opportunistic arbitrage, ranking 3rd out of roughly 100 participants.",
+
     "category": "Quant",
+
     "year": "2024",
+
     "image": "assets/img/projects/Options.png",
+    "thumbnail": "assets/img/projects/Options.png",
+    "thumbnailPosition": "50% 50%",
+
     "heroVideo": "assets/video/backvid5.mp4",
+
     "accent": "#ff8f3d",
-    "tags": ["Quant", "Python", "Trading", "Market Making"],
+
+    "tags": ["Quantitative Trading", "Options", "Market Making", "Black–Scholes", "Python"],
+
     "specs": [
-      { "label": "Result", "value": "3rd / 100 participants" },
-      { "label": "Domain", "value": "Market making and options-style pricing" },
-      { "label": "Stack", "value": "Python simulation and strategy logic" },
-      { "label": "Objective", "value": "Quote competitively while managing risk" }
+      { "label": "Result", "value": "3rd / ~100 participants" },
+      { "label": "Pricing", "value": "Order-book fair value + Black–Scholes option pricing" },
+      { "label": "Risk", "value": "Delta- and position-aware dynamic quote sizing" },
+      { "label": "Execution", "value": "Passive market making with opportunistic arbitrage" }
     ],
+
     "sections": [
-      { "title": "Strategy", "body": "The algorithm balanced spread capture, inventory risk, and changing market information under competition constraints." },
-      { "title": "Outcome", "body": "The final model placed third in the field, with performance driven by disciplined quoting and careful response to price signals." }
+      { "title": "Strategy", "body": "Estimated the underlying fair value from weighted bid and ask information, then used Black–Scholes to price related options. The difference between estimated fair value and the market price was converted into a confidence signal used to adjust quote size and exposure." },
+
+      { "title": "Risk", "body": "Rather than repeatedly trading back to delta neutrality, the strategy incorporated portfolio delta and total position into subsequent bid and ask volumes. This allowed it to continuously provide liquidity while steering inventory back toward a market-neutral position." },
+
+      { "title": "Outcome", "body": "The strategy ranked 3rd in a field of roughly 100 participants. Delta and PnL monitoring were used throughout development to tune the quoting logic, with most performance generated by the passive strategy rather than active arbitrage." }
     ],
+
     "gallery": [
-      { "src": "assets/img/projects/Options.png", "alt": "Options trading visual" },
-      { "src": "assets/img/projects/pnl.jpg", "alt": "PnL graph" }
+      { "src": "assets/img/projects/Options.png", "alt": "Options market-making strategy and pricing" },
+      { "src": "assets/img/projects/pnl.jpg", "alt": "Competition PnL performance" }
     ],
-    "links": [{ "label": "View Code", "href": "https://github.com/diw22/marketmakingalgo" }]
+
+    "links": [
+      { "label": "View Code", "href": "https://github.com/diw22/marketmakingalgo" }
+    ]
   }
 ]

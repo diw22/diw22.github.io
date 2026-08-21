@@ -32,6 +32,17 @@ function getRoute() {
   return window.location.hash.startsWith("#project/") ? "project" : "home";
 }
 
+function projectThumbnail(project) {
+  return project.thumbnail || project.image;
+}
+
+function thumbnailStyle(project) {
+  const styles = [];
+  if (project.thumbnailPosition) styles.push(`--thumb-position: ${escapeHtml(project.thumbnailPosition)}`);
+  if (project.thumbnailBackground) styles.push(`--thumb-bg: ${escapeHtml(project.thumbnailBackground)}`);
+  return styles.length ? ` style="${styles.join("; ")}"` : "";
+}
+
 function renderCarousel() {
   const carousel = document.getElementById("projectCarousel");
   if (!carousel) return;
@@ -39,9 +50,9 @@ function renderCarousel() {
   carousel.innerHTML = state.projects.map((project, index) => `
     <button class="project-card ${index === state.selected ? "is-selected" : ""}"
             type="button"
-            data-index="${index}">
+            data-index="${index}"${thumbnailStyle(project)}>
       <span class="project-count">${String(index + 1).padStart(2, "0")}</span>
-      <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} preview">
+      <img src="${escapeHtml(projectThumbnail(project))}" alt="${escapeHtml(project.title)} preview">
       <span class="project-card-copy">
         <span class="project-card-title">${escapeHtml(project.title)}</span>
         <span class="project-card-meta">${escapeHtml(project.category)} / ${escapeHtml(project.year)}</span>
@@ -57,8 +68,8 @@ function renderDockCarousel() {
   carousel.innerHTML = state.projects.map((project, index) => `
     <button class="dock-project-card ${index === state.selected ? "is-selected" : ""}"
             type="button"
-            data-index="${index}">
-      <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} preview">
+            data-index="${index}"${thumbnailStyle(project)}>
+      <img src="${escapeHtml(projectThumbnail(project))}" alt="${escapeHtml(project.title)} preview">
       <span>
         <strong>${escapeHtml(project.title)}</strong>
         <small>${escapeHtml(project.category)} / ${escapeHtml(project.year)}</small>
@@ -135,13 +146,9 @@ function renderProjectPage() {
   const references = (project.references || ["Primary project artefacts are linked below where available."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   const disclosures = (project.disclosures || ["Summarised for portfolio presentation; third-party assets, datasets, and tools remain with their respective owners."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   const gallery = project.gallery || [];
+  const extraGallery = project.extraGallery || [];
   const projectImage = { src: project.image, alt: `${project.title} project image` };
-  const specContext = (project.specs || [])
-    .slice(0, 3)
-    .map((spec) => `${spec.label.toLowerCase()}: ${spec.value}`)
-    .join("; ");
   const resultSpec = (project.specs || []).find((spec) => /result|output|speed|scale|outcome/i.test(spec.label));
-  const tagContext = (project.tags || []).join(", ");
   const recognitionItems = [
     ...(project.recognitions || []),
     ...(project.tags || []).filter((tag) => /dean|award|list|competition|final year/i.test(tag)),
@@ -152,6 +159,17 @@ function renderProjectPage() {
     .join("");
 
   function reportFigure(item) {
+    const isVideo = item.type === "video" || /\.(mp4|webm|ogg)$/i.test(item.src || "");
+    if (isVideo) {
+      return `
+        <figure class="report-figure report-video-figure">
+          <video autoplay muted loop playsinline controls aria-label="${escapeHtml(item.alt || project.title)}">
+            <source src="${escapeHtml(item.src)}" type="video/mp4">
+          </video>
+        </figure>
+      `;
+    }
+
     return `
       <figure class="report-figure">
         <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || project.title)}">
@@ -168,9 +186,7 @@ function renderProjectPage() {
       label: "Robot",
       image: galleryItem(0),
       paragraphs: [
-        project.sections?.[0]?.body || project.description,
-        `This section introduces the physical system and the constraints it had to satisfy. For ${project.title}, the important question was not only what the object looked like, but how the platform, sensing, interface, and build decisions supported the intended interaction.`,
-        specContext ? `The core specification was anchored by ${specContext}. These details define the operating envelope before the task logic or evaluation layer is considered.` : `The core specification was shaped by the available hardware, implementation time, and the need to make the finished system legible to a reviewer.`
+        project.sections?.[0]?.body || project.description
       ]
     },
     {
@@ -178,26 +194,21 @@ function renderProjectPage() {
       image: galleryItem(1),
       paragraphs: [
         project.subtitle,
-        project.sections?.[1]?.body || project.description,
-        `The task was framed around a clear user-facing outcome: make the system understandable, repeatable, and easy to evaluate. That meant translating the broad project idea into a sequence of behaviours, interfaces, and success criteria that could be demonstrated without needing extra explanation.`
+        project.sections?.[1]?.body || project.description
       ]
     },
     {
       label: "Control",
       image: galleryItem(2),
       paragraphs: [
-        project.sections?.[2]?.body || `The control layer connects the project intent to the working implementation. In practice this meant coordinating data flow, decision logic, interfaces, and feedback so that the system behaved consistently rather than only working in isolated demos.`,
-        specContext ? `The relevant technical structure included ${specContext}. Where appropriate, this section is where theory, plots, algorithms, or control diagrams sit so the page can explain why the implementation behaves the way it does.` : `Where appropriate, this section is where theory, plots, algorithms, or control diagrams sit so the page can explain why the implementation behaves the way it does.`,
-        tagContext ? `The implementation is connected to ${tagContext}, which gives the project its technical identity and helps distinguish the control problem from the broader presentation layer.` : `The implementation choices give the project its technical identity and separate the control problem from the broader presentation layer.`
+        project.sections?.[2]?.body || project.description
       ]
     },
     {
       label: "Results",
       image: galleryItem(3),
       paragraphs: [
-        project.sections?.[3]?.body || project.description,
-        resultSpec ? `The clearest measured result was ${resultSpec.label.toLowerCase()}: ${resultSpec.value}. This is treated as the headline outcome because it turns the project from a build exercise into something that can be compared, inspected, or defended.` : `The result is presented through the finished behaviour, the supporting artefacts, and the evidence that the system could carry the intended task end to end.`,
-        `The final page keeps the outcome close to the implementation details so a recruiter can quickly see what was built, what role it served, and what evidence supports the claim.`
+        project.sections?.[3]?.body || project.description
       ]
     }
   ];
@@ -212,6 +223,15 @@ function renderProjectPage() {
       ${index % 2 ? reportFigure(section.image) : ""}
     </section>
   `).join("");
+  const extraGalleryMarkup = extraGallery.length ? `
+    <section class="report-section extra-gallery" aria-label="${escapeHtml(project.title)} additional gallery">
+      ${extraGallery.map((item) => `
+        <figure class="extra-gallery-item">
+          <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || project.title)}">
+        </figure>
+      `).join("")}
+    </section>
+  ` : "";
 
   mount.style.setProperty("--accent", project.accent || "#fff");
   mount.innerHTML = `
@@ -230,6 +250,7 @@ function renderProjectPage() {
 
     <div class="project-body">
       ${reportSectionMarkup}
+      ${extraGalleryMarkup}
 
       <section class="report-section report-recognition">
         <p class="section-label">Recognitions</p>
