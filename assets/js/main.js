@@ -147,6 +147,7 @@ function renderProjectPage() {
   const disclosures = (project.disclosures || ["Summarised for portfolio presentation; third-party assets, datasets, and tools remain with their respective owners."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   const gallery = project.gallery || [];
   const extraGallery = project.extraGallery || [];
+  const sectionGallery = [...gallery, ...extraGallery];
   const projectImage = { src: project.image, alt: `${project.title} project image` };
   const resultSpec = (project.specs || []).find((spec) => /result|output|speed|scale|outcome/i.test(spec.label));
   const recognitionItems = [
@@ -178,7 +179,7 @@ function renderProjectPage() {
   }
 
   function galleryItem(index) {
-    return gallery[index] || gallery[index - 1] || gallery[0] || projectImage;
+    return sectionGallery[index] || sectionGallery[index - 1] || sectionGallery[0] || projectImage;
   }
 
   const reportSections = (project.sections || []).map((section, index) => ({
@@ -205,15 +206,6 @@ function renderProjectPage() {
       ${index % 2 ? reportFigure(section.image) : ""}
     </section>
   `).join("");
-  const extraGalleryMarkup = extraGallery.length ? `
-    <section class="report-section extra-gallery" aria-label="${escapeHtml(project.title)} additional gallery">
-      ${extraGallery.map((item) => `
-        <figure class="extra-gallery-item">
-          <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || project.title)}">
-        </figure>
-      `).join("")}
-    </section>
-  ` : "";
 
   mount.style.setProperty("--accent", project.accent || "#fff");
   mount.innerHTML = `
@@ -232,7 +224,6 @@ function renderProjectPage() {
 
     <div class="project-body">
       ${reportSectionMarkup}
-      ${extraGalleryMarkup}
 
       <section class="report-section report-recognition">
         <p class="section-label">Recognitions</p>

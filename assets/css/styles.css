@@ -636,31 +636,6 @@ body:not(.is-project-view) .project-page {
   background: var(--charcoal);
 }
 
-.extra-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 3vw, 2rem);
-  align-items: center;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--line);
-}
-
-.extra-gallery-item {
-  display: grid;
-  place-items: center;
-  min-height: clamp(180px, 22vw, 320px);
-  background: transparent;
-}
-
-.extra-gallery-item img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: clamp(180px, 22vw, 320px);
-  object-fit: contain;
-}
-
 .report-copy {
   display: grid;
   gap: 1.1rem;
@@ -863,9 +838,6 @@ body:not(.is-project-view) .project-page {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .extra-gallery {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 680px) {

@@ -1,58 +1,89 @@
 [
-  {
-    "slug": "rigby",
+{
+  "slug": "rigby",
 
-    "title": "RIGBY",
+  "title": "RIGBY",
 
-    "subtitle": "£1,951 mobile bimanual robot for learning assistive manipulation from demonstration.",
+  "subtitle": "Low-cost mobile bimanual platform for assistive manipulation learned from demonstration.",
 
-    "description": "An end-to-end robotics platform combining custom asymmetric manipulators, whole-body teleoperation, imitation learning, simulation models, and accessible multimodal interaction.",
+  "description": "A complete embodied robotics project investigating whether useful mobile manipulation behaviours can be taught and deployed on affordable hardware without relying on high-cost research platforms.",
 
-    "category": "Robotics",
+  "category": "Robotics",
 
-    "year": "2026",
+  "year": "2026",
 
-    "image": "assets/img/projects/rigby-gui-home.png",
-    "thumbnail": "assets/img/photos/Rigby_Render_Front.png",
-    "thumbnailPosition": "50% 50%",
-    "thumbnailBackground": "#d8d2c4",
+  "image": "assets/img/projects/rigby-gui-home.png",
+  "thumbnail": "assets/img/photos/Rigby_Render_Front.png",
+  "thumbnailPosition": "50% 50%",
+  "thumbnailBackground": "#d8d2c4",
 
-    "heroVideo": "assets/video/dom_final.mp4",
+  "heroVideo": "assets/video/dom_final.mp4",
 
-    "accent": "#c9ff4a",
+  "accent": "#c9ff4a",
 
-    "tags": ["Master's Thesis", "DOM-ACT", "Imitation Learning", "LeRobot", "Assistive Robotics"],
+  "tags": ["Master's Thesis", "DOM-ACT", "Imitation Learning", "LeRobot", "Assistive Robotics"],
 
-    "specs": [
-      { "label": "Platform", "value": "£1,951 mobile bimanual manipulator" },
-      { "label": "Learning", "value": "ACT and custom dominant-support DOM-ACT policies" },
-      { "label": "Interface", "value": "Whole-body teleoperation, web, touchscreen, and voice" },
-      { "label": "Compute", "value": "NVIDIA Jetson Orin Nano onboard deployment" }
-    ],
+  "specs": [
+    { "label": "Cost", "value": "£1,951 complete mobile platform" },
+    { "label": "Manipulation", "value": "7-DOF dominant arm + 5-DOF support arm" },
+    { "label": "Learning", "value": "ACT baseline and custom DOM-ACT architecture" },
+    { "label": "Deployment", "value": "LeRobot inference on NVIDIA Jetson Orin Nano" }
+  ],
 
-    "sections": [
-      { "title": "System", "body": "Built RIGBY end-to-end around a mobile base and asymmetric bimanual architecture, including a custom 7-DOF dominant arm, parallel-jaw grippers, onboard vision, whole-body teleoperation, and URDF/MJCF models." },
+  "sections": [
+    {
+      "title": "System",
+      "body": "Built RIGBY as an integrated mobile manipulation platform spanning mechanical design, actuation, sensing, onboard compute, power distribution, control software and autonomous policy deployment."
+    },
 
-      { "title": "Contribution", "body": "Proposed DOM-ACT, extending Action Chunking with Transformers with an explicit dominant-support structure. On sequential bimanual tasks, task success increased from 65% with ACT to 80% with DOM-ACT." }
-    ],
+    {
+      "title": "Mechanical Design",
+      "body": "Developed an asymmetric bimanual configuration with additional dexterity assigned to the dominant arm. I designed the 7-DOF manipulator and parallel-jaw grippers, iterating link geometry and distal mass while preserving workspace, grasp reliability and wrist-camera visibility."
+    },
 
-    "gallery": [
-      { "type": "video", "src": "assets/video/teleopfinal.mp4", "alt": "RIGBY whole-body teleoperation demonstration" },
-      { "type": "video", "src": "assets/video/file-000.mp4", "alt": "RIGBY learned manipulation rollout" },
-      { "type": "video", "src": "assets/video/dom_final.mp4", "alt": "RIGBY DOM-ACT policy rollout" },
-      { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" }
-    ],
+    {
+      "title": "Teleoperation",
+      "body": "Built a whole-body leader-follower teleoperation system using two leader arms for manipulation and rudder pedals for the mobile base. Arm, gripper and base actions were recorded simultaneously through LeRobot to produce demonstrations for imitation learning."
+    },
 
-    "extraGallery": [
-      { "src": "assets/img/photos/leftarmspecs.png", "alt": "RIGBY left arm specifications" },
-      { "src": "assets/img/photos/Rigby_Cameras.png", "alt": "RIGBY camera layout" },
-      { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" }
-    ],
+    {
+      "title": "Simulation",
+      "body": "Created the robot's URDF and MJCF models from the physical CAD geometry, validating link dimensions, masses, inertias, joint limits and camera frames against the hardware to support simulation and future learning-based research."
+    },
 
-    "links": [
-      { "label": "Read Report", "href": "assets/docs/RIGBY_final_year_project_report.pdf" }
-    ]
-  },
+    {
+      "title": "Learning",
+      "body": "Used Action Chunking with Transformers as the imitation-learning baseline and proposed DOM-ACT, which conditions support-arm and mobile-base predictions on features from the dominant manipulation plan. On a sequential bimanual task, success increased from 65% with ACT to 80% with DOM-ACT."
+    },
+
+    {
+      "title": "Interaction",
+      "body": "Developed a multimodal web interface for task selection, demonstration recording, training configuration and policy execution. The same interface supported touchscreen, text and voice interaction, with perception-assisted task discovery used to match recognised objects to available trained behaviours."
+    },
+
+    {
+      "title": "Evaluation",
+      "body": "Evaluated the system on pen placement, wine-glass lifting and wiping, Ziploc closure and chair repositioning. The experiments compared task success, completion time and motion smoothness while also exposing practical limits from actuator quality, environment-specific imitation learning and onboard control frequency."
+    }
+  ],
+
+  "gallery": [
+    { "type": "video", "src": "assets/video/teleopfinal.mp4", "alt": "RIGBY whole-body teleoperation demonstration" },
+    { "type": "video", "src": "assets/video/file-000.mp4", "alt": "RIGBY learned manipulation rollout" },
+    { "type": "video", "src": "assets/video/dom_final.mp4", "alt": "RIGBY DOM-ACT policy rollout" },
+    { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" }
+  ],
+
+  "extraGallery": [
+    { "src": "assets/img/photos/leftarmspecs.png", "alt": "RIGBY left arm specifications" },
+    { "src": "assets/img/photos/Rigby_Cameras.png", "alt": "RIGBY camera layout" },
+    { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" }
+  ],
+
+  "links": [
+    { "label": "Read Report", "href": "assets/docs/RIGBY_final_year_project_report.pdf" }
+  ]
+},
   {
     "slug": "charis",
 
