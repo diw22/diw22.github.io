@@ -1,0 +1,241 @@
+/* All font archives in assets; original files and notices remain in assets/fonts/. */
+
+@font-face {
+  font-family: "Alice Yotsuba Inc.";
+  src: url("../fonts/alice-yotsuba-inc/AliceYotsubaInc-Ea7Zj.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Derma";
+  src: url("../fonts/derma/DermaItalic-aY7la.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Derma";
+  src: url("../fonts/derma/Derma-E4zvr.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ichigaya Mincho";
+  src: url("../fonts/ichigaya-mincho/Ichigayamincho-9MAv0.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueExtraLight-vmBpL.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueBoldItalic-lgXJw.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueExtraLightItalic-nRoJO.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueItalic-1Gr6v.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueLightItalic-RpP5E.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueLight-BWlAw.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueMedium-8MmAn.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueMediumItalic-Yze52.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueRegular-rglJB.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueSemiBold-MVv5P.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueSemiBoldItalic-K7KAX.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueThin-2OM6o.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueThinItalic-vmBp9.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lowball Neue";
+  src: url("../fonts/lowball-neue/LowballNeueBold-w18A6.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oblata Display";
+  src: url("../fonts/oblata-display/OblataDisplayRegular-Zp8o8.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Odida";
+  src: url("../fonts/odida/Odida-3lgYG.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Odida";
+  src: url("../fonts/odida/OdidaItalic-pgVAa.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Regencie";
+  src: url("../fonts/regencie/RegencieLight-M2gn.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Regencie Alt";
+  src: url("../fonts/regencie/RegencieLightAlt-KMLl.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rondal";
+  src: url("../fonts/rondal/RondalRegular-K7ORW.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rondal";
+  src: url("../fonts/rondal/RondalBold-2O4lW.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rondal";
+  src: url("../fonts/rondal/RondalSemibold-vmZ5Z.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sandana";
+  src: url("../fonts/sandana/SandanaRegular-JR5q7.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Super Golden";
+  src: url("../fonts/super-golden/SuperGolden-vn527.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Zurich";
+  src: url("../fonts/zurich/ZurichItalic-2vXVK.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Zurich";
+  src: url("../fonts/zurich/Zurich-woV9Z.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

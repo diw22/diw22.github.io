@@ -1,0 +1,8 @@
+Generated with the built-in image_gen tool.
+
+Use case: product-mockup.
+Asset type: transparent PNG frame asset for an interactive website project card.
+Primary request: one front-facing early-2000s iMac G3-inspired translucent aqua desktop computer frame, Frutiger Aero, optimistic and soft, white pearl inner bezel with glossy pale turquoise translucent outer casing, rounded chunky friendly CRT silhouette, subtle foot molded into the lower shell.
+Composition: straight-on orthographic front view, no perspective, horizontally symmetrical, landscape canvas approximately 4:3. Object occupies almost entire canvas with small transparent padding. Large rounded rectangular screen opening occupying approximately x=12% to 88%, y=12% to 78% of canvas. The entire screen opening MUST be genuinely transparent empty alpha so live website image and text can be placed behind it. Surrounding outside of the computer also genuinely transparent alpha. Frame thickness generous but maximize screen area. Bottom chin and tiny integrated base within bottom 18% of canvas. No separate pedestal.
+Materials: polished semi-translucent aqua plastic, frosted pale cyan edge, softly reflective ivory-white screen surround, realistic molded seams. Premium restrained lighting, gentle fixed studio highlights. No dark glass, no heavy reflections across opening.
+Constraints: frame ONLY. No screen content, no text, no letters, no brand or Apple logo, no keyboard, no mouse, no cables, no scenery, no floor, no backdrop, no checkerboard baked into image. No shadows outside object. Crisp high resolution cutout suitable for large website carousel cards.

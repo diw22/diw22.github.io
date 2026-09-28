@@ -1,0 +1,21 @@
+/* Shared by the portfolio, project viewer, and standalone pages. */
+/* Keep the snapshot viewport unchanged when moving between scrolling and fixed pages. */
+html { scrollbar-gutter: stable; }
+@view-transition { navigation: auto; }
+html.route-entering { overflow: clip; }
+::view-transition { pointer-events: none; }
+::view-transition-group(root) { animation-duration: 750ms; }
+::view-transition-old(root),
+::view-transition-new(root) { mix-blend-mode: normal; animation: 750ms cubic-bezier(.22, 1, .36, 1) both; }
+::view-transition-old(root) { animation-name: page-slide-out; }
+::view-transition-new(root) { animation-name: page-slide-in; }
+html[data-route-transition="backward"]::view-transition-old(root) { animation-name: page-slide-out-reverse; }
+html[data-route-transition="backward"]::view-transition-new(root) { animation-name: page-slide-in-reverse; }
+@keyframes page-slide-out { to { transform: translateY(-12%); } }
+@keyframes page-slide-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes page-slide-out-reverse { to { transform: translateY(12%); } }
+@keyframes page-slide-in-reverse { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}

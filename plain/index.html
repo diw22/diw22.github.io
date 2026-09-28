@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f2e8">
+  <meta name="description" content="Dylan Winters: robotics, intelligent systems and quantitative trading. A text-only portfolio with projects, reports, code and contact details.">
+  <title>Dylan Winters — Plain portfolio</title>
+  <link rel="icon" type="image/png" href="../assets/favicon/favicon-32x32.png">
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #f7f2e8; color: #222; }
+    body { max-width: 760px; margin: 0 auto; padding: 48px 28px; font: 17px/1.65 Arial, sans-serif; }
+    h1, h2, h3 { color: #254a3a; font-family: Georgia, serif; font-weight: 400; line-height: 1.2; }
+    h1 { margin: 0 0 16px; font-size: clamp(36px, 7vw, 48px); letter-spacing: -.03em; }
+    h2 { margin: 42px 0 22px; font-size: 28px; }
+    h3 { margin: 0 0 8px; font-size: 22px; }
+    p { margin: 0 0 12px; }
+    a { color: #254a3a; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+    a:hover { color: #111; }
+    a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    nav, .project-links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+    header nav { margin-top: 20px; }
+    .back-link { display: inline-block; margin-bottom: 28px; font-size: 15px; }
+    .projects { list-style: none; padding: 0; margin: 0; }
+    .projects li { margin-bottom: 26px; padding-bottom: 26px; border-bottom: 1px solid #254a3a25; break-inside: avoid; }
+    .project-links { font-size: 15px; }
+    footer { margin-top: 36px; font-size: 15px; }
+    .skip-link { position: absolute; left: 16px; top: -100px; background: #f7f2e8; padding: 8px; }
+    .skip-link:focus { top: 8px; }
+    @media (max-width: 480px) { body { padding: 30px 22px; font-size: 16px; } }
+    @media print {
+      html { background: white; color: black; }
+      body { max-width: none; padding: 0; font-size: 11pt; }
+      h1, h2, h3, a { color: black; }
+      footer, .skip-link, .back-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#projects">Skip to projects</a>
+  <header>
+    <a class="back-link" href="../#home">← Back to home</a>
+    <h1>Dylan Winters</h1>
+    <p>I'm an electrical and electronic engineering graduate from Imperial College London. My work covers robotics, mechanical design, software, and machine learning.</p>
+    <p>MEng Electrical &amp; Electronic Engineering, 2022–2026. First Class; Dean's List in my final year.</p>
+    <nav aria-label="Contact and CV">
+      <a href="mailto:dylaniwinters@gmail.com">Email</a>
+      <a href="../assets/docs/DylanWinters_CV.pdf">CV (PDF)</a>
+      <a href="https://github.com/diw22">GitHub</a>
+      <a href="https://www.linkedin.com/in/dylan-winters-a943401bb/">LinkedIn</a>
+    </nav>
+  </header>
+  <main>
+    <section aria-labelledby="projects">
+      <h2 id="projects" tabindex="-1">Projects</h2>
+      <!-- Static by design: keep these summaries aligned with data/projects.json.
+           This page must remain readable without scripts or data requests. -->
+      <ul class="projects">
+        <li>
+          <h3>aquaBOT</h3>
+          <p>A browser playground for a custom six-axis robot arm with a parallel-jaw gripper. Built from Fusion parts and URDF joint definitions, with joint controls, camera views, and animation in a Frutiger Aero-inspired interface.</p>
+          <div class="project-links"><a href="../playground/">Open interactive viewer</a></div>
+        </li>
+        <li>
+          <h3>Work in progress</h3>
+          <p>Coming soon.</p>
+        </li>
+        <li>
+          <h3>RIGBY</h3>
+          <p>My master's thesis: a low-cost mobile bimanual platform for assistive manipulation learned from demonstration. The project combines mechanical design, software, and imitation learning for household tasks.</p>
+          <div class="project-links"><a href="../assets/docs/RIGBY_final_year_project_report.pdf">Read report (PDF)</a></div>
+        </li>
+        <li>
+          <h3>CHARIS</h3>
+          <p>A team-built assistive robot for children with motor disabilities. It combines accessible control, computer vision, autonomous behaviours, and adaptive games to support play and interaction.</p>
+          <div class="project-links"><a href="https://github.com/diw22/Robots4ChildrenWithDisabilities">View code</a></div>
+        </li>
+        <li>
+          <h3>TFLBot</h3>
+          <p>An assistive guidance robot for underground transport networks. The project extends a SoftBank Pepper with autonomous navigation, LiDAR perception, and coordinated speech and gesture for accessible passenger guidance.</p>
+          <div class="project-links"><a href="../assets/docs/HumanCenteredRoboticsfinal.pdf">Read report (PDF)</a></div>
+        </li>
+        <li>
+          <h3>ChessBot</h3>
+          <p>A four-axis arm developed from analytical modelling through to physical task execution, using inverse kinematics, workspace calibration, trajectory generation, and a custom gripper.</p>
+          <div class="project-links"><a href="https://www.youtube.com/watch?v=49rMlOqr8tw">Watch demo on YouTube</a></div>
+        </li>
+        <li>
+          <h3>Options Market Making Algorithm</h3>
+          <p>A Python strategy combining order-book fair-value estimation, Black–Scholes option pricing, inventory and delta-aware quote sizing, and arbitrage. Ranked third out of roughly 100 participants in an Imperial Optiver competition.</p>
+          <div class="project-links"><a href="https://github.com/diw22/marketmakingalgo">View code</a></div>
+        </li>
+      </ul>
+    </section>
+    <section aria-labelledby="music">
+      <h2 id="music">Music</h2>
+      <p>I also release music as <a href="https://open.spotify.com/artist/7JjZ5bEZAXIVyILt86lUmb">BB City</a> and <a href="https://open.spotify.com/artist/4f20AOSXM14tc309Xduedn">Nidecan</a> on Spotify.</p>
+    </section>
+  </main>
+  <footer><a href="../#home">Interactive portfolio</a></footer>
+</body>
+</html>

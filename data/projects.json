@@ -1,6 +1,78 @@
 [
+  {
+    "slug": "playground",
+    "presentation": {
+      "material": "aero-panel",
+      "frame": "assets/img/projects/aqua-panel-frame.webp",
+      "backupFrame": "assets/img/projects/aero-monitor-frame.png",
+      "image": "assets/img/projects/playground-monitor.webp",
+      "description": "",
+      "metadata": "Robotics · WebGL",
+      "palette": { "wash": "#c7eeec", "light": "#f7ffff", "shade": "#8ad4df", "rim": "#d9f8f4" }
+    },
+    "entryHref": "playground/",
+    "entryLabel": "Open",
+    "cardLabel": "Interactive playground",
+    "cardFoot": "6-DOF arm · Interactive 3D",
+    "title": "aquaBOT",
+    "subtitle": "An interactive 3D playground for a custom 6-DOF robot arm.",
+    "description": "Explore the aquaBOT in your browser: orbit the model, adjust individual joints, control the parallel-jaw gripper, and experiment with poses in a Frutiger Aero-inspired interface.",
+    "category": "Robotics",
+    "year": "2026",
+    "image": "assets/img/projects/playground.png",
+    "thumbnail": "assets/img/projects/playground.png",
+    "thumbnailPosition": "40% 50%",
+    "thumbnailBackground": "#40cbe9",
+    "accent": "#40cbe9",
+    "tags": ["Interactive 3D", "Robot Kinematics", "URDF", "WebGL", "Frutiger Aero"],
+    "specs": [
+      { "label": "Robot", "value": "6-DOF arm with parallel-jaw gripper" },
+      { "label": "Model", "value": "Fusion parts with URDF joint definitions" },
+      { "label": "Controls", "value": "Joint sliders, gripper, and animation" },
+      { "label": "Export", "value": "Copy poses as JSON" }
+    ],
+    "sections": [
+      { "title": "Design language", "body": "Aero explores a friendlier visual identity for a desktop robot: translucent aqua shells, pearl structural parts, and large circular joints. The underwater interface carries that early-2000s consumer-electronics influence into the browser, giving the robot a playful setting in which to explore its movement." },
+      { "title": "From CAD to the browser", "body": "The viewer combines Fusion part geometry with URDF joint definitions. Six rotational controls follow the arm from base yaw through wrist roll, while the gripper control moves the parallel jaws. The model can be inspected from any angle using orbit, zoom, and a top-view camera." },
+      { "title": "Movement & interaction", "body": "Manual sliders let each joint and the gripper be explored independently. Playback animates the arm, reset returns it to its starting pose, and the copy action exports the current joint values as JSON. This is a visual playground: CAD limits are provisional and no collision prevention or hardware control is provided." }
+    ],
+    "gallery": [
+      { "src": "assets/img/projects/playground.png", "alt": "Aero robot in the aquaBOT viewer with six joint controls and a gripper slider" }
+    ],
+    "references": ["Interactive viewer built from Fusion parts and URDF joint definitions."],
+    "disclosures": ["CAD joint limits are provisional. The playground does not control hardware or prevent collisions."],
+    "links": [
+      { "label": "Open aquaBOT", "href": "playground/" }
+    ]
+  },
+  {
+    "slug": "smoke-and-mirrors",
+    "title": "Smoke and Mirrors",
+    "displayTitle": "Work in progress",
+    "status": "draft",
+    "category": "Visual study",
+    "year": "2026",
+    "subtitle": "A draft study of light, reflection and perception.",
+    "description": "An early visual direction exploring reflected surfaces, sheer fabric and soft light. The project is still taking shape.",
+    "image": "assets/img/projects/smoke-and-mirrors/mirror-1536.webp",
+    "thumbnail": "assets/img/projects/smoke-and-mirrors/mirror-768.webp",
+    "previewAlt": "An oval mirror veiled in ivory fabric with a muted wine-red reflection",
+    "accent": "#633946",
+    "presentation": {
+      "palette": { "wash": "#5d293a", "light": "#8d626a", "shade": "#341522", "rim": "#b8a0a2", "paper": "#391d28" }
+    },
+    "sections": [
+      { "title": "Initial direction", "body": "Smoke and Mirrors begins with reflection, soft light, and the feeling of a space. These images explore an initial visual direction; the project itself is still taking shape." }
+    ],
+    "gallery": [
+      { "src": "assets/img/projects/smoke-and-mirrors/veil-1536.webp", "alt": "Ivory fabric catching soft light in front of a blurred burgundy reflection" }
+    ],
+    "links": []
+  },
 {
   "slug": "rigby",
+  "cardLabel": "Assistive robotics",
+  "cardFoot": "Master's thesis · Imitation learning",
 
   "title": "RIGBY",
 
@@ -18,6 +90,7 @@
   "thumbnailBackground": "#d8d2c4",
 
   "heroVideo": "assets/video/dom_final.mp4",
+  "heroPoster": "assets/img/projects/dom_final-poster.jpg",
 
   "accent": "#c9ff4a",
 
@@ -68,16 +141,14 @@
   ],
 
   "gallery": [
-    { "type": "video", "src": "assets/video/teleopfinal.mp4", "alt": "RIGBY whole-body teleoperation demonstration" },
-    { "type": "video", "src": "assets/video/file-000.mp4", "alt": "RIGBY learned manipulation rollout" },
-    { "type": "video", "src": "assets/video/dom_final.mp4", "alt": "RIGBY DOM-ACT policy rollout" },
-    { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" }
-  ],
-
-  "extraGallery": [
+    { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" },
     { "src": "assets/img/photos/leftarmspecs.png", "alt": "RIGBY left arm specifications" },
-    { "src": "assets/img/photos/Rigby_Cameras.png", "alt": "RIGBY camera layout" },
-    { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" }
+    { "type": "video", "src": "assets/video/teleopfinal.mp4", "poster": "assets/img/projects/teleopfinal-poster.jpg", "alt": "RIGBY whole-body teleoperation demonstration" },
+    { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" },
+    { "type": "video", "src": "assets/video/dom_final.mp4", "poster": "assets/img/projects/dom_final-poster.jpg", "alt": "RIGBY DOM-ACT policy rollout" },
+    { "src": "assets/img/projects/rigby-gui-home.png", "alt": "RIGBY touchscreen interface" },
+    { "type": "video", "src": "assets/video/file-000.mp4", "poster": "assets/img/projects/file-000-poster.jpg", "alt": "RIGBY learned manipulation rollout" }
+
   ],
 
   "links": [
@@ -86,6 +157,8 @@
 },
   {
     "slug": "charis",
+    "cardLabel": "Accessible play",
+    "cardFoot": "Human–robot interaction · ROS 2",
 
     "title": "CHARIS",
 
@@ -100,8 +173,6 @@
     "image": "assets/img/projects/charis.jpg",
     "thumbnail": "assets/img/designs/project6.png",
     "thumbnailPosition": "50% 50%",
-
-    "heroVideo": "assets/video/backvid5.mp4",
 
     "accent": "#ff6b6b",
 
@@ -131,6 +202,8 @@
   },
   {
     "slug": "tflbot",
+    "cardLabel": "Human-centred robotics",
+    "cardFoot": "Navigation · Accessible guidance",
 
     "title": "TFLBot",
 
@@ -148,6 +221,7 @@
     "thumbnailBackground": "#d8d2c4",
 
     "heroVideo": "assets/video/tflbot.mp4",
+    "heroPoster": "assets/img/projects/tflbot-poster.jpg",
 
     "accent": "#78a6d8",
 
@@ -177,8 +251,6 @@
       { "src": "assets/img/projects/tflbot/time_taken.png", "alt": "TFLBot task completion time evaluation" }
     ],
 
-    "recognitions": ["Human-Centred Robotics final project"],
-
     "references": [
       "Human-Centred Robotics final report.",
       "Project assets include system architecture, perception, navigation, interaction, and evaluation results."
@@ -195,6 +267,8 @@
   },
   {
     "slug": "chessbot",
+    "cardLabel": "Robotic manipulation",
+    "cardFoot": "Kinematics · Motion planning",
 
     "title": "ChessBot",
 
@@ -211,6 +285,7 @@
     "thumbnailPosition": "50% 58%",
 
     "heroVideo": "assets/video/A2_Video.mp4",
+    "heroPoster": "assets/img/projects/A2_Video-poster.jpg",
 
     "accent": "#4fd1ff",
 
@@ -242,6 +317,9 @@
   },
   {
     "slug": "market-making-algorithm",
+    "displayTitle": "Market making",
+    "cardLabel": "Quantitative trading",
+    "cardFoot": "Options · 3rd / ~100 participants",
 
     "title": "Options Market Making Algorithm",
 
@@ -256,8 +334,6 @@
     "image": "assets/img/projects/Options.png",
     "thumbnail": "assets/img/projects/Options.png",
     "thumbnailPosition": "50% 50%",
-
-    "heroVideo": "assets/video/backvid5.mp4",
 
     "accent": "#ff8f3d",
 

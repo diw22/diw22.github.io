@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#40cbe9">
+  <title>aquaBOT | Dylan Winters</title>
+  <meta name="description" content="An interactive playground for the aquaBOT. Explore its six joints, gripper, and poses, or read the project details.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='a' cx='.3' cy='.2'%3E%3Cstop stop-color='%23eaffff'/%3E%3Cstop offset='1' stop-color='%230aada8'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='29' fill='url(%23a)'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260925-18">
+  <link rel="stylesheet" href="portfolio.css?v=20260925-43">
+  <script defer src="../assets/js/ui-sounds.js?v=20260925-35"></script>
+  <script defer src="assets/viewer.bundle.js"></script>
+  <script defer src="assets/robot-data.js"></script>
+  <script defer src="motion.js"></script>
+  <script defer src="app.js?v=20260925-43"></script>
+  <link rel="stylesheet" href="../assets/css/transitions.css?v=20260928-1">
+  <script src="../assets/js/transitions.js?v=20260928-1"></script>
+</head>
+<body>
+  <nav class="portfolio-rail" aria-label="Portfolio navigation">
+    <a href="../#work"><span aria-hidden="true">←</span> All projects</a>
+    <span class="portfolio-project">aquaBOT</span>
+    <a href="../#project/playground/story">Project details <span aria-hidden="true">↗</span></a>
+  </nav>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></symbol>
+    <symbol id="i-axis" viewBox="0 0 24 24"><path d="M12 3v10m0 0 8 5m-8-5-8 5m8-15-3 3m3-3 3 3m5 12-4 .5m4-.5-1-4M4 18l4 .5M4 18l1-4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M6 12h12m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M16 5v14"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M19 4C6 2 1 12 7 17s15 0 12-13ZM6 20 16 8"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+  </defs></svg>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="aqua home"><span class="brand-orb"></span><span class="wordmark">aqua<span>.</span></span><span class="brand-caption">Robot playground</span></a>
+    </header>
+    <main class="workspace">
+      <section class="viewer" aria-label="Interactive environment preview">
+        <div class="scene" id="scene" data-theme="aero" data-wallpaper="underwater-wide">
+          <div class="aquarium" aria-hidden="true"></div>
+          <div class="sun-flare" aria-hidden="true"></div>
+          <canvas id="environment" tabindex="0" aria-label="Your articulated robot. Drag or arrow keys to orbit; scroll or plus and minus to zoom."></canvas>
+          <div class="empty-state" role="status"><span class="empty-icon"><svg><use href="#i-spark"/></svg></span><h1>Loading aquaBOT…</h1><span class="empty-tag"></span></div>
+          <div class="view-tools"><button class="icon-button" id="reset-camera" aria-label="Reset camera" title="Reset camera"><svg><use href="#i-reset"/></svg></button><button class="icon-button" id="fullscreen" aria-label="Toggle fullscreen" title="Fullscreen"><svg><use href="#i-expand"/></svg></button><button class="icon-button info-button" id="about-button" aria-label="About this preview" title="About">i</button></div>
+          <div class="scene-bottom"><span>Drag to orbit &#183; Scroll to zoom</span><button id="camera-mode" class="view-chip">Perspective <svg><use href="#i-chevron"/></svg></button></div>
+        </div>
+      </section>
+      <button class="icon-button controls-restore" id="controls-restore" aria-controls="pose-panel" aria-expanded="true" aria-label="Restore controls" title="Restore controls" aria-hidden="true" inert><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+      <aside id="pose-panel" class="control-panel" aria-label="Robot pose controls">
+        <div class="panel-heading"><h2>Controls</h2><button class="icon-button" id="controls-toggle" aria-controls="pose-panel" aria-expanded="true" aria-label="Minimise controls" title="Minimise controls"><svg aria-hidden="true"><use href="#i-minus"/></svg></button></div>
+        <div id="joint-controls"></div>
+        <div class="gripper-section"><div class="joint-heading"><label for="gripper"><span class="gripper-icon">&#8847;&#8848;</span> Gripper</label><output id="gripper-value" for="gripper">50<span>%</span></output></div><input id="gripper" type="range" min="0" max="100" value="50" aria-label="Gripper opening percent"><div class="range-labels"><span>Closed</span><span>Open</span></div></div>
+        <div class="panel-actions"><button class="button primary" id="animate"><svg><use href="#i-play"/></svg><span>Play</span></button><button class="icon-button" id="reset-joints" aria-label="Reset all joints" title="Reset all joints"><svg><use href="#i-reset"/></svg></button><button class="icon-button copy-button" id="copy-pose" aria-label="Copy pose as JSON" title="Copy pose"><svg><use href="#i-copy"/></svg></button></div>
+      </aside>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="about-dialog"><button class="dialog-close icon-button" aria-label="Close about">&times;</button><span class="brand-orb"></span><h2>Welcome to the aquaBOT playground.</h2><p>Here you can discover how the aquaBOT moves; Try moving the sliders to see it in action.</p><button class="button primary dialog-done">OK</button></dialog>
+</body>
+</html>

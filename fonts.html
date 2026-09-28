@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Choose a font — Dylan Winters</title>
+  <link rel="icon" href="assets/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20260925-30">
+  <link rel="stylesheet" href="assets/css/font-picker.css?v=20260925-30">
+  <script src="assets/js/font-settings.js?v=20260925-34"></script>
+  <script src="assets/js/font-choice.js?v=20260925-32"></script>
+  <script src="assets/js/font-picker.js?v=20260925-30" defer></script>
+  <script src="assets/js/ui-sounds.js?v=20260925-35" defer></script>
+</head>
+<body>
+  <header class="picker-header"><h1>Choose a font</h1><a href="index.html" id="openSite">Open site ↗</a></header>
+  <main class="picker-layout">
+    <aside class="font-library">
+      <p class="library-intro">Select a font to see it on the site. Your choice is remembered in this browser.</p>
+      <fieldset><legend>Available fonts</legend><div id="fontList"></div></fieldset>
+      <div class="font-actions">
+        <button id="resetFont" type="button">Use site default</button>
+        <button id="downloadFont" type="button">Download default settings</button>
+        <p>To make your choice the default for everyone, replace <code>assets/js/font-settings.js</code> with the downloaded file.</p>
+      </div>
+    </aside>
+    <section class="preview-area" aria-label="Font preview">
+      <div class="preview-toolbar">
+        <label>Preview page <select id="previewPage"><option value="#home">Home</option><option value="#work">Projects</option><option value="#project/rigby/story">Project details</option><option value="#about">About</option></select></label>
+        <span id="activeFont" role="status" aria-live="polite"></span>
+      </div>
+      <iframe id="sitePreview" title="Live portfolio font preview" src="index.html#home"></iframe>
+      <details class="type-specimen"><summary>Try your own text</summary><label for="sampleText">Sample text</label><textarea id="sampleText" rows="2">Dylan Winters — Robotics, Intelligent Systems &amp; Quant.</textarea><p id="sampleOutput"></p><p id="fontStatus" role="status"></p></details>
+    </section>
+  </main>
+  <noscript><p>Enable JavaScript to use the font chooser. All fonts are in assets/fonts.</p></noscript>
+</body>
+</html>
