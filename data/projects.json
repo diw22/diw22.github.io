@@ -278,7 +278,7 @@
     "presentation": {
       "palette": { "wash": "#e3e8eb", "light": "#fafaf6", "shade": "#c1cdd6", "rim": "#eff2f1", "paper": "#f0f1eb" }
     },
-    "displayTitle": "Market making",
+    "displayTitle": "Market Making Algorithm",
     "cardLabel": "Quantitative trading",
     "cardFoot": "Options · 3rd / ~100 participants",
 
