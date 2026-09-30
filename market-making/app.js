@@ -194,6 +194,13 @@
 
   function drawCharts() { drawChart(canvases[0]); drawChart(canvases[1], true); }
 
+  function syncDeltaTolerance() {
+    const value = simulation.deltaTolerance;
+    $("#delta-tolerance").value = value;
+    $("#delta-tolerance").setAttribute("aria-valuetext", `Plus or minus ${value} delta`);
+    $("#delta-tolerance-value").textContent = `±${value}`;
+  }
+
   function syncPlayback() {
     clearTimeout(timer);
     const stopped = paused || about.open;
@@ -219,7 +226,15 @@
     document.querySelectorAll("[data-regime]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.regime === "calm")));
     $("#fill-flash").classList.remove("show");
     document.querySelectorAll(".book-row.filled").forEach(row => row.classList.remove("filled"));
-    render(); syncPlayback(); $("#announcer").textContent = "Simulation reset. Cash, positions and P&L start at zero. Market is calm.";
+    render(); syncPlayback(); $("#announcer").textContent = `Simulation reset. Cash, positions and P&L start at zero. Market is calm. Delta tolerance remains ${simulation.deltaTolerance}.`;
+  });
+  $("#delta-tolerance").addEventListener("input", event => {
+    simulation.setDeltaTolerance(event.target.valueAsNumber);
+    syncDeltaTolerance();
+    render();
+  });
+  $("#delta-tolerance").addEventListener("change", () => {
+    $("#announcer").textContent = `Delta tolerance set to ${simulation.deltaTolerance}. Quote sizes updated.`;
   });
   $("#speed").addEventListener("click", () => {
     speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
@@ -255,5 +270,5 @@
     drawCharts();
   }).observe($(".workspace"));
   document.fonts.ready.then(drawCharts);
-  render(); syncPlayback();
+  syncDeltaTolerance(); render(); syncPlayback();
 })();

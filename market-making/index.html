@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="../assets/css/transitions.css?v=20260930-1">
   <script src="../assets/js/transitions.js?v=20260930-1"></script>
   <link rel="preload" href="../assets/fonts/nunito-sans/NunitoSans-Latin-Variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20260930-6">
-  <script src="simulation.js?v=20260930-7" defer></script>
-  <script src="app.js?v=20260930-6" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260930-9">
+  <script src="simulation.js?v=20260930-9" defer></script>
+  <script src="app.js?v=20260930-9" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#terminal">Skip to simulation</a>
@@ -59,6 +59,11 @@
       </div>
       <footer class="control-bar">
         <div class="playback-controls"><button id="pause" class="pause-button" aria-label="Pause simulation"><span id="pause-icon" aria-hidden="true">Ⅱ</span><span id="pause-label">Pause</span></button><button id="reset" aria-label="Reset simulation" title="Reset simulation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg></button><button id="speed" aria-label="Simulation speed: 1 times">1×</button></div>
+        <div class="delta-controls">
+          <div class="delta-control-label"><label for="delta-tolerance">Delta tolerance</label><span id="delta-tolerance-value">±10</span></div>
+          <div class="delta-slider-row"><span aria-hidden="true">Tighter</span><input id="delta-tolerance" type="range" min="5" max="100" step="5" value="10" aria-describedby="delta-tolerance-help"><span aria-hidden="true">Looser</span></div>
+          <p id="delta-tolerance-help" class="sr-only">Lower values keep delta closer to zero. 100 uses the original tolerance. Changes apply immediately; Reset keeps your choice. This is a quoting tolerance, not a hard exposure limit.</p>
+        </div>
         <div class="market-controls"><span id="conditions-label">Market</span><div class="regime-buttons" role="group" aria-labelledby="conditions-label"><button data-regime="calm" aria-pressed="true">Calm</button><button data-regime="volatile" aria-pressed="false">Volatile</button></div></div>
       </footer>
     </main>
@@ -69,7 +74,7 @@
     <div class="dialog-heading"><h2 id="about-title">About the simulation</h2><button id="about-close" aria-label="Close explanation">×</button></div>
     <p>A browser adaptation of my options market-making strategy, which placed third in an Imperial College London Optiver competition.</p>
     <dl class="explanation"><div><dt>Pricing</dt><dd>A volume-weighted underlying order book feeds Black–Scholes fair values for a call and a put.</dd></div><div><dt>Orders</dt><dd>The strategy posts bids and asks around fair value. Incoming simulated orders fill those quotes, changing cash and inventory.</dd></div><div><dt>Risk</dt><dd>Order sizes adapt to confidence, remaining inventory capacity, and portfolio delta. Change market conditions to see the response.</dd></div></dl>
-    <details><summary>Simulation assumptions</summary><p class="simulation-note">Prices, liquidity and fills are synthetic, with simplified execution and no fees or queue priority. NVDA is normalised to $100; options use a $100 strike, 7-day tenor, 3% interest and the source’s 3.0 volatility parameter. Tenor is held fixed. Each contract represents one unit. P&amp;L is cash plus inventory marked to model, starting at zero. The charts show up to 90 simulated seconds; the totals cover the full session. These are illustrative results, not a replay of competition performance. The demo clamps quote sizes and suppresses crossed quotes; it does not run Optibook, futures, or arbitrage.</p></details>
+    <details><summary>Simulation assumptions</summary><p class="simulation-note">Prices, liquidity and fills are synthetic, with simplified execution and no fees or queue priority. NVDA is normalised to $100; options use a $100 strike, 7-day tenor, 3% interest and the source’s 3.0 volatility parameter. Tenor is held fixed. Each contract represents one unit. P&amp;L is cash plus inventory marked to model, starting at zero. The charts show up to 90 simulated seconds; the totals cover the full session. These are illustrative results, not a replay of competition performance. Delta tolerance is adjustable from 5 to 100 and starts at 10, compared with 100 in the source. Lower values favour neutrality; resting fills and price changes can carry exposure beyond the selected range. Changes apply immediately, and Reset keeps your chosen tolerance. The demo clamps quote sizes and suppresses crossed quotes; it does not run Optibook, futures, or arbitrage.</p></details>
     <a class="details-link" href="../#project/market-making-algorithm/story">Project background &amp; results <span aria-hidden="true">↗</span></a>
   </dialog>
 </body>

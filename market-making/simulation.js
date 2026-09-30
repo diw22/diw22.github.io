@@ -1,7 +1,8 @@
 /* Browser illustration of diw22/marketmakingalgo/algo.py.
    Synthetic books and fills; fixed tenor; no fees, queue model or live connection.
    The passive option quote prices and confidence/position/delta sizing follow
-   place_bid_ask_spread. Clamps and crossed-quote suppression are demo safeguards. */
+   place_bid_ask_spread, with an adjustable delta-sizing range for this demo.
+   Clamps and crossed-quote suppression are demo safeguards. */
 (() => {
   "use strict";
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -9,6 +10,10 @@
   const floorTick = (value) => Math.floor((value + 1e-9) * 100) / 100;
   const ceilTick = (value) => Math.ceil((value - 1e-9) * 100) / 100;
   const LIMIT = 100;
+  // Lower tolerance favours delta neutrality more strongly (the source uses 100).
+  // At +/- this value, stop quoting the sides that add directional exposure.
+  // This is a sizing range, not a hard limit: resting fills and repricing can overshoot.
+  const DEFAULT_DELTA_TOLERANCE = 10;
   const TENOR = 7 / 365;
   const RATE = .03;
   const SIGMA = 3;
@@ -35,7 +40,10 @@
   }
 
   class MarketSimulation {
-    constructor(seed = 2842024) { this.reset(seed); }
+    constructor(seed = 2842024) {
+      this.deltaTolerance = DEFAULT_DELTA_TOLERANCE;
+      this.reset(seed);
+    }
 
     reset(seed = this.seed) {
       this.seed = seed >>> 0;
@@ -73,6 +81,12 @@
       if (["calm", "volatile"].includes(regime)) this.regime = regime;
     }
 
+    setDeltaTolerance(value) {
+      if (!Number.isFinite(value)) return;
+      this.deltaTolerance = clamp(value, 5, 100);
+      this.requote();
+    }
+
     makeBook(mid, halfSpread, tick) {
       const side = (direction) => Array.from({ length: 5 }, (_, index) => ({
         price: Math.max(.01, round(mid + direction * (halfSpread + index * tick))),
@@ -96,7 +110,7 @@
       for (const instrument of this.instruments) {
         const bestAsk = weighted(instrument.book.asks);
         const bestBid = weighted(instrument.book.bids);
-        let desire = clamp((this.delta + 100) / 200, 0, 1);
+        let desire = clamp((this.delta + this.deltaTolerance) / (2 * this.deltaTolerance), 0, 1);
         if (instrument.kind === "call") desire = 1 - desire;
         const askConfidence = clamp((bestAsk - instrument.fair) / instrument.fair * 500 * (1 - desire), 0, 1);
         const bidConfidence = clamp((instrument.fair - bestBid) / instrument.fair * 500 * desire, 0, 1);

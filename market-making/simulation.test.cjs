@@ -72,6 +72,92 @@ test('positive portfolio delta reduces call buying and increases put buying', ()
   close(call.quote.ask, 20.01);
 });
 
+test('quotes at either delta tolerance only allow exposure-reducing directions', () => {
+  const simulation = new MarketSimulation();
+  const [call, put] = simulation.instruments;
+  simulation.delta = 10;
+  simulation.requote();
+  assert.equal(call.quote.bidSize, 0);
+  assert.equal(put.quote.askSize, 0);
+  assert.ok(call.quote.askSize > 0);
+  assert.ok(put.quote.bidSize > 0);
+
+  simulation.delta = -10;
+  simulation.requote();
+  assert.equal(call.quote.askSize, 0);
+  assert.equal(put.quote.bidSize, 0);
+  assert.ok(call.quote.bidSize > 0);
+  assert.ok(put.quote.askSize > 0);
+});
+
+test('delta stays close to neutral on average across synthetic sessions', () => {
+  for (const regime of ['calm', 'volatile']) {
+    for (const seed of [2842024, 1, 901, 11, 123]) {
+      const simulation = new MarketSimulation(seed);
+      simulation.setRegime(regime);
+      let absoluteDelta = 0;
+      let signedDelta = 0;
+      for (let tick = 0; tick < 2400; tick++) {
+        simulation.step();
+        absoluteDelta += Math.abs(simulation.delta);
+        signedDelta += simulation.delta;
+      }
+      const session = `${regime}, seed ${seed}`;
+      assert.ok(absoluteDelta / 2400 < 12, `${session}: excessive average exposure`);
+      assert.ok(Math.abs(signedDelta / 2400) < 5, `${session}: persistent directional bias`);
+    }
+  }
+});
+
+test('changing delta tolerance updates resting quotes without restarting the session', () => {
+  const simulation = new MarketSimulation();
+  for (let tick = 0; tick < 100; tick++) simulation.step();
+  simulation.setDeltaTolerance(100);
+  simulation.delta = 25;
+  simulation.requote();
+  const [call, put] = simulation.instruments;
+  assert.ok(call.quote.bidSize > 0);
+  assert.ok(put.quote.askSize > 0);
+  const snapshot = () => JSON.stringify({
+    time: simulation.time, cash: simulation.cash, pnl: simulation.pnl,
+    realized: simulation.realized, delta: simulation.delta,
+    positions: simulation.instruments.map(instrument => instrument.position),
+    history: simulation.history, tape: simulation.tape, randomState: simulation.randomState
+  });
+  const before = snapshot();
+  simulation.setDeltaTolerance(25);
+  assert.equal(simulation.deltaTolerance, 25);
+  assert.equal(call.quote.bidSize, 0);
+  assert.equal(put.quote.askSize, 0);
+  assert.ok(call.quote.askSize > 0);
+  assert.ok(put.quote.bidSize > 0);
+  assert.equal(snapshot(), before);
+});
+
+test('delta tolerance rejects invalid values and stays within its supported range', () => {
+  const simulation = new MarketSimulation();
+  for (const value of [NaN, Infinity, -Infinity, undefined, null, '25']) {
+    simulation.setDeltaTolerance(value);
+    assert.equal(simulation.deltaTolerance, 10);
+  }
+  simulation.setDeltaTolerance(0);
+  assert.equal(simulation.deltaTolerance, 5);
+  simulation.setDeltaTolerance(200);
+  assert.equal(simulation.deltaTolerance, 100);
+});
+
+test('reset preserves the chosen tolerance and reproduces the session', () => {
+  const simulation = new MarketSimulation(123);
+  simulation.setDeltaTolerance(100);
+  for (let tick = 0; tick < 100; tick++) simulation.step();
+  const first = JSON.stringify(simulation.history);
+  simulation.reset();
+  assert.equal(simulation.deltaTolerance, 100);
+  assert.equal(simulation.pnl, 0);
+  for (let tick = 0; tick < 100; tick++) simulation.step();
+  assert.equal(JSON.stringify(simulation.history), first);
+});
+
 test('long sessions conserve accounting, respect risk limits and bound history', () => {
   for (const seed of [1, 2842024, 901]) {
     const simulation = new MarketSimulation(seed);
