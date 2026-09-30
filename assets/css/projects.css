@@ -13,6 +13,10 @@ html:has(body.is-work) { scrollbar-gutter: auto; }
 .atmosphere-field { position: absolute; inset: 0; opacity: 0; background: radial-gradient(ellipse at 51% 39%, var(--glass-light) 0%, transparent 57%), radial-gradient(ellipse at 10% 79%, var(--glass-wash), transparent 65%), radial-gradient(ellipse at 95% 48%, var(--glass-shade), transparent 68%), linear-gradient(140deg, var(--glass-paper, #f5f1e7), var(--glass-wash) 65%, var(--glass-paper, #f0f1e6)); }
 .is-work:has(.project-card[data-project="smoke-and-mirrors"] .card-entry[tabindex="0"]) { --green: #f3e8df; --green-hover: #fff; }
 .is-work:has(.project-card[data-project="playground"] .card-entry[tabindex="0"]) { --green: #174f75; --green-hover: #093454; }
+.is-work:has(.project-card[data-project="market-making-algorithm"] .card-entry[tabindex="0"]) { --green: #394e60; --green-hover: #446c94; }
+.project-card[data-project="market-making-algorithm"] .card-screen { border-color: #bec7cb; }
+.project-card[data-project="market-making-algorithm"] .card-screen::after { background: linear-gradient(transparent 65%, #f7f7f2); }
+.project-card[data-project="market-making-algorithm"] .card-title { color: #394e60; font-family: "Nunito Sans", Arial, sans-serif; text-shadow: none; }
 .is-work #work-title { transition: color 300ms ease; }
 .project-card[data-project="smoke-and-mirrors"] .card-art { border-color: #9b727b; background: linear-gradient(145deg, #79515c, #4d2534 70%, #68404d); box-shadow: inset 1px 1px 2px #c5a4aa66, 0 14px 28px #230f202b; }
 .project-card[data-project="smoke-and-mirrors"] .card-screen { border-color: #ae9095; box-shadow: 0 1px 1px #bc969e66; }

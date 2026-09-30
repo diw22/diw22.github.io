@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
+  <rect width="960" height="600" fill="#f7f7f2"/>
+  <g font-family="Arial,sans-serif" fill="#777c80"><text x="54" y="77" font-size="17">Profit &amp; loss</text><text x="820" y="77" font-size="12">Simulated</text></g>
+  <text x="49" y="167" font-family="Arial,sans-serif" font-size="87" letter-spacing="-5" fill="#446c94">+$14.76</text>
+  <g font-family="Arial,sans-serif" font-size="13" fill="#777c80"><text x="54" y="202">Realised</text><text x="117" y="202" fill="#292f36">+$14.12</text><text x="220" y="202">Unrealised</text><text x="297" y="202" fill="#292f36">+$0.64</text></g>
+  <path d="M54 252H635M54 324H635M54 396H635M674 61V450" stroke="#dedfd9"/>
+  <path d="m54 380 22-2 19-12 20-4 24-22 19 4 21-3 22 6 22-7 18-12 24-5 25-3 18 3 20-18 19 7 19-11 23 2 18-6 24 2 21-12 26 4 23-3 19-15 19 4 20-8 18 9 22-17 25 6 19-5 22 10" stroke="#446c94" stroke-width="2.4"/>
+  <g font-family="Arial,sans-serif" font-size="11" fill="#777c80"><text x="54" y="421">00:00</text><text x="327" y="421">00:14</text><text x="606" y="421">00:28</text></g>
+  <g font-family="Arial,sans-serif" font-size="14" fill="#292f36"><text x="710" y="112">Inventory</text><text x="710" y="160" font-size="12">Call</text><text x="874" y="160" font-size="12">+9</text><text x="710" y="196" font-size="12">Put</text><text x="867" y="196" font-size="12">+15</text></g>
+  <path d="M754 156H853M754 192H853" stroke="#e3e5e0" stroke-width="4"/><path d="M803 156H812M803 192H818" stroke="#527a8f" stroke-width="4"/><path d="M803 150V162M803 186V198" stroke="#adb3b7"/>
+  <g font-family="Arial,sans-serif" font-size="12" fill="#777c80"><text x="710" y="244">Delta</text><text x="851" y="244" fill="#292f36">−0.95</text></g>
+  <path d="M710 270H902" stroke="#dedfd9"/>
+  <g font-family="Arial,sans-serif" font-size="12"><text x="710" y="309" fill="#292f36">Recent fills</text><text x="710" y="345" fill="#ab705e">Sell</text><text x="710" y="376" fill="#527a8f">Buy</text><text x="710" y="407" fill="#527a8f">Buy</text><text x="799" y="345" fill="#777c80">1 @ 16.40</text><text x="793" y="376" fill="#777c80">10 @ 16.54</text><text x="799" y="407" fill="#777c80">4 @ 16.24</text></g>
+</svg>

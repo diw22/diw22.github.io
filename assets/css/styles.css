@@ -2,8 +2,8 @@
 :root {
   --paper: #eee9df; --card: #f7f3eb; --ink: #20211e; --muted: #68645b; --line: #ccc6ba;
   --green: #254d3c; --green-hover: #123324;
-  --display: var(--active-font, "Oblata Display"), Georgia, serif;
-  --sans: var(--active-font, "Oblata Display"), Georgia, serif;
+  --display: var(--active-font, "Nunito Sans"), Arial, sans-serif;
+  --sans: var(--active-font, "Nunito Sans"), Arial, sans-serif;
   --accent: "Sandana", Georgia, serif;
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --gutter: clamp(20px, 5vw, 80px);
@@ -56,7 +56,7 @@ html:has(body.is-home) { scrollbar-gutter: auto; }
 .home-scroll-cue svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
 .work-section { padding: 48px 0 70px; min-height: 75vh; }
 .section-heading { border-bottom: 1px solid var(--line); padding-bottom: 26px; margin-bottom: 28px; }
-#work-title { font: clamp(42px, 5vw, 70px)/1.1 var(--accent); letter-spacing: 0; }
+#work-title { font: clamp(42px, 5vw, 70px)/1.1 "Nunito Sans", Arial, sans-serif; letter-spacing: 0; }
 .is-work { height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
 .is-work .site-header { flex-shrink: 0; }
 .is-work main { width: 100%; max-width: none; padding: 0; margin: 0; flex: 1; min-height: 0; }
@@ -89,13 +89,12 @@ html:has(body.is-home) { scrollbar-gutter: auto; }
 /* Distinct project palettes, carried from the gallery into the project pages. */
 [data-project="playground"] { --project-bg: #bde7e4; --project-label: #e6fbd8; --project-ink: #164e44; --project-accent: #187d76; --project-font: var(--display); }
 [data-project="rigby"] { --project-bg: #b3b3b3; --project-label: #dbe5bc; --project-ink: #293622; --project-accent: #5c713d; --project-font: var(--sans); }
-[data-project="charis"] { --project-bg: #d5e5fa; --project-label: #fbe3b7; --project-ink: #53401a; --project-accent: #ae613e; --project-font: var(--display); }
 [data-project="tflbot"] { --project-bg: #dfe9ef; --project-label: #183f77; --project-ink: #fff; --project-accent: #295e96; --project-font: var(--sans); }
 [data-project="chessbot"] { --project-bg: #e8d9c7; --project-label: #5b3e2d; --project-ink: #fff5e3; --project-accent: #8a5338; --project-font: var(--display); }
 [data-project="market-making-algorithm"] { --project-bg: #152c25; --project-label: #cbdcc5; --project-ink: #193127; --project-accent: #35745c; --project-font: var(--display); }
 [data-project="rigby"] .card-art img { object-fit: contain; padding: 12px 0 0; }
 [data-project="tflbot"] .card-art img { object-fit: contain; padding: 12px 0 0; }
-[data-project="market-making-algorithm"] .card-art img { object-fit: contain; padding: 8% 6%; }
+[data-project="market-making-algorithm"] .card-art img { object-fit: cover; padding: 0; }
 /* About mirrors the homepage's single, left-aligned composition in paper tones. */
 html:has(body.is-about) { height: 100%; overflow: hidden; overscroll-behavior: none; scrollbar-gutter: auto; }
 .is-about { height: 100dvh; overflow: hidden; background: var(--paper); }
@@ -122,7 +121,6 @@ html:has(body.is-about) { height: 100%; overflow: hidden; overscroll-behavior: n
 .project-heading h1 { font: 500 clamp(46px, 6.2vw, 86px)/1.08 var(--project-font, var(--display)); letter-spacing: 0; overflow-wrap: anywhere; }
 .title-dot { color: var(--project-accent); }
 [data-project="rigby"] .project-heading h1 { font-weight: 800; letter-spacing: 0; }
-[data-project="charis"] .project-heading h1 { letter-spacing: 0; font-weight: 700; }
 [data-project="market-making-algorithm"] .project-heading h1 { font-size: clamp(38px, 5vw, 68px); }
 /* Project experiences occupy one viewport; long-form content lives in /story. */
 .is-experience { height: 100dvh; overflow: hidden; }

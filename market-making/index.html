@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <meta name="description" content="An interactive simulation of Dylan Winters' options market-making strategy.">
+  <title>Market making — Dylan Winters</title>
+  <link rel="icon" href="../assets/favicon/favicon-32x32.png" type="image/png">
+  <link rel="stylesheet" href="../assets/css/transitions.css?v=20260930-1">
+  <script src="../assets/js/transitions.js?v=20260930-1"></script>
+  <link rel="preload" href="../assets/fonts/nunito-sans/NunitoSans-Latin-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=20260930-6">
+  <script src="simulation.js?v=20260930-7" defer></script>
+  <script src="app.js?v=20260930-6" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#terminal">Skip to simulation</a>
+  <div class="terminal-shell">
+    <header class="topbar">
+      <div class="page-heading"><a class="back-link" href="../#work/market-making-algorithm" aria-label="Back to projects">←</a><h1>Market making</h1></div>
+      <div class="header-actions"><span class="session-meta"><i class="status-dot" aria-hidden="true"></i><span id="session-status">Simulated</span><time id="session-time">00:00</time></span><button id="about-open">About</button><a href="https://github.com/diw22/marketmakingalgo" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a></div>
+    </header>
+    <main id="terminal" tabindex="-1">
+      <div class="workspace">
+        <div class="chart-column">
+          <section class="performance" aria-labelledby="pnl-heading">
+            <div class="pnl-heading"><h2 id="pnl-heading">Profit &amp; loss</h2><span class="unit-label">USD</span></div>
+            <strong id="total-pnl">+$0.00</strong>
+            <dl class="pnl-breakdown"><div><dt>Realised</dt><dd id="realized-pnl">$0.00</dd></div><div><dt>Unrealised</dt><dd id="unrealized-pnl">$0.00</dd></div></dl>
+            <div class="pnl-chart-wrap"><canvas id="pnl-chart" role="img" aria-label="Simulated profit and loss over the most recent 90 seconds"></canvas></div>
+          </section>
+          <section class="price-panel" aria-labelledby="price-heading">
+            <div class="price-heading"><div class="price-title"><h2 id="price-heading">NVDA options</h2><div class="instrument-tabs" role="group" aria-label="Displayed option"><button data-instrument="call" aria-pressed="true">Call</button><button data-instrument="put" aria-pressed="false">Put</button></div></div><span class="fair-value-label">Fair value <strong id="fair-value">—</strong></span></div>
+            <div class="price-chart-wrap"><canvas id="price-chart" role="img" aria-label="Option fair value, our bid and ask, and execution markers"></canvas><div id="fill-flash" class="fill-flash" aria-hidden="true"></div></div>
+            <div class="chart-legend" aria-label="Chart legend"><span class="bid-key">Bid</span><span class="fair-key">Fair value</span><span class="ask-key">Ask</span><span class="fill-key">Fills</span></div>
+          </section>
+        </div>
+        <aside class="activity-column" aria-label="Positions and market activity">
+          <section class="inventory" aria-labelledby="risk-heading">
+            <div class="section-heading"><h2 id="risk-heading">Inventory</h2><span class="quiet" title="Position limit per option">±100</span></div>
+            <div class="inventory-row"><span>Call</span><div class="inventory-track"><span id="call-bar"></span></div><output id="call-position" aria-label="Call position">0</output></div>
+            <div class="inventory-row"><span>Put</span><div class="inventory-track"><span id="put-bar"></span></div><output id="put-position" aria-label="Put position">0</output></div>
+            <div class="delta-row"><span>Delta <span id="delta-note" class="quiet">Neutral</span></span><strong id="portfolio-delta">0.00</strong></div>
+          </section>
+          <section class="book-panel" aria-labelledby="book-heading">
+            <div class="section-heading"><h2 id="book-heading">Order book</h2><span id="book-symbol" class="quiet">NVDA Call</span></div>
+            <div class="order-sides">
+              <div class="bid-side"><h3>Bid</h3><div class="book-labels"><span>Price</span><span>Size</span><span>Ours</span></div><div id="bids" class="book-rows bids"></div></div>
+              <div class="ask-side"><h3>Ask</h3><div class="book-labels"><span>Price</span><span>Size</span><span>Ours</span></div><div id="asks" class="book-rows asks"></div></div>
+            </div>
+            <div class="spread-row"><span>Spread</span><span id="book-spread">—</span></div>
+          </section>
+          <section class="tape-panel" aria-labelledby="tape-heading">
+            <div class="section-heading"><h2 id="tape-heading">Fills <span id="fill-count">0</span></h2><span class="quiet"><span id="volume-count">0</span> contracts</span></div>
+            <div class="tape-labels"><span>Time</span><span>Side</span><span>Option</span><span>Qty @ price</span></div><ol id="execution-tape" tabindex="0" aria-label="Recent executions"><li class="tape-empty">Waiting for a fill…</li></ol>
+          </section>
+        </aside>
+      </div>
+      <footer class="control-bar">
+        <div class="playback-controls"><button id="pause" class="pause-button" aria-label="Pause simulation"><span id="pause-icon" aria-hidden="true">Ⅱ</span><span id="pause-label">Pause</span></button><button id="reset" aria-label="Reset simulation" title="Reset simulation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg></button><button id="speed" aria-label="Simulation speed: 1 times">1×</button></div>
+        <div class="market-controls"><span id="conditions-label">Market</span><div class="regime-buttons" role="group" aria-labelledby="conditions-label"><button data-regime="calm" aria-pressed="true">Calm</button><button data-regime="volatile" aria-pressed="false">Volatile</button></div></div>
+      </footer>
+    </main>
+  </div>
+  <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+  <noscript><div class="no-script">This simulation needs JavaScript. <a href="../#project/market-making-algorithm/story">Read the project details</a>.</div></noscript>
+  <dialog id="about-dialog" aria-labelledby="about-title">
+    <div class="dialog-heading"><h2 id="about-title">About the simulation</h2><button id="about-close" aria-label="Close explanation">×</button></div>
+    <p>A browser adaptation of my options market-making strategy, which placed third in an Imperial College London Optiver competition.</p>
+    <dl class="explanation"><div><dt>Pricing</dt><dd>A volume-weighted underlying order book feeds Black–Scholes fair values for a call and a put.</dd></div><div><dt>Orders</dt><dd>The strategy posts bids and asks around fair value. Incoming simulated orders fill those quotes, changing cash and inventory.</dd></div><div><dt>Risk</dt><dd>Order sizes adapt to confidence, remaining inventory capacity, and portfolio delta. Change market conditions to see the response.</dd></div></dl>
+    <details><summary>Simulation assumptions</summary><p class="simulation-note">Prices, liquidity and fills are synthetic, with simplified execution and no fees or queue priority. NVDA is normalised to $100; options use a $100 strike, 7-day tenor, 3% interest and the source’s 3.0 volatility parameter. Tenor is held fixed. Each contract represents one unit. P&amp;L is cash plus inventory marked to model, starting at zero. The charts show up to 90 simulated seconds; the totals cover the full session. These are illustrative results, not a replay of competition performance. The demo clamps quote sizes and suppresses crossed quotes; it does not run Optibook, futures, or arbitrage.</p></details>
+    <a class="details-link" href="../#project/market-making-algorithm/story">Project background &amp; results <span aria-hidden="true">↗</span></a>
+  </dialog>
+</body>
+</html>

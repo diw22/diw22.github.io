@@ -1,0 +1,15 @@
+Nunito Sans
+
+Copyright 2016 The Nunito Sans Project Authors
+https://github.com/Fonthausen/NunitoSans
+
+Licence: SIL Open Font License 1.1 (included in OFL.txt).
+Source: https://fonts.google.com/specimen/Nunito+Sans
+Licence source: https://github.com/google/fonts/blob/main/ofl/nunitosans/OFL.txt
+
+NunitoSans-Latin-Variable.woff2 is the unmodified Latin webfont build
+served by Google Fonts, downloaded 2026-09-30. Normal style, weights
+200 through 900. The font is hosted locally by the portfolio.
+
+Download URL:
+https://fonts.gstatic.com/s/nunitosans/v19/pe0TMImSLYBIv1o4X1M8ce2xCx3yop4tQpF_MeTm0lfGWVpNn64CL7U8upHZIbMV51Q42ptCp7t1R-s.woff2

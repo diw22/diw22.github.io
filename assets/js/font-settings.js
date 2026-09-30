@@ -1,8 +1,19 @@
 // Change this ID to set the default for every visitor. Browser previews can override it.
-window.PORTFOLIO_DEFAULT_FONT = "oblata-display";
+window.PORTFOLIO_DEFAULT_FONT = "nunito-sans";
 
 // Available families (registered in assets/css/fonts.css).
 window.PORTFOLIO_FONTS = [
+  {
+    "id": "nunito-sans",
+    "family": "Nunito Sans",
+    "styles": [
+      { "weight": 400, "style": "normal" },
+      { "weight": 500, "style": "normal" },
+      { "weight": 600, "style": "normal" },
+      { "weight": 700, "style": "normal" }
+    ],
+    "source": "assets/fonts/nunito-sans/info.txt"
+  },
   {
     "id": "alice-yotsuba-inc",
     "family": "Alice Yotsuba Inc.",

@@ -156,51 +156,6 @@
   ]
 },
   {
-    "slug": "charis",
-    "cardLabel": "Accessible play",
-    "cardFoot": "Human–robot interaction · ROS 2",
-
-    "title": "CHARIS",
-
-    "subtitle": "Low-cost assistive robot for accessible play and child-centred interaction.",
-
-    "description": "A team-built robotic companion for children with motor disabilities, combining accessible control, computer vision, autonomous behaviours, and adaptive interactive games.",
-
-    "category": "Robotics",
-
-    "year": "2025",
-
-    "image": "assets/img/projects/charis.jpg",
-    "thumbnail": "assets/img/designs/project6.png",
-    "thumbnailPosition": "50% 50%",
-
-    "accent": "#ff6b6b",
-
-    "tags": ["Assistive Robotics", "Computer Vision", "ROS 2", "Human-Robot Interaction"],
-
-    "specs": [
-      { "label": "Role", "value": "Project Manager and Software Developer" },
-      { "label": "Interaction", "value": "Head tracking, adaptive controllers, and GUI" },
-      { "label": "Perception", "value": "OpenCV, MediaPipe, object detection, and LiDAR" },
-      { "label": "Platform", "value": "Modified low-cost XLeRobot mobile manipulator" }
-    ],
-
-    "sections": [
-      { "title": "Intent", "body": "CHARIS explored how low-cost robotics could make play and everyday interaction more accessible for children with motor disabilities through intuitive controls, adaptive games, and assistive autonomous behaviours." },
-
-      { "title": "Build", "body": "Led the project team and developed the frontend stack, including a modular child-friendly interface, real-time adaptive difficulty model, and OpenCV/MediaPipe head tracking, integrated with the wider ROS 2 robotic system." }
-    ],
-
-    "gallery": [
-      { "src": "assets/img/projects/charisface.png", "alt": "CHARIS child-friendly interface" },
-      { "src": "assets/img/projects/charis.jpg", "alt": "CHARIS assistive robot" }
-    ],
-
-    "links": [
-      { "label": "View Code", "href": "https://github.com/diw22/Robots4ChildrenWithDisabilities" }
-    ]
-  },
-  {
     "slug": "tflbot",
     "cardLabel": "Human-centred robotics",
     "cardFoot": "Navigation · Accessible guidance",
@@ -317,6 +272,12 @@
   },
   {
     "slug": "market-making-algorithm",
+    "entryHref": "market-making/",
+    "entryLabel": "Open simulation",
+    "previewAlt": "A minimal market-making simulation with a blue profit-and-loss chart and live inventory",
+    "presentation": {
+      "palette": { "wash": "#e3e8eb", "light": "#fafaf6", "shade": "#c1cdd6", "rim": "#eff2f1", "paper": "#f0f1eb" }
+    },
     "displayTitle": "Market making",
     "cardLabel": "Quantitative trading",
     "cardFoot": "Options · 3rd / ~100 participants",
@@ -332,7 +293,7 @@
     "year": "2024",
 
     "image": "assets/img/projects/Options.png",
-    "thumbnail": "assets/img/projects/Options.png",
+    "thumbnail": "assets/img/projects/market-making.svg",
     "thumbnailPosition": "50% 50%",
 
     "accent": "#ff8f3d",
