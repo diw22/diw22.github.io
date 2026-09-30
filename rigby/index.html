@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050e17">
+  <meta name="description" content="Explore RIGBY in 3D. Move its two arms, open the grippers, and try different poses in the robot playground.">
+  <title>RIGBY playground | Dylan Winters</title>
+  <link rel="icon" type="image/png" href="../assets/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20260930-2">
+  <link rel="stylesheet" href="../assets/css/transitions.css?v=20260928-1">
+  <link rel="stylesheet" href="styles.css?v=20260930-8">
+  <script src="../assets/js/transitions.js?v=20260930-2"></script>
+  <script src="../assets/js/ui-sounds.js?v=20260926-8" defer></script>
+  <script type="importmap">
+    {"imports":{"three":"../assets/vendor/three/three.module.js"}}
+  </script>
+  <script type="module" src="app.js?v=20260930-9"></script>
+</head>
+<body>
+  <a class="skip-link" href="#pose-panel">Skip to robot controls</a>
+  <main class="workspace">
+    <header class="workspace-header">
+      <a class="portfolio-link" href="../#work/rigby">All projects <span aria-hidden="true">↗</span></a>
+      <div class="workspace-title"><h1>RIGBY</h1><p>Robot playground</p></div>
+      <a class="portfolio-link portfolio-about" href="../#project/rigby/story">About Rigby <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <div class="playground-stage">
+      <section class="viewer" aria-label="Interactive RIGBY playground">
+        <canvas id="environment" tabindex="0" aria-label="RIGBY robot in 3D. Drag to orbit, scroll or pinch to zoom. Arrow keys pan, plus and minus zoom, and Home resets the view."></canvas>
+        <div id="load-status" class="load-status" role="status" aria-live="polite">
+          <p id="load-title">Loading RIGBY…</p>
+          <p id="load-detail">Preparing the robot</p>
+          <button id="retry" type="button" hidden>Try again</button>
+        </div>
+        <div class="view-tools" role="group" aria-label="View controls">
+          <button id="reset-camera" class="icon-button" type="button" aria-label="Reset view" title="Reset view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg></button>
+          <button id="camera-mode" class="icon-button" type="button" aria-label="Top view" title="Top view" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></button>
+          <button id="fullscreen" class="icon-button" type="button" aria-label="Enter fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg></button>
+        </div>
+      </section>
+
+      <button id="controls-restore" class="icon-button controls-restore" type="button" aria-label="Restore controls" title="Restore controls" aria-controls="pose-panel" aria-expanded="true" aria-hidden="true" inert><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+      <aside id="pose-panel" class="control-panel" aria-label="Robot pose controls" tabindex="-1">
+        <div class="panel-heading"><div><p>Make a move</p><h2>Pose controls</h2></div><button id="controls-toggle" class="icon-button" type="button" aria-label="Minimise controls" title="Minimise controls" aria-controls="pose-panel" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
+        <div class="control-tabs" role="tablist" aria-label="Robot parts">
+          <button id="tab-left" role="tab" aria-selected="true" aria-controls="joints-left" type="button">Left arm</button>
+          <button id="tab-right" role="tab" aria-selected="false" aria-controls="joints-right" tabindex="-1" type="button">Right arm</button>
+          <button id="tab-base" role="tab" aria-selected="false" aria-controls="joints-base" tabindex="-1" type="button">Base</button>
+        </div>
+        <div class="joint-panels">
+          <div id="joints-left" role="tabpanel" aria-labelledby="tab-left"></div>
+          <div id="joints-right" role="tabpanel" aria-labelledby="tab-right" hidden></div>
+          <div id="joints-base" role="tabpanel" aria-labelledby="tab-base" hidden></div>
+        </div>
+        <div class="panel-footer panel-actions">
+          <button id="animate" class="primary" type="button" aria-pressed="false" disabled>Play</button>
+          <button id="reset-joints" class="secondary" type="button" disabled>Reset pose</button>
+          <button id="copy-pose" type="button" disabled>Copy pose</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Enable JavaScript to explore RIGBY in 3D, or <a href="../#project/rigby/story">read the project details</a>.</p></noscript>
+</body>
+</html>

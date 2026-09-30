@@ -46,31 +46,15 @@
     ]
   },
   {
-    "slug": "smoke-and-mirrors",
-    "title": "Smoke and Mirrors",
-    "displayTitle": "Work in progress",
-    "status": "draft",
-    "category": "Visual study",
-    "year": "2026",
-    "subtitle": "A draft study of light, reflection and perception.",
-    "description": "An early visual direction exploring reflected surfaces, sheer fabric and soft light. The project is still taking shape.",
-    "image": "assets/img/projects/smoke-and-mirrors/mirror-1536.webp",
-    "thumbnail": "assets/img/projects/smoke-and-mirrors/mirror-768.webp",
-    "previewAlt": "An oval mirror veiled in ivory fabric with a muted wine-red reflection",
-    "accent": "#633946",
-    "presentation": {
-      "palette": { "wash": "#5d293a", "light": "#8d626a", "shade": "#341522", "rim": "#b8a0a2", "paper": "#391d28" }
-    },
-    "sections": [
-      { "title": "Initial direction", "body": "Smoke and Mirrors begins with reflection, soft light, and the feeling of a space. These images explore an initial visual direction; the project itself is still taking shape." }
-    ],
-    "gallery": [
-      { "src": "assets/img/projects/smoke-and-mirrors/veil-1536.webp", "alt": "Ivory fabric catching soft light in front of a blurred burgundy reflection" }
-    ],
-    "links": []
-  },
-{
   "slug": "rigby",
+  "presentation": {
+    "material": "rigby-preview",
+    "displayImage": "assets/img/projects/rigby-gui-home.png",
+    "palette": { "wash": "#c5e5fa", "light": "#f6fbff", "shade": "#80b8e0", "rim": "#e2f2ff", "paper": "#e8f1f7" }
+  },
+  "previewAlt": "Front render of RIGBY with its touchscreen GUI, against a blue sky with white clouds",
+  "entryHref": "rigby/",
+  "entryLabel": "Open playground for",
   "cardLabel": "Assistive robotics",
   "cardFoot": "Master's thesis · Imitation learning",
 
@@ -222,6 +206,10 @@
   },
   {
     "slug": "chessbot",
+    "presentation": {
+      "palette": { "wash": "#eeeeee", "light": "#ffffff", "shade": "#d8d8d8", "rim": "#f7f7f7", "paper": "#efefef" }
+    },
+    "previewAlt": "ChessBot's robot arm moving a chess piece over a chessboard",
     "cardLabel": "Robotic manipulation",
     "cardFoot": "Kinematics · Motion planning",
 
@@ -323,5 +311,29 @@
     "links": [
       { "label": "View Code", "href": "https://github.com/diw22/marketmakingalgo" }
     ]
+  },
+  {
+    "slug": "smoke-and-mirrors",
+    "title": "Smoke and Mirrors",
+    "displayTitle": "Work in progress",
+    "status": "draft",
+    "category": "Visual study",
+    "year": "2026",
+    "subtitle": "A draft study of light, reflection and perception.",
+    "description": "An early visual direction exploring reflected surfaces, sheer fabric and soft light. The project is still taking shape.",
+    "image": "assets/img/projects/smoke-and-mirrors/mirror-1536.webp",
+    "thumbnail": "assets/img/projects/smoke-and-mirrors/mirror-768.webp",
+    "previewAlt": "An oval mirror veiled in ivory fabric with a muted wine-red reflection",
+    "accent": "#633946",
+    "presentation": {
+      "palette": { "wash": "#5d293a", "light": "#8d626a", "shade": "#341522", "rim": "#b8a0a2", "paper": "#391d28" }
+    },
+    "sections": [
+      { "title": "Initial direction", "body": "Smoke and Mirrors begins with reflection, soft light, and the feeling of a space. These images explore an initial visual direction; the project itself is still taking shape." }
+    ],
+    "gallery": [
+      { "src": "assets/img/projects/smoke-and-mirrors/veil-1536.webp", "alt": "Ivory fabric catching soft light in front of a blurred burgundy reflection" }
+    ],
+    "links": []
   }
 ]

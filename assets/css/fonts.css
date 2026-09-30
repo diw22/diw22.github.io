@@ -1,5 +1,14 @@
 /* All font archives in assets; original files and notices remain in assets/fonts/. */
 
+/* Cabin is distributed under the SIL Open Font License in cabin/OFL.txt. */
+@font-face {
+  font-family: "Cabin";
+  src: url("../fonts/cabin/Cabin-Variable.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Self-hosted Google Fonts Latin build; SIL Open Font License in nunito-sans/OFL.txt. */
 @font-face {
   font-family: "Nunito Sans";

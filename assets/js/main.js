@@ -22,14 +22,23 @@ function presentationStyle(project) {
 
 function renderCards() {
   $("#workAtmosphere").innerHTML = state.projects.map((project, index) => project.presentation?.palette
-    ? `<div class="atmosphere-field" data-theme-index="${index}" style="${presentationStyle(project)}"></div>` : "").join("");
+    ? `<div class="atmosphere-field" data-project="${escapeHtml(project.slug)}" data-theme-index="${index}" style="${presentationStyle(project)}"></div>` : "").join("");
   $("#projectGrid").innerHTML = state.projects.map((project) => {
     const draft = project.status === "draft";
     const panel = project.presentation?.material === "aero-panel";
     const monitor = panel || project.presentation?.material === "aero-monitor";
+    const rigby = project.presentation?.material === "rigby-preview";
     return `<article class="project-card${monitor ? " material-monitor" : ""}${panel ? " material-panel" : ""}" data-project="${escapeHtml(project.slug)}" style="${presentationStyle(project)}">
       ${draft ? '<div class="card-entry" role="group" aria-label="Work in progress">' : `<a class="card-entry" href="${escapeHtml(entryUrl(project))}" aria-label="${escapeHtml(project.entryLabel || "Explore")} ${escapeHtml(title(project))}">`}
-        ${monitor ? `<div class="monitor-object">
+        ${rigby ? `<div class="card-art">
+          <div class="card-screen rigby-screen">
+            <svg class="rigby-preview" viewBox="0 0 1280 1024" role="img" aria-label="${escapeHtml(project.previewAlt || `${project.title} preview`)}">
+              <image href="${escapeHtml(thumbnail(project))}" width="1280" height="1024"/>
+              <image class="rigby-display" href="${escapeHtml(project.presentation.displayImage)}" x="560" y="311" width="134" height="71" preserveAspectRatio="none"/>
+            </svg>
+            <div class="rigby-caption"><h3>${escapeHtml(title(project))}</h3><span aria-hidden="true">&#8599;</span></div>
+          </div>
+        </div>` : monitor ? `<div class="monitor-object">
           <div class="monitor-screen">
             <img class="monitor-preview" src="${escapeHtml(project.presentation.image || thumbnail(project))}" alt="${escapeHtml(project.previewAlt || `${project.title} preview`)}" loading="eager" decoding="async" draggable="false">
             <div class="monitor-caption"><h3>${escapeHtml(title(project))}<span aria-hidden="true">&#8599;</span></h3>${project.presentation.description ? `<p>${escapeHtml(project.presentation.description)}</p>` : ""}</div>

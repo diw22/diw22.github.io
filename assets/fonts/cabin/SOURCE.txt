@@ -1,0 +1,15 @@
+Cabin variable font (upright, weights 400-700)
+Copyright 2018 The Cabin Project Authors
+Distributed under the SIL Open Font License, Version 1.1; see OFL.txt.
+
+Downloaded 2026-09-30, unmodified, from the Google Fonts repository:
+https://github.com/google/fonts/tree/main/ofl/cabin
+https://raw.githubusercontent.com/google/fonts/main/ofl/cabin/Cabin%5Bwdth,wght%5D.ttf
+https://raw.githubusercontent.com/google/fonts/main/ofl/cabin/OFL.txt
+
+Cabin is an independent typeface inspired by Edward Johnston and Eric Gill.
+It is not TfL's Johnston font. The TfLBot card uses an original red-and-blue
+layout with no TfL roundel or copied TfL artwork.
+
+TfL's font and logo permission guidance:
+https://tfl.gov.uk/info-for/business-and-advertisers/using-tfl-brand-ip

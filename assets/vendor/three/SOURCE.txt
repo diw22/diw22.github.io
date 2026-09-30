@@ -1,0 +1,8 @@
+Three.js r180 (npm version 0.180.0), vendored from the official repository:
+https://github.com/mrdoob/three.js/tree/r180
+
+three.module.js and three.core.js: build/
+STLLoader.js: examples/jsm/loaders/
+OrbitControls.js: examples/jsm/controls/
+
+Unmodified upstream files. MIT license in LICENSE.
