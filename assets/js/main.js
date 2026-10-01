@@ -333,13 +333,15 @@ function renderStory(project) {
   const gallery = [...(project.gallery || []), ...(project.extraGallery || [])];
   const specs = project.specs || [];
   const notes = [...(project.references || []), ...(project.disclosures || [])];
+  const links = project.links || [];
+  const resourcesLabel = links.length ? "Links" : "Project details";
   return `<div class="story-layout">
-    <aside class="story-index"><nav aria-label="Story chapters"><button type="button" data-section="story-overview">Overview</button>${sections.map((section, index) => `<button type="button" data-section="chapter-${index}">${escapeHtml(section.title)}</button>`).join("")}<button type="button" data-section="story-resources">Links</button></nav></aside>
+    <aside class="story-index"><nav aria-label="Story chapters"><button type="button" data-section="story-overview">Overview</button>${sections.map((section, index) => `<button type="button" data-section="chapter-${index}">${escapeHtml(section.title)}</button>`).join("")}<button type="button" data-section="story-resources">${resourcesLabel}</button></nav></aside>
     <div class="story-content">
       <section class="story-overview" id="story-overview" aria-labelledby="overview-title"><h2 id="overview-title" tabindex="-1">${escapeHtml(project.subtitle)}</h2><p>${escapeHtml(project.description)}</p></section>
       ${sections.map((section, index) => `<section class="story-chapter" id="chapter-${index}"><div class="chapter-heading"><h2 tabindex="-1">${escapeHtml(section.title)}</h2></div><p>${escapeHtml(section.body)}</p>${gallery[index] ? `<figure class="story-figure">${mediaMarkup(gallery[index])}</figure>` : ""}</section>`).join("")}
       ${gallery.length > sections.length ? `<section class="story-gallery" aria-label="More project images">${gallery.slice(sections.length).map((item) => `<figure class="story-figure">${mediaMarkup(item)}</figure>`).join("")}</section>` : ""}
-      <section class="story-resources" id="story-resources"><h2 tabindex="-1">Links</h2><div class="resource-links">${(project.links || []).map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${link.href.startsWith("playground/") ? "" : 'target="_blank" rel="noopener noreferrer"'}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}</div>
+      <section class="story-resources" id="story-resources"><h2 tabindex="-1">${resourcesLabel}</h2>${links.length ? `<div class="resource-links">${links.map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${link.href.startsWith("playground/") ? "" : 'target="_blank" rel="noopener noreferrer"'}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}</div>` : ""}
         ${specs.length || notes.length ? `<details class="project-notes"><summary>Technical details</summary>
           ${specs.length ? `<dl class="project-specs">${specs.map((spec) => `<div><dt>${escapeHtml(spec.label)}</dt><dd>${escapeHtml(spec.value)}</dd></div>`).join("")}</dl>` : ""}
           ${notes.map((note) => `<p>${escapeHtml(note)}</p>`).join("")}</details>` : ""}

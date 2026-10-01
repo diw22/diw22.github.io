@@ -135,9 +135,7 @@
 
   ],
 
-  "links": [
-    { "label": "Read Report", "href": "assets/docs/RIGBY_final_year_project_report.pdf" }
-  ]
+  "links": []
 },
   {
     "slug": "tflbot",
