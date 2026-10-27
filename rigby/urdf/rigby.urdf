@@ -1004,7 +1004,8 @@
     </visual>
   </link>
   <joint name="context_camera_1_joint" type="fixed">
-    <origin xyz="0.079413 -0.005502 1.006560" rpy="0 0.48869 0" />
+    <!-- Seat the OAK-D against the body mount: 22 mm back along the camera's local X axis. -->
+    <origin xyz="0.059988 -0.005502 1.016888" rpy="0 0.48869 0" />
     <parent link="base_link" />
     <child link="context_camera_1_link" />
   </joint>
@@ -1019,6 +1020,32 @@
     <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
     <parent link="context_camera_1_aim_frame" />
     <child link="context_camera_1_optical_frame" />
+  </joint>
+  <link name="context_camera_2_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" iyz="0" ixz="0" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.019924 0.013682 0.007737" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Oak-D.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="white" />
+    </visual>
+  </link>
+  <joint name="context_camera_2_joint" type="fixed">
+    <!-- The tablet bracket is part of base_link's body mesh; seat the rear casing against its raised mount. -->
+    <origin xyz="0.186265 -0.000134 0.818559" rpy="0 -0.209731 0" />
+    <parent link="base_link" />
+    <child link="context_camera_2_link" />
+  </joint>
+  <link name="context_camera_2_optical_frame" />
+  <joint name="context_camera_2_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708" />
+    <parent link="context_camera_2_link" />
+    <child link="context_camera_2_optical_frame" />
   </joint>
   <link name="left_wrist_camera_link">
     <inertial>
