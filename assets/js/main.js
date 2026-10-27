@@ -8,169 +8,7 @@ const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => (
 const projectUrl = (project, story = false) => `#project/${encodeURIComponent(project.slug)}${story ? "/story" : ""}`;
 const entryUrl = (project) => project.entryHref || projectUrl(project);
 const title = (project) => project.displayTitle || project.title;
-const thumbnail = (project) => project.thumbnail || project.image;
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-let syncProjectCarousel = () => {};
-
-// A presentation is optional: new palettes and materials can be added in projects.json.
-function presentationStyle(project) {
-  const palette = project.presentation?.palette || {};
-  return ["wash", "light", "shade", "rim", "paper"].map((key) =>
-    /^#[a-f0-9]{6}$/i.test(palette[key] || "") ? `--glass-${key}:${palette[key]}` : ""
-  ).filter(Boolean).join(";");
-}
-
-function renderCards() {
-  $("#workAtmosphere").innerHTML = state.projects.map((project, index) => project.presentation?.palette
-    ? `<div class="atmosphere-field" data-project="${escapeHtml(project.slug)}" data-theme-index="${index}" style="${presentationStyle(project)}"></div>` : "").join("");
-  $("#projectGrid").innerHTML = state.projects.map((project) => {
-    const draft = project.status === "draft";
-    const panel = project.presentation?.material === "aero-panel";
-    const monitor = panel || project.presentation?.material === "aero-monitor";
-    const rigby = project.presentation?.material === "rigby-preview";
-    return `<article class="project-card${monitor ? " material-monitor" : ""}${panel ? " material-panel" : ""}" data-project="${escapeHtml(project.slug)}" style="${presentationStyle(project)}">
-      ${draft ? '<div class="card-entry" role="group" aria-label="Work in progress">' : `<a class="card-entry" href="${escapeHtml(entryUrl(project))}" aria-label="${escapeHtml(project.entryLabel || "Explore")} ${escapeHtml(title(project))}">`}
-        ${rigby ? `<div class="card-art">
-          <div class="card-screen rigby-screen">
-            <svg class="rigby-preview" viewBox="0 0 1280 1024" role="img" aria-label="${escapeHtml(project.previewAlt || `${project.title} preview`)}">
-              <image href="${escapeHtml(thumbnail(project))}" width="1280" height="1024"/>
-              <image class="rigby-display" href="${escapeHtml(project.presentation.displayImage)}" x="560" y="311" width="134" height="71" preserveAspectRatio="none"/>
-            </svg>
-            <div class="rigby-caption"><h3>${escapeHtml(title(project))}</h3><span aria-hidden="true">&#8599;</span></div>
-          </div>
-        </div>` : monitor ? `<div class="monitor-object">
-          <div class="monitor-screen">
-            <img class="monitor-preview" src="${escapeHtml(project.presentation.image || thumbnail(project))}" alt="${escapeHtml(project.previewAlt || `${project.title} preview`)}" loading="eager" decoding="async" draggable="false">
-            <div class="monitor-caption"><h3>${escapeHtml(title(project))}<span aria-hidden="true">&#8599;</span></h3>${project.presentation.description ? `<p>${escapeHtml(project.presentation.description)}</p>` : ""}</div>
-          </div>
-          <img class="monitor-frame" src="${escapeHtml(project.presentation.frame)}" alt="" aria-hidden="true" loading="eager" decoding="async" draggable="false">
-        </div>` : `<div class="card-art" style="--image-position:${escapeHtml(project.thumbnailPosition || "center")}">
-          <div class="card-screen"><img src="${escapeHtml(thumbnail(project))}" alt="${escapeHtml(project.previewAlt || `${project.title} preview`)}" loading="lazy" decoding="async" draggable="false"><h3 class="card-title">${escapeHtml(title(project))}</h3></div>
-        </div>`}
-      ${draft ? "</div>" : "</a>"}
-    </article>`;
-  }).join("");
-  const track = $("#projectGrid");
-  const originals = [...track.children];
-  // Copies preserve the continuous loop; only the centred entry is in the tab order.
-  for (const side of ["before", "after"]) {
-    const copies = document.createDocumentFragment();
-    originals.forEach((card) => {
-      const copy = card.cloneNode(true);
-      copy.setAttribute("aria-hidden", "true");
-      copy.querySelector(".card-entry").tabIndex = -1;
-      copies.append(copy);
-    });
-    if (side === "before") track.prepend(copies);
-    else track.append(copies);
-  }
-}
-
-function bindProjectCarousel() {
-  const track = $("#projectGrid");
-  let scrollFrame = 0, settleTimer, selected = 0, targetIndex = null;
-  let layout = [], viewWidth = 0, viewHeight = 0;
-  const nearest = () => {
-    const center = track.scrollLeft + viewWidth / 2;
-    return layout.reduce((best, item, index) => Math.abs(item.center - center) < Math.abs(layout[best].center - center) ? index : best, 0);
-  };
-  function move(index, instant = false) {
-    if (!layout.length) return;
-    targetIndex = Math.max(0, Math.min(index, layout.length - 1));
-    const left = layout[targetIndex].center - viewWidth / 2;
-    track.classList.add("is-moving");
-    track.scrollTo({ left, behavior: instant || reducedMotion.matches ? "instant" : "smooth" });
-    if (instant || reducedMotion.matches || Math.abs(track.scrollLeft - left) < 1) {
-      track.classList.remove("is-moving");
-      targetIndex = null;
-    }
-  }
-  function update() {
-    if ($("#work").hidden || !layout.length) return;
-    // ResizeObserver remeasures first; old centres must not change the selection.
-    if (track.clientWidth !== viewWidth || track.clientHeight !== viewHeight) return;
-    const center = track.scrollLeft + viewWidth / 2;
-    const active = nearest();
-    const themeWeights = new Map();
-    layout.forEach(({card, center: cardCenter, width}, index) => {
-      const distance = Math.abs(cardCenter - center) / (width * 1.12);
-      const t = Math.min(1, distance), eased = t * t * (3 - 2 * t);
-      card.style.setProperty("--card-scale", 1 - eased * .22);
-      card.style.setProperty("--card-opacity", (1 - eased * .45) * Math.max(0, Math.min(1, 2 - distance)));
-      card.style.pointerEvents = distance < 1.6 ? "" : "none";
-      card.setAttribute("aria-hidden", distance >= 1.6 ? "true" : "false");
-      card.querySelector(".card-entry").tabIndex = index === active ? 0 : -1;
-      const themeIndex = index % state.projects.length;
-      const proximity = Math.max(0, 1 - distance / 1.35);
-      const weight = proximity * proximity * (3 - 2 * proximity);
-      themeWeights.set(themeIndex, Math.max(themeWeights.get(themeIndex) || 0, weight));
-    });
-    document.querySelectorAll(".atmosphere-field").forEach((field) => {
-      field.style.opacity = themeWeights.get(Number(field.dataset.themeIndex)) || 0;
-    });
-    selected = active % state.projects.length;
-    const status = $("#carouselStatus"), selectedTitle = title(state.projects[selected]);
-    if (status.textContent !== selectedTitle) status.textContent = selectedTitle;
-  }
-  function settle() {
-    if ($("#work").hidden || !layout.length) return;
-    if (targetIndex !== null && Math.abs(track.scrollLeft - (layout[targetIndex].center - viewWidth / 2)) > 2) return;
-    targetIndex = null;
-    track.classList.remove("is-moving");
-    const index = nearest(), count = state.projects.length;
-    if (index < count || index >= count * 2) {
-      const hasFocus = layout[index].card.contains(document.activeElement);
-      const rebased = count + index % count;
-      move(rebased, true);
-      if (hasFocus) layout[rebased].card.querySelector(".card-entry").focus({preventScroll:true});
-    }
-    update();
-  }
-  syncProjectCarousel = (slug) => {
-    if ($("#work").hidden || !state.projects.length) return;
-    const requested = state.projects.findIndex(project => project.slug === slug);
-    if (requested >= 0) selected = requested;
-    viewWidth = track.clientWidth;
-    viewHeight = track.clientHeight;
-    layout = [...track.children].map((card) => ({ card, center: card.offsetLeft + card.offsetWidth / 2, width: card.offsetWidth }));
-    move(state.projects.length + selected, true);
-    update();
-  };
-  new ResizeObserver(() => {
-    if (track.clientWidth !== viewWidth || track.clientHeight !== viewHeight) syncProjectCarousel();
-  }).observe(track);
-  document.querySelectorAll("[data-project-step]").forEach((button) => {
-    button.addEventListener("click", () => move((targetIndex ?? nearest()) + Number(button.dataset.projectStep)));
-  });
-  $("#work").addEventListener("keydown", (event) => {
-    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-    const index = targetIndex ?? nearest(), count = state.projects.length;
-    const target = { ArrowLeft: index - 1, ArrowRight: index + 1, Home: count, End: count * 2 - 1 }[event.key];
-    if (target === undefined) return;
-    event.preventDefault();
-    move(target);
-    // Focus follows keyboard navigation without scrolling the page or stealing pointer focus.
-    layout[Math.max(0, Math.min(target, layout.length - 1))]?.card.querySelector(".card-entry").focus({preventScroll:true});
-  });
-  function interrupt() {
-    targetIndex = null;
-    track.scrollTo({ left: track.scrollLeft, behavior: "instant" });
-    track.classList.remove("is-moving");
-  }
-  // Wheel and touch scrolling stay native; arrows are available for vertical-only mice.
-  track.addEventListener("pointerdown", interrupt);
-  track.addEventListener("wheel", () => { if (targetIndex !== null) interrupt(); }, {passive:true});
-  window.addEventListener("hashchange", interrupt);
-  reducedMotion.addEventListener("change", () => { interrupt(); syncProjectCarousel(); });
-  track.addEventListener("scroll", () => {
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(settle, 180);
-    if (scrollFrame) return;
-    scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; update(); });
-  }, { passive: true });
-  track.addEventListener("scrollend", settle);
-
-}
 
 function bindHomeVideo() {
   const video = $(".home-video");
@@ -409,7 +247,7 @@ function renderRoute({ initial = false, immediate = false } = {}) {
   });
   state.route = hash;
   const restoreView = () => {
-    if (isWork) syncProjectCarousel(highlightedProject);
+    if (isWork && highlightedProject) $("project-stage").select?.(highlightedProject);
     const target = isWork ? $("#work-title") : !isProject && hash === "#about" ? $("#about-title") : isProject ? $("#projectView h1") : $("#intro-title");
     if (!initial) target?.focus({ preventScroll: true });
     window.scrollTo({ top: isWork || isAbout || isExperience ? 0 : state.scroll.get(hash) || 0, behavior: "instant" });
@@ -459,16 +297,13 @@ async function init() {
     if (!response.ok) throw new Error(`Unable to load projects (${response.status})`);
     state.projects = await response.json();
     history.scrollRestoration = "manual";
-    renderCards();
     renderRoute({ initial: true });
   } catch (error) {
+    // The project stage works without this data; only the #project/ detail views need it.
     console.error(error);
-    $("#projectGrid").innerHTML = '<div class="load-error" role="alert"><h3>The projects couldn’t load.</h3><p>Refresh the page or open aeroBot directly.</p><div class="resource-links"><button class="pill-button" type="button" id="retryProjects">Try again ↻</button><a class="pill-button" href="playground/">Open aeroBot ↗</a></div></div>';
-    $("#retryProjects").addEventListener("click", () => location.reload());
   }
 }
 
-bindProjectCarousel();
 bindInteractions();
 renderRoute({ initial: true });
 bindHomeVideo();

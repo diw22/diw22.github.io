@@ -19,11 +19,11 @@ const groups = {
     { id: 'left_arm_rev_motor_08', label: 'Gripper', unit: '%' }
   ],
   right: [
-    { id: 'Rotation', label: 'Base rotation' },
-    { id: 'Pitch', label: 'Shoulder pitch' },
-    { id: 'Elbow', label: 'Elbow pitch' },
-    { id: 'Wrist_Pitch', label: 'Wrist pitch' },
-    { id: 'Wrist_Roll', label: 'Wrist roll' },
+    { id: 'right_arm_shoulder_pan', label: 'Base rotation' },
+    { id: 'right_arm_shoulder_lift', label: 'Shoulder pitch' },
+    { id: 'right_arm_elbow_flex', label: 'Elbow pitch' },
+    { id: 'right_arm_wrist_flex', label: 'Wrist pitch' },
+    { id: 'right_arm_wrist_roll', label: 'Wrist roll' },
     { id: 'right_arm_rev_motor_08', label: 'Gripper', unit: '%' }
   ],
   base: [
@@ -357,7 +357,7 @@ async function init() {
     };
     new ResizeObserver(resize).observe(canvas);
     resize();
-    robot = await loadRobot(new URL('urdf/rigby.urdf?v=20260930-9', import.meta.url), new URL('./', import.meta.url), (loaded, total) => {
+    robot = await loadRobot(new URL('urdf/rigby.urdf?v=20261027-1', import.meta.url), new URL('./', import.meta.url), (loaded, total) => {
       if (loading) $('#load-detail').textContent = `Loading parts · ${loaded} / ${total}`;
     });
     loading = false;

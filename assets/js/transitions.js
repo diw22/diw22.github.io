@@ -8,14 +8,14 @@
   function depth(value) {
     const url = new URL(value, location.href);
     if (url.hash.startsWith("#project/")) return url.hash.endsWith("/story") ? 3 : 2;
-    if (/\/(playground|rigby|smoke-and-mirrors|market-making)\/(?:index\.html)?$/.test(url.pathname)) return 2;
+    if (/\/(playground|rigby|market-making)\/(?:index\.html)?$/.test(url.pathname)) return 2;
     if (/\/(privacy|terms)\.html$/.test(url.pathname)) return 2;
     return !url.hash || url.hash === "#home" ? 0 : 1;
   }
   function direction(from, to) {
     const project = (value) => {
       const url = new URL(value, location.href);
-      return url.hash.match(/^#project\/([^/]+)/)?.[1] || url.pathname.match(/\/(playground|rigby|smoke-and-mirrors|market-making)\/(?:index\.html)?$/)?.[1];
+      return url.hash.match(/^#project\/([^/]+)/)?.[1] || url.pathname.match(/\/(playground|rigby|market-making)\/(?:index\.html)?$/)?.[1];
     };
     const previousProject = project(from), nextProject = project(to);
     if (previousProject && nextProject && previousProject !== nextProject) return "forward";
@@ -77,8 +77,7 @@
     if (!event.viewTransition) return;
     cancel();
     const destination = event.activation?.entry?.url;
-    const plainPage = destination && /\/plain\/(?:index\.html)?$/.test(new URL(destination).pathname);
-    if (motion.matches || plainPage) { event.viewTransition.ready.catch(() => {}); event.viewTransition.skipTransition(); return; }
+    if (motion.matches) { event.viewTransition.ready.catch(() => {}); event.viewTransition.skipTransition(); return; }
     root.dataset.routeTransition = destination ? direction(location.href, destination) : "forward";
     track(event.viewTransition);
   });

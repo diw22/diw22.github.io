@@ -1,337 +1,355 @@
 [
   {
     "slug": "playground",
-    "presentation": {
-      "material": "aero-panel",
-      "frame": "assets/img/projects/aqua-panel-frame.webp",
-      "backupFrame": "assets/img/projects/aero-monitor-frame.png",
-      "image": "assets/img/projects/playground-monitor.webp",
-      "description": "",
-      "metadata": "Robotics · WebGL",
-      "palette": { "wash": "#c7eeec", "light": "#f7ffff", "shade": "#8ad4df", "rim": "#d9f8f4" }
-    },
     "entryHref": "playground/",
-    "entryLabel": "Open",
-    "cardLabel": "Interactive playground",
-    "cardFoot": "6-DOF arm · Interactive 3D",
     "title": "aquaBOT",
     "subtitle": "An interactive 3D playground for a custom 6-DOF robot arm.",
     "description": "Explore the aquaBOT in your browser: orbit the model, adjust individual joints, control the parallel-jaw gripper, and experiment with poses in a Frutiger Aero-inspired interface.",
-    "category": "Robotics",
-    "year": "2026",
     "image": "assets/img/projects/playground.png",
-    "thumbnail": "assets/img/projects/playground.png",
-    "thumbnailPosition": "40% 50%",
-    "thumbnailBackground": "#40cbe9",
-    "accent": "#40cbe9",
-    "tags": ["Interactive 3D", "Robot Kinematics", "URDF", "WebGL", "Frutiger Aero"],
     "specs": [
-      { "label": "Robot", "value": "6-DOF arm with parallel-jaw gripper" },
-      { "label": "Model", "value": "Fusion parts with URDF joint definitions" },
-      { "label": "Controls", "value": "Joint sliders, gripper, and animation" },
-      { "label": "Export", "value": "Copy poses as JSON" }
+      {
+        "label": "Robot",
+        "value": "6-DOF arm with parallel-jaw gripper"
+      },
+      {
+        "label": "Model",
+        "value": "Fusion parts with URDF joint definitions"
+      },
+      {
+        "label": "Controls",
+        "value": "Joint sliders, gripper, and animation"
+      },
+      {
+        "label": "Export",
+        "value": "Copy poses as JSON"
+      }
     ],
     "sections": [
-      { "title": "Design language", "body": "Aero explores a friendlier visual identity for a desktop robot: translucent aqua shells, pearl structural parts, and large circular joints. The underwater interface carries that early-2000s consumer-electronics influence into the browser, giving the robot a playful setting in which to explore its movement." },
-      { "title": "From CAD to the browser", "body": "The viewer combines Fusion part geometry with URDF joint definitions. Six rotational controls follow the arm from base yaw through wrist roll, while the gripper control moves the parallel jaws. The model can be inspected from any angle using orbit, zoom, and a top-view camera." },
-      { "title": "Movement & interaction", "body": "Manual sliders let each joint and the gripper be explored independently. Playback animates the arm, reset returns it to its starting pose, and the copy action exports the current joint values as JSON. This is a visual playground: CAD limits are provisional and no collision prevention or hardware control is provided." }
+      {
+        "title": "Design language",
+        "body": "Aero explores a friendlier visual identity for a desktop robot: translucent aqua shells, pearl structural parts, and large circular joints. The underwater interface carries that early-2000s consumer-electronics influence into the browser, giving the robot a playful setting in which to explore its movement."
+      },
+      {
+        "title": "From CAD to the browser",
+        "body": "The viewer combines Fusion part geometry with URDF joint definitions. Six rotational controls follow the arm from base yaw through wrist roll, while the gripper control moves the parallel jaws. The model can be inspected from any angle using orbit, zoom, and a top-view camera."
+      },
+      {
+        "title": "Movement & interaction",
+        "body": "Manual sliders let each joint and the gripper be explored independently. Playback animates the arm, reset returns it to its starting pose, and the copy action exports the current joint values as JSON. This is a visual playground: CAD limits are provisional and no collision prevention or hardware control is provided."
+      }
     ],
     "gallery": [
-      { "src": "assets/img/projects/playground.png", "alt": "Aero robot in the aquaBOT viewer with six joint controls and a gripper slider" }
+      {
+        "src": "assets/img/projects/playground.png",
+        "alt": "Aero robot in the aquaBOT viewer with six joint controls and a gripper slider"
+      }
     ],
-    "references": ["Interactive viewer built from Fusion parts and URDF joint definitions."],
-    "disclosures": ["CAD joint limits are provisional. The playground does not control hardware or prevent collisions."],
+    "references": [
+      "Interactive viewer built from Fusion parts and URDF joint definitions."
+    ],
+    "disclosures": [
+      "CAD joint limits are provisional. The playground does not control hardware or prevent collisions."
+    ],
     "links": [
-      { "label": "Open aquaBOT", "href": "playground/" }
+      {
+        "label": "Open aquaBOT",
+        "href": "playground/"
+      }
     ]
   },
   {
-  "slug": "rigby",
-  "presentation": {
-    "material": "rigby-preview",
-    "displayImage": "assets/img/projects/rigby-gui-home.png",
-    "palette": { "wash": "#c5e5fa", "light": "#f6fbff", "shade": "#80b8e0", "rim": "#e2f2ff", "paper": "#e8f1f7" }
+    "slug": "rigby",
+    "entryHref": "rigby/",
+    "title": "RIGBY",
+    "subtitle": "Low-cost mobile bimanual platform for assistive manipulation learned from demonstration.",
+    "description": "A complete embodied robotics project investigating whether useful mobile manipulation behaviours can be taught and deployed on affordable hardware without relying on high-cost research platforms.",
+    "image": "assets/img/projects/rigby-gui-home.png",
+    "heroVideo": "assets/video/dom_final.mp4",
+    "heroPoster": "assets/img/projects/dom_final-poster.jpg",
+    "specs": [
+      {
+        "label": "Cost",
+        "value": "£1,951 complete mobile platform"
+      },
+      {
+        "label": "Manipulation",
+        "value": "7-DOF dominant arm + 5-DOF support arm"
+      },
+      {
+        "label": "Learning",
+        "value": "ACT baseline and custom DOM-ACT architecture"
+      },
+      {
+        "label": "Deployment",
+        "value": "LeRobot inference on NVIDIA Jetson Orin Nano"
+      }
+    ],
+    "sections": [
+      {
+        "title": "System",
+        "body": "Built RIGBY as an integrated mobile manipulation platform spanning mechanical design, actuation, sensing, onboard compute, power distribution, control software and autonomous policy deployment."
+      },
+      {
+        "title": "Mechanical Design",
+        "body": "Developed an asymmetric bimanual configuration with additional dexterity assigned to the dominant arm. I designed the 7-DOF manipulator and parallel-jaw grippers, iterating link geometry and distal mass while preserving workspace, grasp reliability and wrist-camera visibility."
+      },
+      {
+        "title": "Teleoperation",
+        "body": "Built a whole-body leader-follower teleoperation system using two leader arms for manipulation and rudder pedals for the mobile base. Arm, gripper and base actions were recorded simultaneously through LeRobot to produce demonstrations for imitation learning."
+      },
+      {
+        "title": "Simulation",
+        "body": "Created the robot's URDF and MJCF models from the physical CAD geometry, validating link dimensions, masses, inertias, joint limits and camera frames against the hardware to support simulation and future learning-based research."
+      },
+      {
+        "title": "Learning",
+        "body": "Used Action Chunking with Transformers as the imitation-learning baseline and proposed DOM-ACT, which conditions support-arm and mobile-base predictions on features from the dominant manipulation plan. On a sequential bimanual task, success increased from 65% with ACT to 80% with DOM-ACT."
+      },
+      {
+        "title": "Interaction",
+        "body": "Developed a multimodal web interface for task selection, demonstration recording, training configuration and policy execution. The same interface supported touchscreen, text and voice interaction, with perception-assisted task discovery used to match recognised objects to available trained behaviours."
+      },
+      {
+        "title": "Evaluation",
+        "body": "Evaluated the system on pen placement, wine-glass lifting and wiping, Ziploc closure and chair repositioning. The experiments compared task success, completion time and motion smoothness while also exposing practical limits from actuator quality, environment-specific imitation learning and onboard control frequency."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "assets/img/photos/Rigby_Render_Front.png",
+        "alt": "Front render of RIGBY"
+      },
+      {
+        "src": "assets/img/photos/leftarmspecs.png",
+        "alt": "RIGBY left arm specifications"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/teleopfinal.mp4",
+        "poster": "assets/img/projects/teleopfinal-poster.jpg",
+        "alt": "RIGBY whole-body teleoperation demonstration"
+      },
+      {
+        "src": "assets/img/projects/04_robot_front_left.png",
+        "alt": "RIGBY camera layout"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/dom_final.mp4",
+        "poster": "assets/img/projects/dom_final-poster.jpg",
+        "alt": "RIGBY DOM-ACT policy rollout"
+      },
+      {
+        "src": "assets/img/projects/rigby-gui-home.png",
+        "alt": "RIGBY touchscreen interface"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/file-000.mp4",
+        "poster": "assets/img/projects/file-000-poster.jpg",
+        "alt": "RIGBY learned manipulation rollout"
+      }
+    ],
+    "links": []
   },
-  "previewAlt": "Front render of RIGBY with its touchscreen GUI, against a blue sky with white clouds",
-  "entryHref": "rigby/",
-  "entryLabel": "Open playground for",
-  "cardLabel": "Assistive robotics",
-  "cardFoot": "Master's thesis · Imitation learning",
-
-  "title": "RIGBY",
-
-  "subtitle": "Low-cost mobile bimanual platform for assistive manipulation learned from demonstration.",
-
-  "description": "A complete embodied robotics project investigating whether useful mobile manipulation behaviours can be taught and deployed on affordable hardware without relying on high-cost research platforms.",
-
-  "category": "Robotics",
-
-  "year": "2026",
-
-  "image": "assets/img/projects/rigby-gui-home.png",
-  "thumbnail": "assets/img/photos/Rigby_Render_Front.png",
-  "thumbnailPosition": "50% 50%",
-  "thumbnailBackground": "#d8d2c4",
-
-  "heroVideo": "assets/video/dom_final.mp4",
-  "heroPoster": "assets/img/projects/dom_final-poster.jpg",
-
-  "accent": "#c9ff4a",
-
-  "tags": ["Master's Thesis", "DOM-ACT", "Imitation Learning", "LeRobot", "Assistive Robotics"],
-
-  "specs": [
-    { "label": "Cost", "value": "£1,951 complete mobile platform" },
-    { "label": "Manipulation", "value": "7-DOF dominant arm + 5-DOF support arm" },
-    { "label": "Learning", "value": "ACT baseline and custom DOM-ACT architecture" },
-    { "label": "Deployment", "value": "LeRobot inference on NVIDIA Jetson Orin Nano" }
-  ],
-
-  "sections": [
-    {
-      "title": "System",
-      "body": "Built RIGBY as an integrated mobile manipulation platform spanning mechanical design, actuation, sensing, onboard compute, power distribution, control software and autonomous policy deployment."
-    },
-
-    {
-      "title": "Mechanical Design",
-      "body": "Developed an asymmetric bimanual configuration with additional dexterity assigned to the dominant arm. I designed the 7-DOF manipulator and parallel-jaw grippers, iterating link geometry and distal mass while preserving workspace, grasp reliability and wrist-camera visibility."
-    },
-
-    {
-      "title": "Teleoperation",
-      "body": "Built a whole-body leader-follower teleoperation system using two leader arms for manipulation and rudder pedals for the mobile base. Arm, gripper and base actions were recorded simultaneously through LeRobot to produce demonstrations for imitation learning."
-    },
-
-    {
-      "title": "Simulation",
-      "body": "Created the robot's URDF and MJCF models from the physical CAD geometry, validating link dimensions, masses, inertias, joint limits and camera frames against the hardware to support simulation and future learning-based research."
-    },
-
-    {
-      "title": "Learning",
-      "body": "Used Action Chunking with Transformers as the imitation-learning baseline and proposed DOM-ACT, which conditions support-arm and mobile-base predictions on features from the dominant manipulation plan. On a sequential bimanual task, success increased from 65% with ACT to 80% with DOM-ACT."
-    },
-
-    {
-      "title": "Interaction",
-      "body": "Developed a multimodal web interface for task selection, demonstration recording, training configuration and policy execution. The same interface supported touchscreen, text and voice interaction, with perception-assisted task discovery used to match recognised objects to available trained behaviours."
-    },
-
-    {
-      "title": "Evaluation",
-      "body": "Evaluated the system on pen placement, wine-glass lifting and wiping, Ziploc closure and chair repositioning. The experiments compared task success, completion time and motion smoothness while also exposing practical limits from actuator quality, environment-specific imitation learning and onboard control frequency."
-    }
-  ],
-
-  "gallery": [
-    { "src": "assets/img/photos/Rigby_Render_Front.png", "alt": "Front render of RIGBY" },
-    { "src": "assets/img/photos/leftarmspecs.png", "alt": "RIGBY left arm specifications" },
-    { "type": "video", "src": "assets/video/teleopfinal.mp4", "poster": "assets/img/projects/teleopfinal-poster.jpg", "alt": "RIGBY whole-body teleoperation demonstration" },
-    { "src": "assets/img/projects/04_robot_front_left.png", "alt": "RIGBY camera layout" },
-    { "type": "video", "src": "assets/video/dom_final.mp4", "poster": "assets/img/projects/dom_final-poster.jpg", "alt": "RIGBY DOM-ACT policy rollout" },
-    { "src": "assets/img/projects/rigby-gui-home.png", "alt": "RIGBY touchscreen interface" },
-    { "type": "video", "src": "assets/video/file-000.mp4", "poster": "assets/img/projects/file-000-poster.jpg", "alt": "RIGBY learned manipulation rollout" }
-
-  ],
-
-  "links": []
-},
   {
     "slug": "tflbot",
-    "cardLabel": "Human-centred robotics",
-    "cardFoot": "Navigation · Accessible guidance",
-
     "title": "TFLBot",
-
     "subtitle": "Assistive guidance robot for underground transport networks.",
-
     "description": "A human-centred robotics project extending a SoftBank Pepper with autonomous navigation, LiDAR perception, multimodal interaction, and synchronised speech and gesture for accessible passenger guidance.",
-
-    "category": "Robotics",
-
-    "year": "2026",
-
     "image": "assets/img/projects/tflbot/base.png",
-    "thumbnail": "assets/img/projects/tflbot/pepperbot.png",
-    "thumbnailPosition": "50% 18%",
-    "thumbnailBackground": "#d8d2c4",
-
     "heroVideo": "assets/video/tflbot.mp4",
     "heroPoster": "assets/img/projects/tflbot-poster.jpg",
-
-    "accent": "#78a6d8",
-
-    "tags": ["ROS 2", "SLAM", "Computer Vision", "Human-Robot Interaction", "Accessibility"],
-
     "specs": [
-      { "label": "Platform", "value": "SoftBank Pepper with upgraded sensing and compute" },
-      { "label": "Navigation", "value": "LiDAR mapping, collision avoidance, and autonomous guidance" },
-      { "label": "Interaction", "value": "Speech, gesture, touchscreen, multilingual, and BSL" },
-      { "label": "Result", "value": "Mean cognitive load reduced from 2.0 to 1.4" }
+      {
+        "label": "Platform",
+        "value": "SoftBank Pepper with upgraded sensing and compute"
+      },
+      {
+        "label": "Navigation",
+        "value": "LiDAR mapping, collision avoidance, and autonomous guidance"
+      },
+      {
+        "label": "Interaction",
+        "value": "Speech, gesture, touchscreen, multilingual, and BSL"
+      },
+      {
+        "label": "Result",
+        "value": "Mean cognitive load reduced from 2.0 to 1.4"
+      }
     ],
-
     "sections": [
-      { "title": "Robot", "body": "Extended Pepper with a Jetson Orin Nano, Orbbec RGB-D camera, ReSpeaker microphone array, RPLIDAR A2M12, and custom mounts, overcoming limitations in the robot's onboard perception and compute." },
-
-      { "title": "Task", "body": "TFLBot explored whether an embodied robot could make underground navigation more accessible by combining physical guidance with speech, visual feedback, multilingual interaction, and British Sign Language support." },
-
-      { "title": "Control", "body": "Implemented LiDAR collision avoidance using DBSCAN obstacle clustering and built occupancy maps from scan-matched odometry. I also developed a library of deictic gestures through kinaesthetic teaching and synchronised them with spoken guidance." },
-
-      { "title": "Results", "body": "A comparative user study evaluated no aid, stationary robotic guidance, and mobile guidance. The mobile robot reduced mean cognitive load from 2.0 to 1.4 and achieved the highest satisfaction, although conservative navigation substantially increased completion time." }
+      {
+        "title": "Robot",
+        "body": "Extended Pepper with a Jetson Orin Nano, Orbbec RGB-D camera, ReSpeaker microphone array, RPLIDAR A2M12, and custom mounts, overcoming limitations in the robot's onboard perception and compute."
+      },
+      {
+        "title": "Task",
+        "body": "TFLBot explored whether an embodied robot could make underground navigation more accessible by combining physical guidance with speech, visual feedback, multilingual interaction, and British Sign Language support."
+      },
+      {
+        "title": "Control",
+        "body": "Implemented LiDAR collision avoidance using DBSCAN obstacle clustering and built occupancy maps from scan-matched odometry. I also developed a library of deictic gestures through kinaesthetic teaching and synchronised them with spoken guidance."
+      },
+      {
+        "title": "Results",
+        "body": "A comparative user study evaluated no aid, stationary robotic guidance, and mobile guidance. The mobile robot reduced mean cognitive load from 2.0 to 1.4 and achieved the highest satisfaction, although conservative navigation substantially increased completion time."
+      }
     ],
-
     "gallery": [
-      { "src": "assets/img/projects/tflbot/pepperbot.png", "alt": "TFLBot upgraded Pepper hardware" },
-      { "src": "assets/img/projects/tflbot/base.png", "alt": "TFLBot multilingual and BSL interface" },
-      { "src": "assets/img/projects/tflbot/SystemDesign.png", "alt": "TFLBot ROS 2 system architecture" },
-      { "src": "assets/img/projects/tflbot/time_taken.png", "alt": "TFLBot task completion time evaluation" }
+      {
+        "src": "assets/img/projects/tflbot/pepperbot.png",
+        "alt": "TFLBot upgraded Pepper hardware"
+      },
+      {
+        "src": "assets/img/projects/tflbot/base.png",
+        "alt": "TFLBot multilingual and BSL interface"
+      },
+      {
+        "src": "assets/img/projects/tflbot/SystemDesign.png",
+        "alt": "TFLBot ROS 2 system architecture"
+      },
+      {
+        "src": "assets/img/projects/tflbot/time_taken.png",
+        "alt": "TFLBot task completion time evaluation"
+      }
     ],
-
     "references": [
       "Human-Centred Robotics final report.",
       "Project assets include system architecture, perception, navigation, interaction, and evaluation results."
     ],
-
     "disclosures": [
       "Academic team project completed at Imperial College London.",
       "TfL is referenced as the transport-service context; TFLBot is an academic prototype and not an official TfL product."
     ],
-
     "links": [
-      { "label": "Read Report", "href": "assets/docs/HumanCenteredRoboticsfinal.pdf" }
+      {
+        "label": "Read Report",
+        "href": "assets/docs/HumanCenteredRoboticsfinal.pdf"
+      }
     ]
   },
   {
     "slug": "chessbot",
-    "presentation": {
-      "palette": { "wash": "#eeeeee", "light": "#ffffff", "shade": "#d8d8d8", "rim": "#f7f7f7", "paper": "#efefef" }
-    },
-    "previewAlt": "ChessBot's robot arm moving a chess piece over a chessboard",
-    "cardLabel": "Robotic manipulation",
-    "cardFoot": "Kinematics · Motion planning",
-
     "title": "ChessBot",
-
     "subtitle": "Analytical kinematics, workspace calibration, and trajectory control for a 4-DOF manipulator.",
-
     "description": "A robotics project taking a 4-DOF arm from analytical modelling to physical task execution through closed-form inverse kinematics, empirical workspace calibration, trajectory generation, and a custom task-specific gripper.",
-
-    "category": "Robotics",
-
-    "year": "2025",
-
     "image": "assets/img/projects/project7.jpeg",
-    "thumbnail": "assets/img/projects/project7.jpeg",
-    "thumbnailPosition": "50% 58%",
-
     "heroVideo": "assets/video/A2_Video.mp4",
     "heroPoster": "assets/img/projects/A2_Video-poster.jpg",
-
-    "accent": "#4fd1ff",
-
-    "tags": ["ChessBot", "Kinematics", "MATLAB", "Python", "CAD"],
-
     "specs": [
-      { "label": "Robot", "value": "4-DOF Dynamixel manipulator" },
-      { "label": "Kinematics", "value": "DH forward and closed-form inverse kinematics" },
-      { "label": "Calibration", "value": "Measured workspace correction using RBF interpolation" },
-      { "label": "Planning", "value": "Task-specific Cartesian trajectory generation" }
+      {
+        "label": "Robot",
+        "value": "4-DOF Dynamixel manipulator"
+      },
+      {
+        "label": "Kinematics",
+        "value": "DH forward and closed-form inverse kinematics"
+      },
+      {
+        "label": "Calibration",
+        "value": "Measured workspace correction using RBF interpolation"
+      },
+      {
+        "label": "Planning",
+        "value": "Task-specific Cartesian trajectory generation"
+      }
     ],
-
     "sections": [
-      { "title": "Experience", "body": "The system translated Cartesian task points into physical manipulation sequences, coordinating approach, grasp, transfer, and release motions across several tasks while compensating for the difference between the ideal kinematic model and the real robot." },
-
-      { "title": "Engineering", "body": "Derived the DH model and closed-form inverse kinematics, validated them in MATLAB, and deployed them to Dynamixel hardware. I then built Python tools for trajectory generation and empirical workspace calibration, using measured errors to correct commanded positions before execution." }
+      {
+        "title": "Experience",
+        "body": "The system translated Cartesian task points into physical manipulation sequences, coordinating approach, grasp, transfer, and release motions across several tasks while compensating for the difference between the ideal kinematic model and the real robot."
+      },
+      {
+        "title": "Engineering",
+        "body": "Derived the DH model and closed-form inverse kinematics, validated them in MATLAB, and deployed them to Dynamixel hardware. I then built Python tools for trajectory generation and empirical workspace calibration, using measured errors to correct commanded positions before execution."
+      }
     ],
-
     "gallery": [
-      { "src": "assets/img/projects/project7.jpeg", "alt": "ChessBot during chess piece manipulation" },
-      { "src": "assets/img/projects/robotic-manipulation/report-001.png", "alt": "Dimensioned CAD views of ChessBot" },
-      { "src": "assets/img/projects/robotic-manipulation/report-005.png", "alt": "CAD model of the custom gripper for the manipulation task" },
-      { "src": "assets/img/projects/robotic-manipulation/report-007.png", "alt": "Alternate CAD view of the custom gripper for the manipulation task" }
+      {
+        "src": "assets/img/projects/project7.jpeg",
+        "alt": "ChessBot during chess piece manipulation"
+      },
+      {
+        "src": "assets/img/projects/robotic-manipulation/report-001.png",
+        "alt": "Dimensioned CAD views of ChessBot"
+      },
+      {
+        "src": "assets/img/projects/robotic-manipulation/report-005.png",
+        "alt": "CAD model of the custom gripper for the manipulation task"
+      },
+      {
+        "src": "assets/img/projects/robotic-manipulation/report-007.png",
+        "alt": "Alternate CAD view of the custom gripper for the manipulation task"
+      }
     ],
-
     "links": [
-      { "label": "Watch Demo", "href": "https://www.youtube.com/watch?v=49rMlOqr8tw" }
+      {
+        "label": "Watch Demo",
+        "href": "https://www.youtube.com/watch?v=49rMlOqr8tw"
+      }
     ]
   },
   {
     "slug": "market-making-algorithm",
     "entryHref": "market-making/",
-    "entryLabel": "Open simulation",
-    "previewAlt": "A minimal market-making simulation with a blue profit-and-loss chart and live inventory",
-    "presentation": {
-      "palette": { "wash": "#e3e8eb", "light": "#fafaf6", "shade": "#c1cdd6", "rim": "#eff2f1", "paper": "#f0f1eb" }
-    },
     "displayTitle": "Market Making Algorithm",
-    "cardLabel": "Quantitative trading",
-    "cardFoot": "Options · 3rd / ~100 participants",
-
     "title": "Options Market Making Algorithm",
-
     "subtitle": "Delta-aware trading strategy ranked 3rd in an Imperial Optiver competition.",
-
     "description": "A Python market-making strategy combining order-book fair-value estimation, Black–Scholes option pricing, inventory and delta-aware quote sizing, and opportunistic arbitrage, ranking 3rd out of roughly 100 participants.",
-
-    "category": "Quant",
-
-    "year": "2024",
-
     "image": "assets/img/projects/Options.png",
-    "thumbnail": "assets/img/projects/market-making.svg",
-    "thumbnailPosition": "50% 50%",
-
-    "accent": "#ff8f3d",
-
-    "tags": ["Quantitative Trading", "Options", "Market Making", "Black–Scholes", "Python"],
-
     "specs": [
-      { "label": "Result", "value": "3rd / ~100 participants" },
-      { "label": "Pricing", "value": "Order-book fair value + Black–Scholes option pricing" },
-      { "label": "Risk", "value": "Delta- and position-aware dynamic quote sizing" },
-      { "label": "Execution", "value": "Passive market making with opportunistic arbitrage" }
+      {
+        "label": "Result",
+        "value": "3rd / ~100 participants"
+      },
+      {
+        "label": "Pricing",
+        "value": "Order-book fair value + Black–Scholes option pricing"
+      },
+      {
+        "label": "Risk",
+        "value": "Delta- and position-aware dynamic quote sizing"
+      },
+      {
+        "label": "Execution",
+        "value": "Passive market making with opportunistic arbitrage"
+      }
     ],
-
     "sections": [
-      { "title": "Strategy", "body": "Estimated the underlying fair value from weighted bid and ask information, then used Black–Scholes to price related options. The difference between estimated fair value and the market price was converted into a confidence signal used to adjust quote size and exposure." },
-
-      { "title": "Risk", "body": "Rather than repeatedly trading back to delta neutrality, the strategy incorporated portfolio delta and total position into subsequent bid and ask volumes. This allowed it to continuously provide liquidity while steering inventory back toward a market-neutral position." },
-
-      { "title": "Outcome", "body": "The strategy ranked 3rd in a field of roughly 100 participants. Delta and PnL monitoring were used throughout development to tune the quoting logic, with most performance generated by the passive strategy rather than active arbitrage." }
+      {
+        "title": "Strategy",
+        "body": "Estimated the underlying fair value from weighted bid and ask information, then used Black–Scholes to price related options. The difference between estimated fair value and the market price was converted into a confidence signal used to adjust quote size and exposure."
+      },
+      {
+        "title": "Risk",
+        "body": "Rather than repeatedly trading back to delta neutrality, the strategy incorporated portfolio delta and total position into subsequent bid and ask volumes. This allowed it to continuously provide liquidity while steering inventory back toward a market-neutral position."
+      },
+      {
+        "title": "Outcome",
+        "body": "The strategy ranked 3rd in a field of roughly 100 participants. Delta and PnL monitoring were used throughout development to tune the quoting logic, with most performance generated by the passive strategy rather than active arbitrage."
+      }
     ],
-
     "gallery": [
-      { "src": "assets/img/projects/Options.png", "alt": "Options market-making strategy and pricing" },
-      { "src": "assets/img/projects/pnl.jpg", "alt": "Competition PnL performance" }
+      {
+        "src": "assets/img/projects/Options.png",
+        "alt": "Options market-making strategy and pricing"
+      },
+      {
+        "src": "assets/img/projects/pnl.jpg",
+        "alt": "Competition PnL performance"
+      }
     ],
-
     "links": [
-      { "label": "View Code", "href": "https://github.com/diw22/marketmakingalgo" }
+      {
+        "label": "View Code",
+        "href": "https://github.com/diw22/marketmakingalgo"
+      }
     ]
   },
   {
     "slug": "smoke-and-mirrors",
     "title": "Smoke and Mirrors",
-    "displayTitle": "Work in progress",
-    "status": "draft",
-    "category": "Visual study",
-    "year": "2026",
-    "subtitle": "A draft study of light, reflection and perception.",
-    "description": "An early visual direction exploring reflected surfaces, sheer fabric and soft light. The project is still taking shape.",
-    "image": "assets/img/projects/smoke-and-mirrors/mirror-1536.webp",
-    "thumbnail": "assets/img/projects/smoke-and-mirrors/mirror-768.webp",
-    "previewAlt": "An oval mirror veiled in ivory fabric with a muted wine-red reflection",
-    "accent": "#633946",
-    "presentation": {
-      "palette": { "wash": "#5d293a", "light": "#8d626a", "shade": "#341522", "rim": "#b8a0a2", "paper": "#391d28" }
-    },
-    "sections": [
-      { "title": "Initial direction", "body": "Smoke and Mirrors begins with reflection, soft light, and the feeling of a space. These images explore an initial visual direction; the project itself is still taking shape." }
-    ],
-    "gallery": [
-      { "src": "assets/img/projects/smoke-and-mirrors/veil-1536.webp", "alt": "Ivory fabric catching soft light in front of a blurred burgundy reflection" }
-    ],
-    "links": []
+    "status": "draft"
   }
 ]

@@ -73,7 +73,7 @@
     const navigation = ++navigationVersion;
     // Capture the source page before routing updates the body classes.
     const sound = document.body.classList.contains("is-home") ? "home"
-      : control.matches(".card-entry, .next-project-link") ? "project" : "button";
+      : control.matches(".next-project-link") ? "project" : "button";
     const playback = play(sound);
     if ((sound !== "project" && sound !== "home") || !control.matches("a[href]") || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || control.hasAttribute("download") || (control.target && control.target !== "_self")) return;
     const destination = new URL(control.href, location.href);
