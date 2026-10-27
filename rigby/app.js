@@ -357,7 +357,7 @@ async function init() {
     };
     new ResizeObserver(resize).observe(canvas);
     resize();
-    robot = await loadRobot(new URL('urdf/rigby.urdf?v=20261027-1', import.meta.url), new URL('./', import.meta.url), (loaded, total) => {
+    robot = await loadRobot(new URL('urdf/rigby.urdf?v=20261027-2', import.meta.url), new URL('./', import.meta.url), (loaded, total) => {
       if (loading) $('#load-detail').textContent = `Loading parts · ${loaded} / ${total}`;
     });
     loading = false;

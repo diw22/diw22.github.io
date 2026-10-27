@@ -78,21 +78,7 @@
     <visual name="raskog">
       <origin xyz="-0.01668 0.502 0.895" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="meshes/raskogbody.stl" scale="0.0009 0.001 0.0009" />
-      </geometry>
-      <material name="black" />
-    </visual>
-    <visual name="raskogwheel1">
-      <origin xyz="-0.01668 0.502 0.895" rpy="1.5708 0 0" />
-      <geometry>
-        <mesh filename="meshes/raskogwheel1.stl" scale="0.0009 0.001 0.0009" />
-      </geometry>
-      <material name="black" />
-    </visual>
-    <visual name="raskogwheel2">
-      <origin xyz="-0.01668 0.502 0.895" rpy="1.5708 0 0" />
-      <geometry>
-        <mesh filename="meshes/raskogwheel2.stl" scale="0.0009 0.001 0.0009" />
+        <mesh filename="meshes/raskog_body_new.stl" scale="0.0009 0.001 0.0009" />
       </geometry>
       <material name="black" />
     </visual>
@@ -1040,13 +1026,6 @@
       <mass value="0.001" />
       <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" iyz="0" ixz="0" />
     </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.012 0.025 0.025" />
-      </geometry>
-      <material name="white" />
-    </visual>
   </link>
   <joint name="left_wrist_camera_joint" type="fixed">
     <origin xyz="0.0 0.03 0.07" rpy="0 0.45 1.5708" />
@@ -1065,13 +1044,6 @@
       <mass value="0.001" />
       <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" iyz="0" ixz="0" />
     </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.012 0.025 0.025" />
-      </geometry>
-      <material name="black" />
-    </visual>
   </link>
   <joint name="right_wrist_camera_joint" type="fixed">
     <origin xyz="0.0 0.03 0.07" rpy="0 0.45 1.5708" />
