@@ -150,9 +150,11 @@ class ProjectStage extends HTMLElement {
       ctx.globalAlpha = q.a; ctx.fillStyle = q.c; ctx.fillRect(q.x, q.y, q.s, q.s);
     }
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    // Solid titles ease in and out over roughly the time particle titles take to gather and scatter,
+    // settling from slightly below and drifting up as they leave.
     this.solids = this.solids.filter((s) => {
-      const a = Math.min(1, s.out ? 1 - (now - s.out) / 400 : (now - s.born) / 700);
-      if (a > 0) { ctx.globalAlpha = a; ctx.font = s.font; ctx.fillStyle = s.color; ctx.fillText(s.text, this.w / 2, s.base); }
+      const t = Math.max(0, Math.min(1, s.out ? 1 - (now - s.out) / 1100 : (now - s.born - 250) / 1500)), a = t * t * (3 - 2 * t);
+      if (a > 0) { ctx.globalAlpha = a; ctx.font = s.font; ctx.fillStyle = s.color; ctx.fillText(s.text, this.w / 2, s.base + (1 - a) * (s.out ? -14 : 14)); }
       return !s.out || a > 0; // a frame stamped just before `born` must not drop a new title
     });
     ctx.globalAlpha = 1;
