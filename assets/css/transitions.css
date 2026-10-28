@@ -11,6 +11,10 @@ html.route-entering { overflow: clip; }
 ::view-transition-new(root) { animation-name: page-slide-in; }
 html[data-route-transition="backward"]::view-transition-old(root) { animation-name: page-slide-out-reverse; }
 html[data-route-transition="backward"]::view-transition-new(root) { animation-name: page-slide-in-reverse; }
+/* Home to projects runs slower, giving the 3D views longer to load. */
+html[data-route-pace="slow"]::view-transition-group(root),
+html[data-route-pace="slow"]::view-transition-old(root),
+html[data-route-pace="slow"]::view-transition-new(root) { animation-duration: 1100ms; }
 @keyframes page-slide-out { to { transform: translateY(-12%); } }
 @keyframes page-slide-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes page-slide-out-reverse { to { transform: translateY(12%); } }

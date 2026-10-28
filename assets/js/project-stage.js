@@ -23,14 +23,13 @@ const ADAPTERS = {
 };
 const imgCache = {};
 const loadImg = (src) => imgCache[src] ||= new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
-const ease = (t) => 1 - Math.pow(1 - t, 3);
 const rnd = (a, b) => a + Math.random() * (b - a);
 
 class ProjectStage extends HTMLElement {
   connectedCallback() {
     if (this._init) return; this._init = true;
     this.idx = 0; this.mouse = { x: -9999, y: -9999, down: false };
-    this.rot = 0; this.vel = 0; this.flip = null; this.tiltX = 0; this.tiltY = 0;
+    this.rot = 0; this.vel = 0; this.x = 0; this.y = 0; this.turn = 0; this.lean = 0; this.slide = null; this.hold = true; this.tiltX = 0; this.tiltY = 0;
     this.parts = []; this.dying = []; this.solids = []; this.v3 = {};
     Object.assign(this.style, { display: "block", overflow: "hidden", userSelect: "none", touchAction: "none" });
     this.bg = this.mk("div", {}); this.bg.className = "stage-bg";
@@ -41,8 +40,11 @@ class ProjectStage extends HTMLElement {
     this.canvas = this.mk("canvas", { position: "absolute", inset: "0", width: "100%", height: "100%" });
     this.ctx = this.canvas.getContext("2d");
     const persp = this.mk("div", { position: "absolute", inset: "0", perspective: "1400px", pointerEvents: "none" });
-    this.obj = persp.appendChild(document.createElement("img")); this.obj.draggable = false; this.obj.alt = "";
-    Object.assign(this.obj.style, { position: "absolute", left: "50%", transformStyle: "preserve-3d", willChange: "transform" });
+    // Two images trade places: `ghost` keeps the outgoing project's image while the next one slides in.
+    [this.obj, this.ghost] = [0, 0].map(() => {
+      const e = persp.appendChild(document.createElement("img")); e.draggable = false; e.alt = "";
+      Object.assign(e.style, { position: "absolute", left: "50%", opacity: "0", transformStyle: "preserve-3d", willChange: "transform" }); return e;
+    });
     for (const slug in ADAPTERS) if (!solid.has(slug)) slot(slug);
     this.meta = this.mk("div", {}); this.meta.className = "stage-meta";
     this.on();
@@ -67,19 +69,22 @@ class ProjectStage extends HTMLElement {
     this.addEventListener("wheel", (e) => { e.preventDefault(); const now = Date.now(); if (now - wheelLock < 900) return; const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY; if (Math.abs(d) < 12) return; wheelLock = now; this.step(d > 0 ? 1 : -1); }, { passive: false });
   }
   resize() {
-    const r = this.getBoundingClientRect();
-    if (!r.width) { this.w = 0; return; } // hidden: frame() idles until the projects view is shown again
+    const r = this.getBoundingClientRect(), entering = !this.w;
+    // Hidden: frame() idles, and the project is cleared away so it can slide back in when the view returns.
+    if (!r.width) { this.w = 0; this.hold = true; this.slide = null; for (const e of [this.obj, this.ghost, ...Object.values(this.v3).map((s) => s.canvas)]) e.style.opacity = "0"; return; }
+    // Read now, while the page transition that revealed the view is still running.
+    if (entering) this.rise = document.documentElement.dataset.routeTransition === "backward" ? -1 : 1;
     this.w = r.width; this.h = r.height; const dpr = Math.min(2, window.devicePixelRatio || 1);
     this.canvas.width = this.w * dpr; this.canvas.height = this.h * dpr;
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (this.started) return this.show(this.idx, true);
+    if (this.started) return this.show(this.idx, true, entering ? 1 : 0);
     this.started = true;
     PROJECTS.forEach((p) => loadImg(p.img));
-    for (const slug in ADAPTERS) ADAPTERS[slug](this.v3[slug].canvas).then((v) => { this.v3[slug].view = v; v.resize(this.w || 1280, this.ch || 600); }).catch((e) => console.warn("3D load failed", slug, e));
-    this.show(this.idx, true);
+    for (const slug in ADAPTERS) { const s = this.v3[slug]; s.ready = ADAPTERS[slug](s.canvas).then((v) => { s.view = v; v.resize(this.w || 1280, this.ch || 600); }).catch((e) => console.warn("3D load failed", slug, e)); }
+    this.show(this.idx, true, 1);
   }
-  select(slug) { const i = PROJECTS.findIndex((p) => p.slug === slug); if (i >= 0 && i !== this.idx) this.started ? this.show(i, true) : this.idx = i; }
-  step(d) { this.show((this.idx + d + PROJECTS.length) % PROJECTS.length); }
+  select(slug) { const i = PROJECTS.findIndex((p) => p.slug === slug); if (i >= 0 && i !== this.idx) this.started ? this.show(i, false, i > this.idx ? 1 : -1) : this.idx = i; }
+  step(d) { this.show((this.idx + d + PROJECTS.length) % PROJECTS.length, false, d); }
   layout() {
     // Title and robot are centred in the space between the page heading and the caption.
     const head = this.closest("section")?.querySelector(".section-heading");
@@ -91,8 +96,8 @@ class ProjectStage extends HTMLElement {
     this.ch = ch; this.ctop = ctop; this.cw = this.w;
     for (const k in this.v3) { const s = this.v3[k]; Object.assign(s.canvas.style, { top: ctop + "px", height: ch + "px" }); s.view && s.view.resize(this.w, ch); }
   }
-  async show(i, instant) {
-    const prev = this.idx; this.idx = i;
+  async show(i, instant, dir) {
+    this.idx = i;
     const p = PROJECTS[i], img = await loadImg(p.img); if (!img || !this.w || this.idx !== i) return;
     for (const k of ["wash", "light", "shade", "paper"]) this.bg.style.setProperty(`--stage-${k}`, p[k]);
     const name = p.href ? `<a class="stage-name" href="${p.href}">${p.title}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>` : `<span class="stage-name">${p.title}</span>`;
@@ -105,7 +110,10 @@ class ProjectStage extends HTMLElement {
     if (this.idx !== i) return;
     this.ctx.font = "100px Sandana, Georgia, serif";
     this.buildTitle(p, Math.min(this.band * .7, (100 * this.w * .9) / this.ctx.measureText(p.title).width), instant);
-    this.buildSpin(img, instant, i > prev || (prev === PROJECTS.length - 1 && i === 0) ? 1 : -1);
+    // A project with a live view waits for it, so its stand-in image never shows and then swaps out.
+    await this.v3[p.slug]?.ready;
+    if (this.idx !== i || !this.w) return;
+    this.buildSlide(img, dir);
   }
   buildTitle(p, fs, instant) {
     const now = performance.now(), font = fs + "px Sandana, Georgia, serif";
@@ -125,7 +133,7 @@ class ProjectStage extends HTMLElement {
     }
   }
   burst(m) { this.parts.forEach((q) => { const dx = q.x - m.x, dy = q.y - m.y, dd = Math.hypot(dx, dy) || 1; if (dd < 220) { const f = (220 - dd) / 220 * 11; q.vx += dx / dd * f; q.vy += dy / dd * f; } }); }
-  buildSpin(img, instant, dir) {
+  buildSlide(img, dir) {
     const p = PROJECTS[this.idx], s = Math.min(this.w * .42 / img.width, this.band * (p.cut ? .95 : .62) / img.height);
     const dw = Math.round(img.width * s), dh = Math.round(img.height * s), top = this.line, radius = p.cut ? "0" : Math.min(dw, dh) * .08 + "px";
     const set = () => {
@@ -133,8 +141,15 @@ class ProjectStage extends HTMLElement {
       this.activeSlug = p.slug; this.obj.src = img.src;
       Object.assign(this.obj.style, { width: dw + "px", height: dh + "px", top: top + "px", marginLeft: -dw / 2 + "px", marginTop: -dh / 2 + "px", borderRadius: radius });
     };
-    if (instant) { set(); this.rot = -540; this.vel = 0; this.enterAt = performance.now(); return; }
-    this.flip = { set, dir, start: performance.now(), from: this.rot };
+    // A resize, or this project already on stage: refit in place and leave any slide running.
+    if (!dir || (!this.hold && this.activeSlug === p.slug)) return set();
+    // The first project after the view opens rises in with the page, with nothing to push off. Otherwise the
+    // outgoing project keeps its pose and slides off from wherever it is, so rapid clicks stay smooth.
+    const live = this.v3[this.activeSlug]?.view ? this.v3[this.activeSlug] : null;
+    const out = this.hold ? null : { x0: this.x, yaw0: this.rot + this.turn, lean0: this.lean, live };
+    if (out && !live) [this.obj, this.ghost] = [this.ghost, this.obj];
+    this.slide = { dir, rise: this.hold ? this.rise : 0, start: performance.now(), out }; this.hold = false;
+    set(); this.rot = 0; this.vel = 0;
   }
   frame(now) {
     if (!this.w) return;
@@ -159,32 +174,51 @@ class ProjectStage extends HTMLElement {
     });
     ctx.globalAlpha = 1;
     const over = m.x > -999;
-    if (!this.obj.src) return;
-    if (this.flip) {
-      const k = Math.min(1, (now - this.flip.start) / 1100), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      this.rot = this.flip.from + this.flip.dir * 360 * e;
-      if (!this.flip.swapped && k >= .5) { this.flip.set(); this.flip.swapped = true; }
-      if (k >= 1) { this.rot = 0; this.flip = null; } this.vel = 0;
-    } else if (this.enterAt) {
-      const k = Math.min(1, (now - this.enterAt) / 1600); this.rot = -540 * (1 - ease(k)); if (k >= 1) this.enterAt = 0;
-    } else if (!m.down) {
+    if (this.hold) return; // nothing shows until its slide begins
+    // The arriving project swings round to face the front as it lands, so it reads as 3D.
+    let out = null; this.x = this.y = this.turn = this.lean = 0;
+    if (this.slide) {
+      const { dir, rise } = this.slide, el = Math.max(0, now - this.slide.start);
+      // A damped swing: a few degrees past square, then at rest with no snap.
+      const t = Math.min(1, el / 1800), swing = (1 - t) ** 2 * Math.cos(t * Math.PI * 1.25);
+      if (rise) {
+        // Opening the view, it follows the page in, rising from below and tipping upright like a page turning
+        // up (or dropping in from above when coming back), easing out to match the page transition.
+        const k = Math.min(1, el / 1100); this.y = rise * this.h * (1 - k) ** 4; this.turn = 12 * swing; this.lean = rise * 20 * swing;
+      } else {
+        // Next slides in from the right and previous from the left, pushing the old project off the other side.
+        const k = Math.min(1, el / 900), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        this.x = dir * this.w * (1 - e); this.turn = dir * 30 * swing; this.lean = 6 * swing;
+        if ((out = this.slide.out)) Object.assign(out, { x: out.x0 + (-dir * this.w - out.x0) * e, yaw: out.yaw0 - dir * 30 * e, lean: out.lean0 + (6 - out.lean0) * e });
+        if (k >= 1) this.slide.out = null;
+      }
+      if (t >= 1) this.slide = null;
+    }
+    if (!m.down) {
       this.rot += this.vel; this.vel *= .95;
       const n = Math.round(this.rot / 360) * 360; if (Math.abs(this.vel) < 2) this.rot += (n - this.rot) * .05;
     }
     // Eased so the model never snaps when the pointer leaves the stage, e.g. onto an arrow.
     this.tiltX += ((over ? (m.y / this.h - .5) * -14 : Math.sin(now * .0008) * 3) - this.tiltX) * .06;
     this.tiltY += ((over && !m.down ? (m.x / this.w - .5) * 18 : Math.sin(now * .0006) * 6) - this.tiltY) * .06;
-    const bob = Math.sin(now * .0012) * 8, slot = this.v3[this.activeSlug];
-    for (const k in this.v3) this.v3[k].canvas.style.opacity = slot && slot.view && this.v3[k] === slot ? "1" : "0";
+    const bob = Math.sin(now * .0012) * 8, slot = this.v3[this.activeSlug], gone = out?.live, yaw = this.rot + this.turn;
+    for (const k in this.v3) { const s = this.v3[k]; s.canvas.style.opacity = s.view && (s === slot || s === gone) ? "1" : "0"; }
+    if (gone) { gone.view.draw(out.yaw + this.tiltY * 1.5, (this.tiltX + out.lean) * .6); gone.canvas.style.transform = `translate(${out.x}px, ${bob}px)`; }
+    if (out && !gone) this.pose(this.ghost, out.x, bob, out.yaw, out.lean);
+    this.ghost.style.opacity = out && !gone ? "1" : "0";
     if (slot && slot.view) {
-      slot.view.draw(this.rot + this.tiltY * 1.5, this.tiltX * .6, over && !m.down ? { x: m.x, y: m.y - this.ctop - bob } : null, { ctx, dy: this.ctop + bob });
-      this.obj.style.opacity = "0"; slot.canvas.style.transform = `translateY(${bob}px)`; return;
+      // No hover readout mid-slide: it is drawn on the stage canvas, which doesn't move with the view.
+      slot.view.draw(yaw + this.tiltY * 1.5, (this.tiltX + this.lean) * .6, over && !m.down && !this.x && !this.y ? { x: m.x, y: m.y - this.ctop - bob } : null, { ctx, dy: this.ctop + bob });
+      this.obj.style.opacity = "0"; slot.canvas.style.transform = `translate(${this.x}px, ${bob + this.y}px)`; return;
     }
-    let r = this.rot % 360; if (r < 0) r += 360;
-    const back = r > 90 && r < 270;
     this.obj.style.opacity = "1";
-    this.obj.style.transform = `translateY(${bob}px) rotateX(${this.tiltX}deg) rotateY(${this.rot + this.tiltY}deg) ${back ? "scaleX(-1)" : ""}`;
-    this.obj.style.filter = `drop-shadow(0 30px 40px rgba(0,0,0,.28)) brightness(${back ? .82 : 1})`;
+    this.pose(this.obj, this.x, bob + this.y, yaw, this.lean);
+  }
+  pose(img, x, y, yaw, lean) {
+    let r = yaw % 360; if (r < 0) r += 360;
+    const back = r > 90 && r < 270;
+    img.style.transform = `translate(${x}px, ${y}px) rotateX(${this.tiltX + lean}deg) rotateY(${yaw + this.tiltY}deg) ${back ? "scaleX(-1)" : ""}`;
+    img.style.filter = `drop-shadow(0 30px 40px rgba(0,0,0,.28)) brightness(${back ? .82 : 1})`;
   }
 }
 if (!customElements.get("project-stage")) customElements.define("project-stage", ProjectStage);

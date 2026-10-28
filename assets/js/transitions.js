@@ -27,6 +27,7 @@
     entrance?.cancel();
     active = null;
     delete root.dataset.routeTransition;
+    delete root.dataset.routePace;
     root.classList.remove("route-entering");
   }
   function track(transition, fallback) {
@@ -39,6 +40,7 @@
       if (active !== transition) return;
       active = null;
       delete root.dataset.routeTransition;
+      delete root.dataset.routePace;
     });
   }
   function enter(side) {
@@ -48,11 +50,12 @@
     const animation = document.body.animate([
       { transform: `translateY(${side === "backward" ? -100 : 100}vh)` },
       { transform: "translateY(0)" }
-    ], { duration: 750, easing: "cubic-bezier(.22, 1, .36, 1)" });
+    ], { duration: root.dataset.routePace === "slow" ? 1100 : 750, easing: "cubic-bezier(.22, 1, .36, 1)" });
     entrance = animation;
     animation.finished.catch(() => {}).finally(() => {
       if (entrance !== animation) return;
       root.classList.remove("route-entering");
+      delete root.dataset.routePace;
     });
   }
   function navigate(render, from, to) {
@@ -62,6 +65,8 @@
     const side = nextIndex < historyIndex ? "backward" : direction(from, to);
     historyIndex = nextIndex;
     const navigationVersion = version;
+    // Opening the projects from home runs slower, so their 3D views have longer to load as the page comes up.
+    if (depth(from) === 0 && /^#work(?:\/|$)/.test(new URL(to).hash)) root.dataset.routePace = "slow";
     if (document.startViewTransition) {
       root.dataset.routeTransition = side;
       track(document.startViewTransition(() => {
