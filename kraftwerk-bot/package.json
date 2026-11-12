@@ -1,9 +1,9 @@
 {
   "name": "kraftwerk-bot-page",
   "private": true,
-  "description": "Builds app.js, the Kraftwerk Bot page, from src/. three.js stays external: the page's import map points it at the site's vendored copy.",
+  "description": "Builds app.js, the Kraftwerk Bot page, from src/ (tools/build.mjs). three.js stays external: the page's import map points it at the site's vendored copy.",
   "scripts": {
-    "build": "esbuild src/main.jsx --bundle --format=esm --target=es2020 --jsx=automatic --minify --external:three --external:three/* --define:process.env.NODE_ENV=\\\"production\\\" --legal-comments=linked --outfile=app.js"
+    "build": "node tools/build.mjs"
   },
   "devDependencies": {
     "@react-three/fiber": "9.8.2",

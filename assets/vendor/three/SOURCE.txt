@@ -4,5 +4,6 @@ https://github.com/mrdoob/three.js/tree/r187
 three.module.js and three.core.js: build/
 STLLoader.js: examples/jsm/loaders/
 OrbitControls.js: examples/jsm/controls/
+RoomEnvironment.js: examples/jsm/environments/
 
 Unmodified upstream files. MIT license in LICENSE.

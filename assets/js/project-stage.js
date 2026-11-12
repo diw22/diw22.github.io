@@ -14,9 +14,9 @@ const module = (path) => import(new URL(path, document.baseURI).href);
 // Projects with a live view; the others spin their image. All load once the projects view is first opened.
 const ADAPTERS = {
   playground: async (canvas) => {
-    // About 8 MB, so never fetched before it is needed.
-    await Promise.all([window.AeroViewer || script("playground/assets/viewer.bundle.js"), window.AERO_ROBOT_DATA || script("playground/assets/robot-data.js")]);
-    const v = window.AeroViewer.create(canvas, window.AERO_ROBOT_DATA);
+    // The robot's data is about 8 MB, so never fetched before it is needed.
+    const [{ create }] = await Promise.all([module("playground/assets/viewer.js"), window.AERO_ROBOT_DATA || script("playground/assets/robot-data.js")]);
+    const v = create(canvas, window.AERO_ROBOT_DATA);
     return { resize: (w, h) => v.resize(w, h), draw: (yaw, tilt) => v.draw({ yaw: -.7 + yaw * Math.PI / 180, pitch: Math.max(.04, .22 + tilt * Math.PI / 180), zoom: .8, top: false }, false, false) };
   },
   rigby: async (canvas) => (await module("assets/js/rigby-view.js")).createRigbyView(canvas),

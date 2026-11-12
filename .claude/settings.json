@@ -24,7 +24,9 @@
       "Bash(grep -o \"PCFSoftShadowMap has been removed[^\\\\\"']\\\\{0,40\\\\}\" playground/assets/viewer.bundle.js)",
       "Bash(grep -o \"shadowMap.type=[^,;]\\\\{0,40\\\\}\" playground/assets/viewer.bundle.js)",
       "Bash(sed -i 's/app.js?v=20261112-2/app.js?v=20261112-3/' index.html)",
-      "Bash(python cdp.py http://127.0.0.1:5180/kraftwerk-bot/ __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/v5-kb.json)"
+      "Bash(python cdp.py http://127.0.0.1:5180/kraftwerk-bot/ __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/v5-kb.json)",
+      "Read(//c/Users/dylan/Documents/**)",
+      "Read(//c/Users/dylan/Downloads/**)"
     ]
   }
 }

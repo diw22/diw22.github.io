@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="styles.css?v=20260925-18">
   <link rel="stylesheet" href="portfolio.css?v=20260925-43">
   <script defer src="../assets/js/ui-sounds.js?v=20261027-1"></script>
-  <script defer src="assets/viewer.bundle.js"></script>
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three/three.module.js"}}</script>
+  <!-- A module runs in order with the deferred scripts around it, so app.js still finds window.AeroViewer. -->
+  <script type="module" src="assets/viewer.js?v=20261112-1"></script>
   <script defer src="assets/robot-data.js"></script>
   <script defer src="motion.js"></script>
   <script defer src="app.js?v=20260925-43"></script>
