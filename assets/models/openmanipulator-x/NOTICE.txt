@@ -1,0 +1,12 @@
+OpenManipulator-X model
+=======================
+
+omx.json and omx.bin are derived from the OpenManipulator-X description by ROBOTIS Co., Ltd.,
+licensed under the Apache License 2.0 (LICENSE in this folder):
+https://github.com/ROBOTIS-GIT/open_manipulator (commit cb946894a8b5d242d2d4e012f93f01eecac5a3ce)
+open_manipulator_description/urdf/open_manipulator_x/open_manipulator_x.urdf and
+open_manipulator_description/meshes/open_manipulator_x/*.stl (all but the gripper palms)
+
+Changes made (build.py): the gripper palms are left out (the page draws the ChessBot team's own fingers);
+the other meshes were decimated with quadric simplification, given new normals,
+quantised and repacked into omx.bin; the URDF's links, joints and visual origins were copied into omx.json.

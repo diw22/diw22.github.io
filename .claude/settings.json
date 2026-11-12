@@ -26,7 +26,11 @@
       "Bash(sed -i 's/app.js?v=20261112-2/app.js?v=20261112-3/' index.html)",
       "Bash(python cdp.py http://127.0.0.1:5180/kraftwerk-bot/ __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/v5-kb.json)",
       "Read(//c/Users/dylan/Documents/**)",
-      "Read(//c/Users/dylan/Downloads/**)"
+      "Read(//c/Users/dylan/Downloads/**)",
+      "Bash(python range_server.py \"C:/Users/dylan/Documents/Quant/Portfolio/diw22.github.io\" 5180)",
+      "Bash(python cdp.py 'http://127.0.0.1:5180/#project/tflbot' __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/fs5.json)",
+      "Bash(sed -i 's/main\\\\.js?v=20261112-3/main.js?v=20261112-4/; s/styles\\\\.css?v=20261112-5/styles.css?v=20261112-6/' index.html)",
+      "Bash(node --check assets/js/main.js)"
     ]
   }
 }

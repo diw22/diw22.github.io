@@ -281,6 +281,7 @@
     "image": "assets/img/projects/tflbot/base.png",
     "heroVideo": "assets/video/tflbot.mp4",
     "heroPoster": "assets/img/projects/tflbot-poster.jpg",
+    "heroAlt": "Project film: the team explains how TFLBot guides passengers",
     "specs": [
       {
         "label": "Platform",
@@ -357,7 +358,9 @@
     "description": "A robotics project taking a 4-DOF arm from analytical modelling to physical task execution through closed-form inverse kinematics, empirical workspace calibration, trajectory generation, and a custom task-specific gripper.",
     "image": "assets/img/projects/project7.jpeg",
     "heroVideo": "assets/video/A2_Video.mp4",
-    "heroPoster": "assets/img/projects/A2_Video-poster.jpg",
+    "heroPoster": "assets/img/projects/A2_Video-chess-poster.jpg",
+    "heroStart": 26,
+    "heroAlt": "Coursework film: kinematics simulations, block stacking and a game of chess",
     "specs": [
       {
         "label": "Robot",

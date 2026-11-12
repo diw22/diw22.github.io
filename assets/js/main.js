@@ -1,6 +1,6 @@
 "use strict";
 
-const state = { projects: [], route: "", scroll: new Map(), media: new Map() };
+const state = { projects: [], route: "", scroll: new Map() };
 const $ = (selector) => document.querySelector(selector);
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -85,55 +85,35 @@ function bindPageScroll() {
   window.addEventListener("hashchange", () => { wheelDistance = 0; touchStart = null; });
 }
 
-function mediaItems(project) {
-  const first = project.heroVideo
-    ? { type: "video", src: project.heroVideo, poster: project.heroPoster || project.image, alt: `${project.title} demonstration` }
-    : { src: project.image, alt: `${project.title} overview` };
-  return [first, ...(project.gallery || []), ...(project.extraGallery || [])]
-    .filter((item, index, items) => items.findIndex((other) => other.src === item.src) === index);
-}
+const isVideo = (item) => item.type === "video" || /\.(mp4|webm|ogg)$/i.test(item.src);
+const externalLink = (href) => /^(https?:|.*\.pdf$)/i.test(href);
 
-function mediaMarkup(item, { hero = false } = {}) {
-  const video = item.type === "video" || /\.(mp4|webm|ogg)$/i.test(item.src);
-  return video
+function mediaMarkup(item) {
+  return isVideo(item)
     ? `<video controls autoplay muted loop playsinline preload="metadata" ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""} aria-label="${escapeHtml(item.alt)}"><source src="${escapeHtml(item.src)}" type="${/\.webm$/i.test(item.src) ? "video/webm" : "video/mp4"}"></video>`
-    : `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt)}" ${hero ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+    : `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">`;
 }
 
-let cancelMediaSlide = () => {};
-
-function renderMedia(project, index, { animate = false, direction = 1 } = {}) {
-  cancelMediaSlide();
-  const items = mediaItems(project);
-  const active = Math.max(0, Math.min(index, items.length - 1));
-  state.media.set(project.slug, active);
+// A project page is its film, full screen and looping. It can open partway in (ChessBot's starts at the robot,
+// after its simulations) and then loops back to there. With reduced motion it waits on its poster with controls.
+function renderFilm(project) {
+  const item = project.heroVideo
+    ? { type: "video", src: project.heroVideo, poster: project.heroPoster || project.image, alt: project.heroAlt || `${project.title} demonstration`, start: project.heroStart }
+    : { src: project.image, alt: `${project.title} overview` };
   const mount = $("#projectMedia");
-  const previous = mount.firstElementChild;
-  const incoming = document.createElement("div");
-  incoming.className = "media-slide";
-  incoming.innerHTML = mediaMarkup(items[active], { hero: true });
-  if (animate && previous && !reducedMotion.matches) {
-    previous.inert = true;
-    previous.setAttribute("aria-hidden", "true");
-    previous.querySelector("video")?.pause();
-    mount.append(incoming);
-    const timing = { duration: 750, easing: "cubic-bezier(.22, 1, .36, 1)", fill: "both" };
-    const outgoingAnimation = previous.animate([
-      { transform: "translateX(0)" }, { transform: `translateX(${-direction * 12}%)` }
-    ], timing);
-    const incomingAnimation = incoming.animate([
-      { transform: `translateX(${direction * 100}%)` }, { transform: "translateX(0)" }
-    ], timing);
-    const finish = () => {
-      previous.remove();
-      outgoingAnimation.cancel();
-      incomingAnimation.cancel();
-      if (cancelMediaSlide === finish) cancelMediaSlide = () => {};
-    };
-    cancelMediaSlide = finish;
-    incomingAnimation.finished.then(finish, () => {});
-  } else mount.replaceChildren(incoming);
-  $("#mediaCaption").textContent = items[active].alt;
+  $("#projectView").dataset.media = isVideo(item) ? "video" : "image";
+  mount.innerHTML = isVideo(item)
+    ? `<video class="media-cover" ${reducedMotion.matches ? "controls" : "autoplay"} muted ${item.start ? "" : "loop"} playsinline preload="auto" ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""} aria-label="${escapeHtml(item.alt)}"><source src="${escapeHtml(item.src)}${item.start ? `#t=${item.start}` : ""}" type="${/\.webm$/i.test(item.src) ? "video/webm" : "video/mp4"}"></video>`
+    : `<img class="media-contain" src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt)}" fetchpriority="high" decoding="async">`;
+  const video = mount.querySelector("video");
+  if (!video) return;
+  video.muted = true;
+  if (item.start) {
+    const toStart = () => { video.currentTime = item.start; };
+    if (video.readyState >= 1) toStart(); else video.addEventListener("loadedmetadata", toStart, { once: true });
+    video.addEventListener("ended", () => { toStart(); video.play().catch(() => {}); });
+  }
+  if (!reducedMotion.matches) video.play().catch(() => {});
 }
 
 function projectNavigation(project) {
@@ -154,17 +134,15 @@ function nextProjectMarkup(project) {
 }
 
 function renderExperience(project) {
-  const items = mediaItems(project);
-  return `<section class="project-experience" aria-label="${escapeHtml(project.title)} media">
-    <figure class="media-stage"><div id="projectMedia"></div><figcaption class="sr-only" id="mediaCaption" aria-live="polite"></figcaption></figure>
-    ${items.length > 1 ? `<nav class="media-navigation" aria-label="Browse project media">
-      <button type="button" data-media-step="-1" aria-label="Previous image or video">←</button>
-      <button type="button" data-media-step="1" aria-label="Next image or video">→</button>
-    </nav>` : ""}
+  const links = project.links || [];
+  return `<section class="project-experience" aria-label="${escapeHtml(project.title)} film">
+    <figure class="media-stage"><div id="projectMedia"></div></figure>
+    <nav class="experience-actions" aria-label="More about ${escapeHtml(project.title)}">
+      <a class="experience-button" href="${projectUrl(project, true)}">Project details</a>
+      ${links.map((link) => `<a class="experience-button" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}
+    </nav>
   </section>`;
 }
-
-reducedMotion.addEventListener("change", () => { if (reducedMotion.matches) cancelMediaSlide(); });
 
 function renderStory(project) {
   const sections = project.sections || [];
@@ -179,7 +157,7 @@ function renderStory(project) {
       <section class="story-overview" id="story-overview" aria-labelledby="overview-title"><h2 id="overview-title" tabindex="-1">${escapeHtml(project.subtitle)}</h2><p>${escapeHtml(project.description)}</p></section>
       ${sections.map((section, index) => `<section class="story-chapter" id="chapter-${index}"><div class="chapter-heading"><h2 tabindex="-1">${escapeHtml(section.title)}</h2></div><p>${escapeHtml(section.body)}</p>${gallery[index] ? `<figure class="story-figure">${mediaMarkup(gallery[index])}</figure>` : ""}</section>`).join("")}
       ${gallery.length > sections.length ? `<section class="story-gallery" aria-label="More project images">${gallery.slice(sections.length).map((item) => `<figure class="story-figure">${mediaMarkup(item)}</figure>`).join("")}</section>` : ""}
-      <section class="story-resources" id="story-resources"><h2 tabindex="-1">${resourcesLabel}</h2>${links.length ? `<div class="resource-links">${links.map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${/^(https?:|.*\.pdf$)/i.test(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}</div>` : ""}
+      <section class="story-resources" id="story-resources"><h2 tabindex="-1">${resourcesLabel}</h2>${links.length ? `<div class="resource-links">${links.map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}</div>` : ""}
         ${specs.length || notes.length ? `<details class="project-notes"><summary>Technical details</summary>
           ${specs.length ? `<dl class="project-specs">${specs.map((spec) => `<div><dt>${escapeHtml(spec.label)}</dt><dd>${escapeHtml(spec.value)}</dd></div>`).join("")}</dl>` : ""}
           ${notes.map((note) => `<p>${escapeHtml(note)}</p>`).join("")}</details>` : ""}
@@ -198,14 +176,12 @@ function renderProject(project, story) {
     : `<header class="experience-header">
         <a class="back-link" href="#work"><span aria-hidden="true">←</span> All projects</a>
         <h1 tabindex="-1">${escapeHtml(title(project))}</h1>
-        <a class="experience-details" href="${projectUrl(project, true)}">Project details <span aria-hidden="true">↗</span></a>
       </header>${renderExperience(project)}`;
-  if (!story) renderMedia(project, state.media.get(project.slug) || 0);
+  if (!story) renderFilm(project);
   document.title = `${title(project)}${story ? " — Project details" : ""} | Dylan Winters`;
 }
 
 function renderRoute({ initial = false, immediate = false } = {}) {
-  cancelMediaSlide();
   const hash = location.hash || "#home";
   const match = hash.match(/^#project\/([^/]+)(\/story)?$/);
   let project;
@@ -264,15 +240,6 @@ function navigateRoute() {
 
 function bindInteractions() {
   document.addEventListener("click", (event) => {
-    const media = event.target.closest("[data-media-step]");
-    if (media) {
-      const project = state.projects.find((item) => item.slug === $("#projectView").dataset.project);
-      if (project) {
-        const count = mediaItems(project).length;
-        const next = ((state.media.get(project.slug) || 0) + Number(media.dataset.mediaStep) + count) % count;
-        renderMedia(project, next, { animate: true, direction: Number(media.dataset.mediaStep) });
-      }
-    }
     const chapter = event.target.closest("[data-section]");
     if (chapter) {
       const section = document.getElementById(chapter.dataset.section);

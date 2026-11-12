@@ -338,35 +338,6 @@ body:has(#projectView[data-project="chessbot"]:not([hidden])) .site-header {
   background: var(--paper);
 }
 
-.is-experience:has(#projectView[data-project="chessbot"])::before {
-  content: "";
-  position: fixed;
-  z-index: -1;
-  inset: 22% -20% -20%;
-  pointer-events: none;
-  background: repeating-linear-gradient(30deg, transparent 0 79px, #d7d7d7 80px 81px, transparent 82px 160px), repeating-linear-gradient(150deg, transparent 0 79px, #d7d7d7 80px 81px, transparent 82px 160px);
-  mask-image: linear-gradient(transparent, #0009 45%, #000);
-}
-
-#projectView[data-project="chessbot"] .media-stage {
-  padding: clamp(8px, 1.1vw, 15px);
-  border-radius: 6px;
-  border: 1px solid #bcbcbc;
-  background: #e5e5e5;
-  box-shadow: inset 0 1px 0 #fff, 0 12px 24px #00000012, 0 2px 3px #0000000a;
-}
-
-#projectView[data-project="chessbot"] #projectMedia {
-  border-radius: 2px;
-  border: 1px solid #d0d0d0;
-  background: #efefef;
-  box-shadow: none;
-}
-
-#projectView[data-project="chessbot"] #projectMedia video {
-  background: var(--project-bg);
-}
-
 @media (max-width: 700px) {
   .work-section {
     padding-top: 30px;
