@@ -306,7 +306,7 @@ async function init() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(38, 1, .01, 200);
     camera.up.set(0, 0, 1);

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://huggingface.co/api/datasets/diw22/DWinters_Humanoid-data/tree/main/robot/rims_001\")",
+      "Bash(curl -s \"https://huggingface.co/api/datasets/diw22/DWinters_Humanoid-data/tree/main/human/rims_001\")",
+      "Bash(curl -s \"https://huggingface.co/api/datasets/diw22/DWinters_Humanoid-data/tree/main/music\")",
+      "Bash(curl -s \"https://huggingface.co/api/models/diw22/DWinters_Humanoid-models/tree/main\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(len\\(d\\)\\); [print\\(f.get\\('size'\\), f['path']\\) for f in d[:60]]\")",
+      "Bash(python -c \"import mujoco; print\\('mujoco', mujoco.__version__\\)\")",
+      "Bash(python -c \"import numpy; print\\('numpy', numpy.__version__\\)\")",
+      "Bash(python -I -c ' *)",
+      "Bash(python -m http.server 5180 --bind 127.0.0.1)",
+      "Bash(python -c \"import websocket; print\\('websocket-client', websocket.__version__\\)\")",
+      "Bash(python -c \"import websockets; print\\('websockets', websockets.__version__\\)\")",
+      "Bash(python -c \"import aiohttp; print\\('aiohttp', aiohttp.__version__\\)\")",
+      "Bash(python -m http.server 5181 --bind 127.0.0.1)",
+      "WebSearch",
+      "Bash(python -)",
+      "Bash(bash \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/build.sh\")",
+      "Bash(git diff *)",
+      "Bash(python -c ' *)",
+      "Bash(rm src/Wordmark.jsx)",
+      "Bash(grep -o \"PCFSoftShadowMap[^;]\\\\{0,80\\\\}\" kraftwerk-bot/app.js)",
+      "Bash(grep -o \"PCFSoftShadowMap has been removed[^\\\\\"']\\\\{0,40\\\\}\" playground/assets/viewer.bundle.js)",
+      "Bash(grep -o \"shadowMap.type=[^,;]\\\\{0,40\\\\}\" playground/assets/viewer.bundle.js)",
+      "Bash(sed -i 's/app.js?v=20261112-2/app.js?v=20261112-3/' index.html)",
+      "Bash(python cdp.py http://127.0.0.1:5180/kraftwerk-bot/ __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/v5-kb.json)"
+    ]
+  }
+}

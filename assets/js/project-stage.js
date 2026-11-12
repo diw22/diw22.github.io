@@ -1,8 +1,9 @@
 (() => {
 // `solid` projects show their title as plain text with their live view behind it rather than in front.
 const PROJECTS = [
-  { slug: "playground", href: "playground/", title: "aquaBOT", label: "Interactive playground", sub: "An interactive 3D playground for a custom 6-DOF robot arm.", img: "assets/img/projects/playground.png", wash: "#c7eeec", light: "#f7ffff", shade: "#8ad4df", paper: "#f5f1e7", green: "#174f75", ink: "#0f2f45" },
   { slug: "rigby", href: "rigby/", title: "RIGBY", label: "Assistive robotics", sub: "Low-cost mobile bimanual platform for assistive manipulation learned from demonstration.", img: "assets/img/photos/Rigby_Render_Front.png", cut: true, wash: "#c5e5fa", light: "#f6fbff", shade: "#80b8e0", paper: "#e8f1f7", green: "#164d78", ink: "#0d2a42" },
+  { slug: "kraftwerk-bot", href: "kraftwerk-bot/", title: "Kraftwerk Bot", label: "Robot learning", sub: "A humanoid who knows how to play along.", img: "assets/img/projects/kraftwerk/kraftwerk-bot.png", cut: true, wash: "#efd9d2", light: "#fff6f2", shade: "#dba79b", paper: "#f4e7e2", green: "#8a2a1f", ink: "#2b1512" },
+  { slug: "playground", href: "playground/", title: "aquaBOT", label: "Interactive playground", sub: "An interactive 3D playground for a custom 6-DOF robot arm.", img: "assets/img/projects/playground.png", wash: "#c7eeec", light: "#f7ffff", shade: "#8ad4df", paper: "#f5f1e7", green: "#174f75", ink: "#0f2f45" },
   { slug: "tflbot", href: "#project/tflbot", title: "TFLBot", label: "Human-centred robotics", sub: "Assistive guidance robot for underground transport networks.", img: "assets/img/projects/tflbot/pepperbot.png", cut: true, wash: "#e6e0d4", light: "#f7f3eb", shade: "#d8d2c4", paper: "#eee9df", green: "#254d3c", ink: "#20211e" },
   { slug: "chessbot", href: "#project/chessbot", title: "ChessBot", label: "Robotic manipulation", sub: "Analytical kinematics, workspace calibration, and trajectory control for a 4-DOF manipulator.", img: "assets/img/projects/project7.jpeg", wash: "#eeeeee", light: "#ffffff", shade: "#d8d8d8", paper: "#efefef", green: "#292929", ink: "#222222" },
   { slug: "market-making-algorithm", href: "market-making/", title: "Market Making", label: "Quantitative trading", sub: "Delta-aware trading strategy ranked 3rd in an Imperial Optiver competition.", img: "assets/img/projects/Options.png", solid: true, wash: "#e3e8eb", light: "#fafaf6", shade: "#c1cdd6", paper: "#f0f1eb", green: "#394e60", ink: "#1f2c38" },
@@ -19,6 +20,7 @@ const ADAPTERS = {
     return { resize: (w, h) => v.resize(w, h), draw: (yaw, tilt) => v.draw({ yaw: -.7 + yaw * Math.PI / 180, pitch: Math.max(.04, .22 + tilt * Math.PI / 180), zoom: .8, top: false }, false, false) };
   },
   rigby: async (canvas) => (await module("assets/js/rigby-view.js")).createRigbyView(canvas),
+  "kraftwerk-bot": async (canvas) => (await module("assets/js/kraftwerk-view.js")).createKraftwerkView(canvas),
   "market-making-algorithm": async (canvas) => (await module("assets/js/vol-surface.js")).createVolSurface(canvas)
 };
 const imgCache = {};

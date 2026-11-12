@@ -1,0 +1,34 @@
+Kraftwerk Bot page: third-party code and fonts
+==============================================
+
+React, React DOM, @react-three/fiber and their dependencies are bundled into app.js; their notices are in app.js.LEGAL.txt.
+three.js (MIT) is the site's vendored copy in assets/vendor/three/.
+Michroma (SIL Open Font License 1.1) is in assets/fonts/michroma/ with its licence.
+
+----------------------------------------------------------------------
+src/backdrop.js adapts the noise displacement and colour mixing of ShaderGradient's plane shader
+https://github.com/ruucm/shadergradient
+
+MIT License (as stated in ShaderGradient's README and package.json; the repository has no licence file)
+
+Copyright (c) ruucm (https://github.com/ruucm), stone-skipper (https://github.com/stone-skipper)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The Perlin noise in src/backdrop.js is by Stefan Gustavson (MIT), as included in ShaderGradient.

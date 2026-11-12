@@ -1,63 +1,5 @@
 [
   {
-    "slug": "playground",
-    "entryHref": "playground/",
-    "title": "aquaBOT",
-    "subtitle": "An interactive 3D playground for a custom 6-DOF robot arm.",
-    "description": "Explore the aquaBOT in your browser: orbit the model, adjust individual joints, control the parallel-jaw gripper, and experiment with poses in a Frutiger Aero-inspired interface.",
-    "image": "assets/img/projects/playground.png",
-    "specs": [
-      {
-        "label": "Robot",
-        "value": "6-DOF arm with parallel-jaw gripper"
-      },
-      {
-        "label": "Model",
-        "value": "Fusion parts with URDF joint definitions"
-      },
-      {
-        "label": "Controls",
-        "value": "Joint sliders, gripper, and animation"
-      },
-      {
-        "label": "Export",
-        "value": "Copy poses as JSON"
-      }
-    ],
-    "sections": [
-      {
-        "title": "Design language",
-        "body": "Aero explores a friendlier visual identity for a desktop robot: translucent aqua shells, pearl structural parts, and large circular joints. The underwater interface carries that early-2000s consumer-electronics influence into the browser, giving the robot a playful setting in which to explore its movement."
-      },
-      {
-        "title": "From CAD to the browser",
-        "body": "The viewer combines Fusion part geometry with URDF joint definitions. Six rotational controls follow the arm from base yaw through wrist roll, while the gripper control moves the parallel jaws. The model can be inspected from any angle using orbit, zoom, and a top-view camera."
-      },
-      {
-        "title": "Movement & interaction",
-        "body": "Manual sliders let each joint and the gripper be explored independently. Playback animates the arm, reset returns it to its starting pose, and the copy action exports the current joint values as JSON. This is a visual playground: CAD limits are provisional and no collision prevention or hardware control is provided."
-      }
-    ],
-    "gallery": [
-      {
-        "src": "assets/img/projects/playground.png",
-        "alt": "Aero robot in the aquaBOT viewer with six joint controls and a gripper slider"
-      }
-    ],
-    "references": [
-      "Interactive viewer built from Fusion parts and URDF joint definitions."
-    ],
-    "disclosures": [
-      "CAD joint limits are provisional. The playground does not control hardware or prevent collisions."
-    ],
-    "links": [
-      {
-        "label": "Open aquaBOT",
-        "href": "playground/"
-      }
-    ]
-  },
-  {
     "slug": "rigby",
     "entryHref": "rigby/",
     "title": "RIGBY",
@@ -151,6 +93,185 @@
       }
     ],
     "links": []
+  },
+  {
+    "slug": "kraftwerk-bot",
+    "entryHref": "kraftwerk-bot/",
+    "title": "Kraftwerk Bot",
+    "subtitle": "A humanoid who knows how to play along.",
+    "description": "I adapted OpenVLA-OFT, a 7B vision-language-action model, to listen to music. A simulated Unitree G1 hears a drum loop with claps, rims or shakers taken out, and plays the missing part on a pad controller in time with the beat, learnt from 160 recordings of my own playing.",
+    "image": "assets/img/projects/kraftwerk/kraftwerk-bot.png",
+    "specs": [
+      {
+        "label": "Robot",
+        "value": "Unitree G1 with Dex3 hands, simulated in MuJoCo"
+      },
+      {
+        "label": "Model",
+        "value": "OpenVLA-OFT 7B with MERT audio features, LoRA fine-tuned"
+      },
+      {
+        "label": "Data",
+        "value": "160 takes of my own playing, 152 robot demonstrations"
+      },
+      {
+        "label": "Best result",
+        "value": "1.8M-parameter student: rims in 40 / 40 held-out runs"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Task",
+        "body": "Inspired by Kraftwerk's \"The Robots\", I wanted to see whether music alone could tell a robot what a song needs. A simulated Unitree G1 hears a 65 BPM loop with one percussion part removed and plays that part on an Akai LPD8: claps on pad 1, rims on pad 5, or shaker fades on knob 4. The text prompt never changes and the robot never hears its own playing, so both the missing part and its timing have to come from the backing track."
+      },
+      {
+        "title": "Model",
+        "body": "I adapted OpenVLA-OFT, building on Audio-VLA's idea of giving a VLA sound as an input. MERT, an audio model pretrained on music, turns the last four seconds into 299 features, about one every 13 ms, so individual beats stay distinct; a projector maps them to tokens alongside the head camera's 256 vision tokens and one robot-state token. Every 0.2 s the model predicts 25 steps of 15 joint targets, and the robot runs the first 12 at 60 Hz before replanning. LoRA adapters train the language model while its 7B weights and MERT stay frozen."
+      },
+      {
+        "title": "Demonstrations",
+        "body": "I recorded 160 takes of myself playing, and 152 became usable robot demonstrations. MediaPipe tracks my index fingertip in two ArUco-calibrated cameras and the G1's finger follows that 3D path; for shakers, an overhead camera reads the knob angle and the right hand grips and turns knob 4. At 30 fps a hit can land anywhere in a 33 ms frame, so the video sets the motion while the audio of my playing pins each hit to its pad. Every demonstration is replayed in MuJoCo and checked for missed hits and stray contacts: claps land 19 ms and rims 7 ms from my recordings on average."
+      },
+      {
+        "title": "Training",
+        "body": "The three-part model trained for 10,000 steps on one H200. Early versions recognised the part from the robot's first movement rather than the music, so every demonstration starts from the same pose and stays still for a bar, and a random 0–2 s of silence before the music stops it memorising a fixed schedule. It played the right part in 24 of 35 claps runs and 23 of 30 shakers runs but chose rims in only 1 of 40: pad 5 sits 3.3 cm behind pad 1, so reaching for the wrong pad barely moves the loss. Fine-tuning a copy on rims alone for 2,500 steps raised that to 31 of 40."
+      },
+      {
+        "title": "Distillation",
+        "body": "The 7B model needs a large GPU, so I distilled the rims model into a 1.8M-parameter student, about 4,000 times smaller, that sees the camera image, the robot state and a spectrogram of the music. Over four rounds the student drives more of each take while the teacher labels the states it reaches, with only the teacher's successful runs kept in the first round. The student played rims in all 40 held-out test runs, hitting 99.8% of beats with 14 ms average timing error, and runs on a CPU."
+      },
+      {
+        "title": "Limitations",
+        "body": "Everything trains on one song at 65 BPM. At 67 BPM the three-part model chose the right part in 10 of 21 takes, and every model fails at 82 BPM. Choosing between the three-part and rims-only models is still manual, the rims-only model also plays rims over claps music, and shaker fades remain far less precise than mine. The student's 40 / 40 covers eight recordings with five start delays each, so a larger test set is needed; reinforcement learning in the simulator, rewarding part choice and timing, is the natural next step."
+      }
+    ],
+    "gallery": [
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-claps.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-claps-poster.jpg",
+        "alt": "Claps on a held-out take: my recording beside the three-part model playing on its own in simulation"
+      },
+      {
+        "src": "assets/img/projects/kraftwerk/architecture.webp",
+        "alt": "Kraftwerk Bot architecture: head camera, robot state, MERT music features and the prompt feed OpenVLA-OFT, which predicts 25-step action chunks"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-tracking.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-tracking-poster.jpg",
+        "alt": "MediaPipe hand tracking in both camera views, following the index fingertip"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-replay-rims.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-replay-rims-poster.jpg",
+        "alt": "A rims recording beside its robot demonstration, seen through the head camera used for training"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-rims-student.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-rims-student-poster.jpg",
+        "alt": "Rims on a held-out take, played by the distilled 1.8M-parameter student"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-shakers.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-shakers-poster.jpg",
+        "alt": "Shakers on a held-out take: the three-part model fading the part in and out with knob 4"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-jaco.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-jaco-poster.jpg",
+        "alt": "Version 1: a claps recording replayed on two simulated Kinova Jaco arms"
+      },
+      {
+        "type": "video",
+        "src": "assets/video/kraftwerk-replay-shakers.mp4",
+        "poster": "assets/img/projects/kraftwerk/kraftwerk-replay-shakers-poster.jpg",
+        "alt": "A shakers recording beside its robot demonstration turning knob 4"
+      }
+    ],
+    "references": [
+      "Code, evaluation results and replication steps are in the project repository; the dataset (CC BY 4.0) and trained models are on Hugging Face.",
+      "Unitree G1 model from MuJoCo Menagerie, used under Unitree's BSD licence."
+    ],
+    "disclosures": [
+      "The interactive page replays demonstrations from held-out takes in the browser; it does not run the model. The videos show the trained models."
+    ],
+    "links": [
+      {
+        "label": "Open Kraftwerk Bot",
+        "href": "kraftwerk-bot/"
+      },
+      {
+        "label": "View Code",
+        "href": "https://github.com/diw22/DWinters_Humanoid"
+      },
+      {
+        "label": "Dataset",
+        "href": "https://huggingface.co/datasets/diw22/DWinters_Humanoid-data"
+      }
+    ]
+  },
+  {
+    "slug": "playground",
+    "entryHref": "playground/",
+    "title": "aquaBOT",
+    "subtitle": "An interactive 3D playground for a custom 6-DOF robot arm.",
+    "description": "Explore the aquaBOT in your browser: orbit the model, adjust individual joints, control the parallel-jaw gripper, and experiment with poses in a Frutiger Aero-inspired interface.",
+    "image": "assets/img/projects/playground.png",
+    "specs": [
+      {
+        "label": "Robot",
+        "value": "6-DOF arm with parallel-jaw gripper"
+      },
+      {
+        "label": "Model",
+        "value": "Fusion parts with URDF joint definitions"
+      },
+      {
+        "label": "Controls",
+        "value": "Joint sliders, gripper, and animation"
+      },
+      {
+        "label": "Export",
+        "value": "Copy poses as JSON"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Design language",
+        "body": "Aero explores a friendlier visual identity for a desktop robot: translucent aqua shells, pearl structural parts, and large circular joints. The underwater interface carries that early-2000s consumer-electronics influence into the browser, giving the robot a playful setting in which to explore its movement."
+      },
+      {
+        "title": "From CAD to the browser",
+        "body": "The viewer combines Fusion part geometry with URDF joint definitions. Six rotational controls follow the arm from base yaw through wrist roll, while the gripper control moves the parallel jaws. The model can be inspected from any angle using orbit, zoom, and a top-view camera."
+      },
+      {
+        "title": "Movement & interaction",
+        "body": "Manual sliders let each joint and the gripper be explored independently. Playback animates the arm, reset returns it to its starting pose, and the copy action exports the current joint values as JSON. This is a visual playground: CAD limits are provisional and no collision prevention or hardware control is provided."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "assets/img/projects/playground.png",
+        "alt": "Aero robot in the aquaBOT viewer with six joint controls and a gripper slider"
+      }
+    ],
+    "references": [
+      "Interactive viewer built from Fusion parts and URDF joint definitions."
+    ],
+    "disclosures": [
+      "CAD joint limits are provisional. The playground does not control hardware or prevent collisions."
+    ],
+    "links": [
+      {
+        "label": "Open aquaBOT",
+        "href": "playground/"
+      }
+    ]
   },
   {
     "slug": "tflbot",
