@@ -165,7 +165,7 @@ export function App() {
         <a className="back" href="../#work/kraftwerk-bot" aria-label="All projects"><ArrowBack /> <span className="back-label" aria-hidden="true">All projects</span></a>
         <h1 className="title">Kraftwerk Bot</h1>
         <nav className="links" aria-label="Project">
-          <button ref={panelButton} type="button" aria-expanded={panel} aria-controls="panel" onClick={() => (panel ? closePanel() : setPanel(true))}><span className="full-label">How it works</span><span className="short-label" aria-hidden="true">Info</span></button>
+          {!noGraphics && <button ref={panelButton} type="button" aria-expanded={panel} aria-controls="panel" onClick={() => (panel ? closePanel() : setPanel(true))}><span className="full-label">How it works</span><span className="short-label" aria-hidden="true">Info</span></button>}
           <a href="https://github.com/diw22/DWinters_Humanoid" target="_blank" rel="noopener noreferrer">Code <ArrowOut /></a>
         </nav>
       </header>
