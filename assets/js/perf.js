@@ -9,7 +9,10 @@
    3  lightest: no live 3D views (pictures instead), plain titles
 
    ?perf=0..3 in the address previews a level on any machine (e.g. diw22.github.io/?perf=3#work) and keeps it for
-   the rest of the visit in that tab; ?perf=0 goes back to normal. */
+   the rest of the visit in that tab; ?perf=0 goes back to normal.
+
+   To see what it decided and why: the browser console logs each choice ("Graphics: …"), and SitePerf.level,
+   SitePerf.reason, SitePerf.renderer and SitePerf.webgl can be typed into the console. */
 (() => {
   "use strict";
   const KEY = "site-perf-level", MAX = 3, SLOW_MS = 34, WINDOW_MS = 2000;
@@ -17,30 +20,39 @@
   const stored = () => { try { return Number(sessionStorage.getItem(KEY)) || 0; } catch { return 0; } };
   const store = (value) => { try { sessionStorage.setItem(KEY, String(value)); } catch { /* not remembered */ } };
 
-  function softwareRendering() {
+  // What the browser draws 3D with. No WebGL at all usually means graphics acceleration is switched off.
+  function graphics() {
     try {
       const gl = document.createElement("canvas").getContext("webgl");
-      if (!gl) return true;
+      if (!gl) return { webgl: false, renderer: "none" };
       const info = gl.getExtension("WEBGL_debug_renderer_info");
-      const name = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
+      const renderer = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
       gl.getExtension("WEBGL_lose_context")?.loseContext();
-      return /swiftshader|software|llvmpipe|softpipe|basic render/i.test(name);
-    } catch { return false; }
+      return { webgl: true, renderer, software: /swiftshader|software|llvmpipe|softpipe|basic render/i.test(renderer) };
+    } catch { return { webgl: false, renderer: "none" }; }
   }
 
-  const forced = new URLSearchParams(location.search).get("perf");
-  const preview = forced !== null && /^[0-3]$/.test(forced);
-  let level = preview ? Number(forced) : Math.max(stored(), softwareRendering() ? MAX : 0);
+  const gpu = graphics(), forced = new URLSearchParams(location.search).get("perf");
+  const preview = forced !== null && /^[0-3]$/.test(forced), earlier = stored();
+  let level, reason;
+  if (preview) { level = Number(forced); reason = `previewing level ${level} (?perf=${level})`; }
+  else if (!gpu.webgl) { level = MAX; reason = "no 3D graphics in this browser (graphics acceleration is probably off)"; }
+  else if (gpu.software) { level = MAX; reason = `3D is drawn in software (${gpu.renderer})`; }
+  else if (earlier) { level = earlier; reason = "kept from earlier in this visit"; }
+  else { level = 0; reason = `full quality on ${gpu.renderer}`; }
   // A previewed level holds for the rest of the visit in this tab; ?perf=0 goes back to normal.
   if (preview) store(level);
   root.dataset.perf = level;
+  console.info(`Graphics: level ${level} of ${MAX}, ${reason}.`);
   const listeners = new Set();
 
-  function lower() {
+  function lower(medianMs) {
     if (level >= MAX) return;
     level += 1;
+    reason = `frames were taking ${Math.round(medianMs)} ms (about ${Math.round(1000 / medianMs)} per second)`;
     root.dataset.perf = level;
     store(level);
+    console.info(`Graphics: stepped down to level ${level} of ${MAX}, ${reason}.`);
     listeners.forEach((listener) => listener(level));
   }
 
@@ -58,7 +70,8 @@
       last = now;
       if (now - start >= WINDOW_MS && gaps.length >= 2) {
         gaps.sort((a, b) => a - b);
-        if (gaps[gaps.length >> 1] > SLOW_MS) { lower(); quietUntil = now + 2500; }
+        const median = gaps[gaps.length >> 1];
+        if (median > SLOW_MS) { lower(median); quietUntil = now + 2500; }
         gaps = []; start = now;
       }
       requestAnimationFrame(tick);
@@ -68,7 +81,10 @@
 
   window.SitePerf = {
     MAX,
+    webgl: gpu.webgl,
+    renderer: gpu.renderer,
     get level() { return level; },
+    get reason() { return reason; },
     // Calls back with each new level, and starts the watching.
     onChange(listener) { listeners.add(listener); watch(); return () => listeners.delete(listener); },
     // Pauses judging until the promise settles (and a moment after), e.g. while models load.

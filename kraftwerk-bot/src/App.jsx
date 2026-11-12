@@ -22,6 +22,8 @@ const VIDEOS = {
 // (which can only be set as the canvas is made, so dropping to that level rebuilds it once).
 const perf = window.SitePerf || { level: 0, onChange() { return () => {}; }, hold() {} };
 const DPR = [[1, 2], 1, .75, .6];
+// No WebGL at all (graphics acceleration switched off): the robot can't run, so say so rather than load it.
+const noGraphics = perf.webgl === false;
 
 export function App() {
   const [quality, setQuality] = useState(perf.level);
@@ -36,6 +38,7 @@ export function App() {
   const panelButton = useRef(), dialog = useRef(), video = useRef();
 
   useEffect(() => {
+    if (noGraphics) return;
     let compiled;
     // Loading, and the first frames while shaders compile, stutter; that mustn't count as a slow computer.
     perf.hold(new Promise((done) => { compiled = done; }));
@@ -148,7 +151,13 @@ export function App() {
             <Scene data={data} view={view} onView={setView} onPick={choose} part={part} />
           </Canvas>
         )}
-        {!data && <p className="status" role="status">{error || 'Loading the robot'}</p>}
+        {!data && (
+          <p className="status" role="status">
+            {noGraphics
+              ? <span>3D graphics are switched off in this browser, so the robot can’t run here. Turn on graphics acceleration and reload, or <a href="../#project/kraftwerk-bot/story">read about the project</a>.</span>
+              : <span>{error || 'Loading the robot'}</span>}
+          </p>
+        )}
         {data && error && <p className="status" role="alert">{error}</p>}
       </div>
 

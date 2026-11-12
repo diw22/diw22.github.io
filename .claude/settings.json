@@ -56,7 +56,10 @@
       "Bash(DPR=2 python cdp.py 'http://127.0.0.1:5180/#work/chessbot' __TRACKED_VAR__/shots 1440x900 grip.json)",
       "Bash(python \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/mount_and_links.py\")",
       "Bash(sed -i 's#module\\(\"assets/js/chess-view.js?v=20261112-2\"\\)#module\\(\"assets/js/chess-view.js?v=20261112-3\"\\)#' assets/js/project-stage.js)",
-      "Bash(sed -i 's#assets/js/project-stage.js?v=20261112-5#assets/js/project-stage.js?v=20261112-6#; s#assets/css/styles.css?v=20261112-8#assets/css/styles.css?v=20261112-9#; s#assets/css/projects.css?v=20261112-1#assets/css/projects.css?v=20261112-2#' index.html)"
+      "Bash(sed -i 's#assets/js/project-stage.js?v=20261112-5#assets/js/project-stage.js?v=20261112-6#; s#assets/css/styles.css?v=20261112-8#assets/css/styles.css?v=20261112-9#; s#assets/css/projects.css?v=20261112-1#assets/css/projects.css?v=20261112-2#' index.html)",
+      "Bash(node --check assets/js/perf.js)",
+      "Bash(sed \"s/NAME/nogl-kraftwerk-fixed/\" nogl.json)",
+      "Bash(NOGL=1 timeout 100 python cdp.py http://127.0.0.1:5180/kraftwerk-bot/ __TRACKED_VAR__/shots 1440x900 noglr.json)"
     ]
   }
 }
