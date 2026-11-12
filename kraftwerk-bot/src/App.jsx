@@ -6,6 +6,7 @@ import { Scene } from './Scene.jsx';
 import { Timeline } from './Timeline.jsx';
 import { Panel } from './Panel.jsx';
 import { world } from './world.js';
+import { ArrowBack, ArrowOut } from './icons.jsx';
 
 const base = new URL('./', document.baseURI);
 const PARTS = [['rims', 'Rims'], ['claps', 'Claps'], ['shakers', 'Shakers']];
@@ -141,11 +142,11 @@ export function App() {
       </div>
 
       <header className="bar">
-        <a className="back" href="../#work/kraftwerk-bot" aria-label="All projects"><span aria-hidden="true">←</span> <span className="back-label" aria-hidden="true">All projects</span></a>
+        <a className="back" href="../#work/kraftwerk-bot" aria-label="All projects"><ArrowBack /> <span className="back-label" aria-hidden="true">All projects</span></a>
         <h1 className="title">Kraftwerk Bot</h1>
         <nav className="links" aria-label="Project">
           <button ref={panelButton} type="button" aria-expanded={panel} aria-controls="panel" onClick={() => (panel ? closePanel() : setPanel(true))}><span className="full-label">How it works</span><span className="short-label" aria-hidden="true">Info</span></button>
-          <a href="https://github.com/diw22/DWinters_Humanoid" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/diw22/DWinters_Humanoid" target="_blank" rel="noopener noreferrer">Code <ArrowOut /></a>
         </nav>
       </header>
 

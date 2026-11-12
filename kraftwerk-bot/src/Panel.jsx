@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
 import { studioEnvironment } from '../stage.js';
 import { world } from './world.js';
+import { ArrowOut } from './icons.jsx';
 
 const RESULTS = [
   ['Claps', 'Three-part', '24 / 35', '91%', '42 ms'],
@@ -122,8 +123,8 @@ export function Panel({ open, onClose, onWatch }) {
       </details>
       <p className="panel-links">
         <a href="../#project/kraftwerk-bot/story">Full write-up</a>
-        <a href="https://github.com/diw22/DWinters_Humanoid" target="_blank" rel="noopener noreferrer">Code ↗</a>
-        <a href="https://huggingface.co/datasets/diw22/DWinters_Humanoid-data" target="_blank" rel="noopener noreferrer">Dataset ↗</a>
+        <a href="https://github.com/diw22/DWinters_Humanoid" target="_blank" rel="noopener noreferrer">Code <ArrowOut /></a>
+        <a href="https://huggingface.co/datasets/diw22/DWinters_Humanoid-data" target="_blank" rel="noopener noreferrer">Dataset <ArrowOut /></a>
       </p>
       <p className="credits">Music, recordings and data are mine (CC BY 4.0). The Unitree G1 model is from MuJoCo Menagerie under Unitree's BSD licence (<a href="data/LICENSE-G1.txt">notice</a>). Keys: space plays, 1 to 3 choose a part.</p>
     </aside>

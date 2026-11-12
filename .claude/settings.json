@@ -47,7 +47,16 @@
       "Bash(python \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/mm_type_colour.py\")",
       "Bash(node --check market-making/app.js)",
       "PowerShell($conn = Get-NetTCPConnection -LocalPort 5180 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { $p = Get-Process -Id $_.OwningProcess; \"$\\($p.Id\\) $\\($p.ProcessName\\) $\\($p.Path\\)\" } } else { \"nothing listening on 5180\" })",
-      "Bash(rm assets/fonts/ibm-plex/IBMPlexMono-Latin-400.woff2 assets/fonts/ibm-plex/IBMPlexMono-Latin-500.woff2)"
+      "Bash(rm assets/fonts/ibm-plex/IBMPlexMono-Latin-400.woff2 assets/fonts/ibm-plex/IBMPlexMono-Latin-500.woff2)",
+      "Bash(PYTHONIOENCODING=utf-8 python -)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/icons.py\")",
+      "Bash(grep -n 'innerHTML = `<section class=\"not-found\"' assets/js/main.js)",
+      "Bash(sed -i 's#module\\(\"assets/js/chess-view.js?v=20261112-1\"\\)#module\\(\"assets/js/chess-view.js?v=20261112-2\"\\)#' assets/js/project-stage.js)",
+      "Bash(sed -i 's#assets/js/project-stage.js?v=20261112-4#assets/js/project-stage.js?v=20261112-5#' index.html)",
+      "Bash(DPR=2 python cdp.py 'http://127.0.0.1:5180/#work/chessbot' __TRACKED_VAR__/shots 1440x900 grip.json)",
+      "Bash(python \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/mount_and_links.py\")",
+      "Bash(sed -i 's#module\\(\"assets/js/chess-view.js?v=20261112-2\"\\)#module\\(\"assets/js/chess-view.js?v=20261112-3\"\\)#' assets/js/project-stage.js)",
+      "Bash(sed -i 's#assets/js/project-stage.js?v=20261112-5#assets/js/project-stage.js?v=20261112-6#; s#assets/css/styles.css?v=20261112-8#assets/css/styles.css?v=20261112-9#; s#assets/css/projects.css?v=20261112-1#assets/css/projects.css?v=20261112-2#' index.html)"
     ]
   }
 }

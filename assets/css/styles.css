@@ -249,6 +249,8 @@ html:has(body.is-home) {
   margin-top: 26px;
 }
 
+/* Links change colour without a fade: Chrome won't fade a link that's already been visited, so some would fade
+   and others snap. */
 .home-link {
   display: inline-flex;
   align-items: center;
@@ -256,7 +258,6 @@ html:has(body.is-home) {
   min-height: 46px;
   color: #9eafc2;
   font-size: 21px;
-  transition: color 160ms ease;
 }
 
 .home-link:hover, .home-link:focus-visible {
@@ -424,7 +425,6 @@ html:has(body.is-about) {
   min-height: 46px;
   padding: 12px 0;
   font-size: 21px;
-  transition: color 160ms ease;
 }
 
 /* Shared footer */
@@ -1283,3 +1283,6 @@ body:not(.is-home) :is(a, button, summary):not(.skip-link):not(.pill-button):is(
     animation: none !important;
   }
 }
+
+/* Arrows are drawn as lines in the text colour: arrow characters can turn into emoji on Windows. */
+.icon { display: inline-block; flex: none; width: .85em; height: .85em; vertical-align: -.08em; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }

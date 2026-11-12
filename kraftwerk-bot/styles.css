@@ -192,3 +192,6 @@ dialog.film::backdrop { background: oklch(10% 0.01 330 / .82); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
 }
+
+/* Arrows are drawn as lines in the text colour: arrow characters can turn into emoji on Windows. */
+.icon { display: inline-block; flex: none; width: .85em; height: .85em; vertical-align: -.08em; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }

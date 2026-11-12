@@ -40,8 +40,8 @@ function solve(tip, q) {
 
 const loadModel = (base) => loadPacked(new URL(MODEL + 'omx.json', base), new URL(MODEL + 'omx.bin', base));
 
-// The team's printed fingers (report-005.png) in place of ROBOTIS's palms: a mounting plate on each slider and a
-// tapered fin with a small lip at its tip. In a palm's frame x runs to the fingertip and the inner face sits where
+// The team's printed fingers (report-005.png) in place of ROBOTIS's palms: a tapered fin on each slider's red mount
+// (below), with a small lip at its tip. In a palm's frame x runs to the fingertip and the inner face sits where
 // the stock palm's does (y = -12.1 mm on the left), so the gripper's open and closed values are unchanged.
 function prism(x0, x1, [in0, out0, w0], [in1, out1, w1], mirror) {
   const s = mirror ? -1 : 1, v = [];
@@ -54,10 +54,16 @@ function prism(x0, x1, [in0, out0, w0], [in1, out1, w1], mirror) {
   g.computeVertexNormals();
   return g;
 }
+// A red block on each slider runs from the wrist body's underside (67.5 mm along link5) down to where the finger
+// starts, as on the team's robot. It reaches a little past the finger's inner face so the two read as one band.
+function mount(material, mirror) {
+  const mesh = new THREE.Mesh(prism(-.0147, 0, [-.018, .016, .014], [-.018, .016, .014], mirror), material);
+  mesh.castShadow = mesh.receiveShadow = true;
+  return mesh;
+}
 function finger(material, mirror) {
   const group = new THREE.Group(), y = -.0121;
   for (const g of [
-    prism(-.003, 0, [-.012, .016, .014], [-.012, .016, .014], mirror),          // mounting plate
     prism(0, .056, [y, y + .006, .005], [y, y + .003, .0035], mirror),         // tapered fin, slim enough to pass neighbours
     prism(.056, .062, [y - .0012, y + .003, .0035], [y - .0012, y + .003, .0035], mirror)   // lip
   ]) {
@@ -70,8 +76,8 @@ function finger(material, mirror) {
 
 function buildRobot({ desc, geometries }, materials) {
   const links = new Map(desc.links.map((l) => [l.name, new THREE.Group()]));
-  links.get('gripper_left_link').add(finger(materials.gripper, false));
-  links.get('gripper_right_link').add(finger(materials.gripper, true));
+  links.get('gripper_left_link').add(finger(materials.gripper, false), mount(materials.mount, false));
+  links.get('gripper_right_link').add(finger(materials.gripper, true), mount(materials.mount, true));
   for (const link of desc.links) {
     for (const v of link.visuals) {
       const mesh = new THREE.Mesh(geometries[v.mesh], materials.robot);
@@ -234,6 +240,7 @@ export async function createChessView(canvas) {
   const materials = {
     robot: new THREE.MeshStandardMaterial({ color: 0x161618, roughness: .42, metalness: .2 }),
     gripper: new THREE.MeshStandardMaterial({ color: 0xf0661f, roughness: .5 }),
+    mount: new THREE.MeshStandardMaterial({ color: 0xa51d23, roughness: .5 }),
     plate: new THREE.MeshStandardMaterial({ color: 0xeceae6, roughness: .72 }),
     light: new THREE.MeshPhysicalMaterial({ color: 0xe8c896, roughness: .4, clearcoat: .6, clearcoatRoughness: .3 }),
     dark: new THREE.MeshPhysicalMaterial({ color: 0x4a2216, roughness: .34, clearcoat: .65, clearcoatRoughness: .28 })

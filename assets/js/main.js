@@ -9,6 +9,9 @@ const projectUrl = (project, story = false) => `#project/${encodeURIComponent(pr
 const entryUrl = (project) => project.entryHref || projectUrl(project);
 const title = (project) => project.displayTitle || project.title;
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+// Arrows are drawn as SVG in the text colour: the arrow characters can turn into emoji on Windows.
+const ICON_BACK = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13 8H3m4-4L3 8l4 4"/></svg>';
+const ICON_OUT = '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11l6-6M6 5h5v5"/></svg>';
 
 function bindHomeVideo() {
   const video = $(".home-video");
@@ -136,8 +139,8 @@ function setSound(on) {
 
 function projectNavigation(project) {
   return `<nav class="project-navigation" aria-label="Project navigation">
-    <a class="back-link" href="#work"><span aria-hidden="true">←</span> All projects</a>
-    <a class="project-open" href="${escapeHtml(entryUrl(project))}">View project <span aria-hidden="true">↗</span></a>
+    <a class="back-link" href="#work">${ICON_BACK} All projects</a>
+    <a class="project-open" href="${escapeHtml(entryUrl(project))}">View project ${ICON_OUT}</a>
   </nav>`;
 }
 
@@ -146,8 +149,8 @@ function nextProjectMarkup(project) {
   const index = available.findIndex((item) => item.slug === project.slug);
   const next = available[(index + 1) % available.length];
   return `<nav class="next-project" aria-label="Continue exploring">
-    <a class="text-link" href="#work">← All projects</a>
-    <a class="next-project-link" href="${escapeHtml(entryUrl(next))}" aria-label="Next project: ${escapeHtml(title(next))}"><span>${escapeHtml(title(next))} <span aria-hidden="true">↗</span></span></a>
+    <a class="text-link" href="#work">${ICON_BACK} All projects</a>
+    <a class="next-project-link" href="${escapeHtml(entryUrl(next))}" aria-label="Next project: ${escapeHtml(title(next))}"><span>${escapeHtml(title(next))} ${ICON_OUT}</span></a>
   </nav>`;
 }
 
@@ -157,7 +160,7 @@ function renderExperience(project) {
     <figure class="media-stage"><div id="projectMedia"></div></figure>
     <nav class="experience-actions" aria-label="More about ${escapeHtml(project.title)}">
       <a class="experience-button" href="${projectUrl(project, true)}">Project details</a>
-      ${links.map((link) => `<a class="experience-button" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}
+      ${links.map((link) => `<a class="experience-button" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} ${ICON_OUT}</a>`).join("")}
       ${project.heroVideo ? `<button class="experience-button experience-sound" type="button" data-film-sound aria-pressed="false" aria-label="Sound" title="Sound">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="sound-on" d="M15.5 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/><path class="sound-off" d="m16 9.5 5 5m0-5-5 5"/></svg>
       </button>` : ""}
@@ -178,7 +181,7 @@ function renderStory(project) {
       <section class="story-overview" id="story-overview" aria-labelledby="overview-title"><h2 id="overview-title" tabindex="-1">${escapeHtml(project.subtitle)}</h2><p>${escapeHtml(project.description)}</p></section>
       ${sections.map((section, index) => `<section class="story-chapter" id="chapter-${index}"><div class="chapter-heading"><h2 tabindex="-1">${escapeHtml(section.title)}</h2></div><p>${escapeHtml(section.body)}</p>${gallery[index] ? `<figure class="story-figure">${mediaMarkup(gallery[index])}</figure>` : ""}</section>`).join("")}
       ${gallery.length > sections.length ? `<section class="story-gallery" aria-label="More project images">${gallery.slice(sections.length).map((item) => `<figure class="story-figure">${mediaMarkup(item)}</figure>`).join("")}</section>` : ""}
-      <section class="story-resources" id="story-resources"><h2 tabindex="-1">${resourcesLabel}</h2>${links.length ? `<div class="resource-links">${links.map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}</div>` : ""}
+      <section class="story-resources" id="story-resources"><h2 tabindex="-1">${resourcesLabel}</h2>${links.length ? `<div class="resource-links">${links.map((link) => `<a class="text-link" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} ${ICON_OUT}</a>`).join("")}</div>` : ""}
         ${specs.length || notes.length ? `<details class="project-notes"><summary>Technical details</summary>
           ${specs.length ? `<dl class="project-specs">${specs.map((spec) => `<div><dt>${escapeHtml(spec.label)}</dt><dd>${escapeHtml(spec.value)}</dd></div>`).join("")}</dl>` : ""}
           ${notes.map((note) => `<p>${escapeHtml(note)}</p>`).join("")}</details>` : ""}
@@ -195,7 +198,7 @@ function renderProject(project, story) {
       <header class="project-heading"><h1 tabindex="-1">${escapeHtml(title(project))}</h1></header>
       ${renderStory(project)}${nextProjectMarkup(project)}`
     : `<header class="experience-header">
-        <a class="back-link" href="#work"><span aria-hidden="true">←</span> All projects</a>
+        <a class="back-link" href="#work">${ICON_BACK} All projects</a>
         <h1 tabindex="-1">${escapeHtml(title(project))}</h1>
       </header>${renderExperience(project)}`;
   if (!story) renderFilm(project);
@@ -234,7 +237,7 @@ function renderRoute({ initial = false, immediate = false } = {}) {
   if (isProject && project) renderProject(project, Boolean(match[2]));
   else if (isProject) {
     $("#projectView").removeAttribute("data-project");
-    $("#projectView").innerHTML = '<section class="not-found"><h1 tabindex="-1">Project not found.</h1><p>This project may have moved. The collection is a good place to start.</p><a class="pill-button" href="#work">← All projects</a></section>';
+    $("#projectView").innerHTML = `<section class="not-found"><h1 tabindex="-1">Project not found.</h1><p>This project may have moved. The collection is a good place to start.</p><a class="pill-button" href="#work">${ICON_BACK} All projects</a></section>`;
     document.title = "Project not found | Dylan Winters";
   } else document.title = "Dylan Winters — Selected work";
   document.querySelectorAll("[data-nav]").forEach((link) => {

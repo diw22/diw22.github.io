@@ -111,7 +111,7 @@
     $$("[data-panel]").forEach((panel) => { panel.hidden = Number(panel.dataset.panel) !== state.step; });
     const change = instrument.fair - simulation.history[0][kind].fair;
     $("#panel-fair").textContent = `$${instrument.fair.toFixed(2)}`;
-    $("#panel-fair-change").textContent = `${change >= 0 ? "▲" : "▼"} ${Math.abs(change).toFixed(2)}`;
+    $("#panel-fair-change").textContent = signed(change, 2);
     $("#panel-fair-change").classList.toggle("is-down", change < 0);
     const levels = depth(instrument), most = Math.max(...levels.map((level) => level.size));
     depthColumns.forEach(({ column, bar, price }, i) => {

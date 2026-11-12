@@ -77,3 +77,6 @@
   .panel-actions .button, .panel-actions > .icon-button { height: 32px; padding: 3px 8px; font-size: 16px; }
   .panel-actions > .icon-button { width: 32px; }
 }
+
+/* Arrows are drawn as lines in the text colour: arrow characters can turn into emoji on Windows. */
+.icon { display: inline-block; flex: none; width: .85em; height: .85em; vertical-align: -.08em; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }

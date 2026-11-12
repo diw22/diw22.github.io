@@ -21,7 +21,7 @@ const ADAPTERS = {
   },
   rigby: async (canvas) => (await module("assets/js/rigby-view.js?v=20261112-2")).createRigbyView(canvas),
   "kraftwerk-bot": async (canvas) => (await module("assets/js/kraftwerk-view.js")).createKraftwerkView(canvas),
-  chessbot: async (canvas) => (await module("assets/js/chess-view.js?v=20261112-1")).createChessView(canvas),
+  chessbot: async (canvas) => (await module("assets/js/chess-view.js?v=20261112-4")).createChessView(canvas),
   "market-making-algorithm": async (canvas) => (await module("assets/js/vol-surface.js")).createVolSurface(canvas)
 };
 const imgCache = {};

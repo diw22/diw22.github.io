@@ -93,7 +93,6 @@ html:has(body.is-work) {
   color: var(--green);
   font: 18px/1.2 var(--display);
   letter-spacing: 0;
-  transition: color 160ms ease;
 }
 
 .work-signature:hover {
@@ -128,7 +127,6 @@ html:has(body.is-work) {
   min-height: 44px;
   font-size: 16px;
   color: var(--green);
-  transition: color 160ms ease;
 }
 
 .work-dock a:hover {

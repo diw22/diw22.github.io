@@ -11,16 +11,16 @@
   <link rel="stylesheet" href="../assets/css/transitions.css?v=20261028-1">
   <script src="../assets/js/transitions.js?v=20261111-1"></script>
   <link rel="preload" href="../assets/fonts/oxanium/Oxanium-Latin-Variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261112-14">
+  <link rel="stylesheet" href="styles.css?v=20261112-15">
   <script src="simulation.js?v=20261112-2" defer></script>
-  <script src="app.js?v=20261112-8" defer></script>
+  <script src="app.js?v=20261112-9" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#stage">Skip to simulation</a>
   <div class="app" data-step="0">
     <div class="rail">
       <header class="title-row">
-        <a class="back" href="../#work/market-making-algorithm" aria-label="Back to projects">←</a>
+        <a class="back" href="../#work/market-making-algorithm" aria-label="Back to projects"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13 8H3m4-4L3 8l4 4"/></svg></a>
         <h1>Market Making Algorithm</h1>
       </header>
       <section class="pnl" aria-labelledby="pnl-label">
@@ -74,7 +74,7 @@
           <div class="links">
             <button type="button" id="theme" class="theme-toggle">Light</button>
             <button type="button" id="about-open">About</button>
-            <a href="https://github.com/diw22/marketmakingalgo" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/diw22/marketmakingalgo" target="_blank" rel="noopener noreferrer">Code <svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@
     <p>A browser adaptation of my options market-making strategy, which placed third in an Imperial College London Optiver competition.</p>
     <dl class="explanation"><div><dt>Pricing</dt><dd>A volume-weighted underlying order book feeds Black–Scholes fair values for a call and a put.</dd></div><div><dt>Orders</dt><dd>The strategy posts bids and asks around fair value. Incoming simulated orders fill those quotes, changing cash and inventory.</dd></div><div><dt>Risk</dt><dd>Order sizes adapt to confidence, remaining inventory capacity, and portfolio delta.</dd></div></dl>
     <details><summary>Simulation assumptions</summary><p class="simulation-note">Prices, liquidity and fills are synthetic, with simplified execution and no fees or queue priority. NVDA is normalised to $100; options use a $100 strike, 7-day tenor, 3% interest and the source’s 3.0 volatility parameter. Tenor is held fixed. Each contract represents one unit. P&amp;L is cash plus inventory marked to model, starting at zero. The price chart shows the last 80 simulated seconds; the P&amp;L line and totals cover the whole session. These are illustrative results, not a replay of competition performance. Delta tolerance is 10, compared with 100 in the source, which favours neutrality; resting fills and price changes can still carry exposure beyond it. The demo clamps quote sizes and suppresses crossed quotes; it does not run Optibook, futures, or arbitrage.</p></details>
-    <a class="details-link" href="../#project/market-making-algorithm/story">Project background &amp; results <span aria-hidden="true">↗</span></a>
+    <a class="details-link" href="../#project/market-making-algorithm/story">Project background &amp; results <svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
   </dialog>
 </body>
 </html>
