@@ -328,7 +328,7 @@ export async function createChessView(canvas) {
   }
 
   return {
-    resize(w, h) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
+    resize(w, h, pixelRatio) { if (pixelRatio) renderer.setPixelRatio(pixelRatio); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
     replay() { clock = performance.now(); },
     draw(yawDeg, tiltDeg) {
       const t = ((performance.now() - clock) / 1000) % plan.reset;

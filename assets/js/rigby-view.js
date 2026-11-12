@@ -41,7 +41,7 @@ export async function createRigbyView(canvas) {
   const dir = new THREE.Vector3(1.7, -2.4, .7).normalize();
   let w = 1, h = 1;
   return {
-    resize(nw, nh) { w = nw; h = nh; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
+    resize(nw, nh, pixelRatio) { w = nw; h = nh; if (pixelRatio) renderer.setPixelRatio(pixelRatio); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
     draw(yawDeg, tiltDeg) {
       spin.rotation.z = THREE.MathUtils.degToRad(yawDeg);
       const d = radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.02;

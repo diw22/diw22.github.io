@@ -233,5 +233,7 @@
   motion.addEventListener("change", () => { if (motion.matches) { state.paused = true; schedule(); } });
   new ResizeObserver(fitPnl).observe($(".pnl-value"));
   document.fonts.ready.then(fitPnl);
+  // assets/js/perf.js watches the frame rate; on slower computers the stylesheet then drops the decorative motion.
+  window.SitePerf?.onChange(() => {});
   applyTheme(); render(); schedule();
 })();

@@ -18,7 +18,14 @@ const VIDEOS = {
   shakers: ['kraftwerk-shakers', 'Shakers on a held-out take: me playing, then the three-part model fading them with knob 4.']
 };
 
+// Quality levels from assets/js/perf.js: slower computers get fewer pixels, then no shadows, then no antialiasing
+// (which can only be set as the canvas is made, so dropping to that level rebuilds it once).
+const perf = window.SitePerf || { level: 0, onChange() { return () => {}; }, hold() {} };
+const DPR = [[1, 2], 1, .75, .6];
+
 export function App() {
+  const [quality, setQuality] = useState(perf.level);
+  useEffect(() => perf.onChange(setQuality), []);
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [part, setPart] = useState('rims');
@@ -29,6 +36,9 @@ export function App() {
   const panelButton = useRef(), dialog = useRef(), video = useRef();
 
   useEffect(() => {
+    let compiled;
+    // Loading, and the first frames while shaders compile, stutter; that mustn't count as a slow computer.
+    perf.hold(new Promise((done) => { compiled = done; }));
     (async () => {
       const [scene, manifest] = await Promise.all([loadScene(base), loadManifest(base)]);
       const parts = Object.keys(manifest.parts);
@@ -36,7 +46,8 @@ export function App() {
       Object.assign(world, { manifest, mixer: new Mixer(manifest, base), takes: Object.fromEntries(parts.map((p, i) => [p, takes[i]])) });
       world.take = world.takes.rims;
       setData(scene);
-    })().catch((e) => { console.error(e); setError('The robot could not load. Try reloading the page.'); });
+      setTimeout(compiled, 2500);
+    })().catch((e) => { compiled(); console.error(e); setError('The robot could not load. Try reloading the page.'); });
   }, []);
 
   // Sound may only start inside a click or key press, so mixer.start() runs before anything is awaited.
@@ -131,7 +142,7 @@ export function App() {
     <div className={`app${panel ? ' has-panel' : ''}${data ? ' is-ready' : ''}`}>
       <div className="stage">
         {data && (
-          <Canvas shadows="percentage" dpr={[1, 2]} gl={{ antialias: true, alpha: true }}
+          <Canvas key={quality < 3 ? 'smooth' : 'light'} shadows={quality < 2 ? 'percentage' : false} dpr={DPR[quality]} gl={{ antialias: quality < 3, alpha: true }}
             camera={{ up: [0, 0, 1], fov: 32, near: .02, far: 40, position: [1, 1.2, 1.4] }}
             aria-label="A Unitree G1 humanoid at a desk with an eight-pad controller. Drag to look around; click a pad to choose a part.">
             <Scene data={data} view={view} onView={setView} onPick={choose} part={part} />

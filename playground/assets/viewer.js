@@ -151,9 +151,10 @@ export function create(canvas, data) {
   }
 
   let width = 1, height = 1;
-  function resize(w, h) {
+  function resize(w, h, pixelRatio) {
     width = w;
     height = h;
+    if (pixelRatio) renderer.setPixelRatio(pixelRatio);
     renderer.setSize(w, h, false);
   }
 

@@ -19,7 +19,7 @@ export function createVolSurface(canvas) {
   const ctx = canvas.getContext("2d");
   let w = 1, h = 1, t0 = performance.now();
   return {
-    resize(nw, nh) { w = nw; h = nh; const d = Math.min(2, devicePixelRatio || 1); canvas.width = w * d; canvas.height = h * d; ctx.setTransform(d, 0, 0, d, 0, 0); },
+    resize(nw, nh, pixelRatio) { w = nw; h = nh; const d = pixelRatio || Math.min(2, devicePixelRatio || 1); canvas.width = w * d; canvas.height = h * d; ctx.setTransform(d, 0, 0, d, 0, 0); },
     // Re-run the fly-in whenever the stage switches to this project.
     replay() { t0 = performance.now(); },
     draw(yawDeg, tiltDeg, mouse, front) {

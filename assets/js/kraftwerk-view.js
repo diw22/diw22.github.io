@@ -56,7 +56,7 @@ export async function createKraftwerkView(canvas) {
   let clock = performance.now();
 
   return {
-    resize(w, h) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
+    resize(w, h, pixelRatio) { if (pixelRatio) renderer.setPixelRatio(pixelRatio); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
     replay() { clock = performance.now(); },
     draw(yawDeg, tiltDeg) {
       const u = ((performance.now() - clock) / 1000) % length, t = start + u;

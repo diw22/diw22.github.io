@@ -242,3 +242,8 @@ dialog .simulation-note { margin-top: 12px; }
 /* Arrows are drawn as lines in the text colour: arrow characters can turn into emoji on Windows. */
 .icon { display: inline-block; flex: none; width: .85em; height: .85em; vertical-align: -.08em; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; }
 .back .icon { width: 16px; height: 16px; }
+
+/* Slower computers (assets/js/perf.js, level 2 and up) skip the decorative motion; the figures still update. */
+:root:is([data-perf="2"], [data-perf="3"]) :is(*, *::before, *::after) { animation: none !important; transition: none !important; }
+:root:is([data-perf="2"], [data-perf="3"]) .ripple { display: none; }
+:root:is([data-perf="2"], [data-perf="3"]) dialog::backdrop { backdrop-filter: none; }

@@ -15,15 +15,20 @@ const module = (path) => import(new URL(path, document.baseURI).href);
 const ADAPTERS = {
   playground: async (canvas) => {
     // The robot's data is about 8 MB, so never fetched before it is needed.
-    const [{ create }] = await Promise.all([module("playground/assets/viewer.js"), window.AERO_ROBOT_DATA || script("playground/assets/robot-data.js")]);
+    const [{ create }] = await Promise.all([module("playground/assets/viewer.js?v=20261112-2"), window.AERO_ROBOT_DATA || script("playground/assets/robot-data.js")]);
     const v = create(canvas, window.AERO_ROBOT_DATA);
-    return { resize: (w, h) => v.resize(w, h), draw: (yaw, tilt) => v.draw({ yaw: -.7 + yaw * Math.PI / 180, pitch: Math.max(.04, .22 + tilt * Math.PI / 180), zoom: .8, top: false }, false, false) };
+    return { resize: (w, h, pr) => v.resize(w, h, pr), draw: (yaw, tilt) => v.draw({ yaw: -.7 + yaw * Math.PI / 180, pitch: Math.max(.04, .22 + tilt * Math.PI / 180), zoom: .8, top: false }, false, false) };
   },
-  rigby: async (canvas) => (await module("assets/js/rigby-view.js?v=20261112-2")).createRigbyView(canvas),
-  "kraftwerk-bot": async (canvas) => (await module("assets/js/kraftwerk-view.js")).createKraftwerkView(canvas),
-  chessbot: async (canvas) => (await module("assets/js/chess-view.js?v=20261112-4")).createChessView(canvas),
-  "market-making-algorithm": async (canvas) => (await module("assets/js/vol-surface.js")).createVolSurface(canvas)
+  rigby: async (canvas) => (await module("assets/js/rigby-view.js?v=20261112-3")).createRigbyView(canvas),
+  "kraftwerk-bot": async (canvas) => (await module("assets/js/kraftwerk-view.js?v=20261112-1")).createKraftwerkView(canvas),
+  chessbot: async (canvas) => (await module("assets/js/chess-view.js?v=20261112-5")).createChessView(canvas),
+  "market-making-algorithm": async (canvas) => (await module("assets/js/vol-surface.js?v=20261112-1")).createVolSurface(canvas)
 };
+// Quality levels come from assets/js/perf.js. A live view draws at most this many pixels, and a title uses at most
+// this many particles, at each level: about the same on a big monitor as on a laptop, so the work doesn't grow with
+// the screen. At the lightest level the live views give way to the project pictures and titles are plain text.
+const perf = window.SitePerf || { level: 0, MAX: 3, onChange() {}, hold() {} };
+const VIEW_PIXELS = [3.6e6, 1.6e6, .9e6], TITLE_PARTICLES = [18000, 9000, 4500];
 const imgCache = {};
 const loadImg = (src) => imgCache[src] ||= new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
 const rnd = (a, b) => a + Math.random() * (b - a);
@@ -52,6 +57,7 @@ class ProjectStage extends HTMLElement {
     this.meta = this.mk("div", {}); this.meta.className = "stage-meta";
     this.on();
     this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(this);
+    perf.onChange((level) => this.degrade(level));
     const loop = (t) => { this.raf = requestAnimationFrame(loop); this.frame(t); };
     this.raf = requestAnimationFrame(loop);
   }
@@ -77,14 +83,41 @@ class ProjectStage extends HTMLElement {
     if (!r.width) { this.w = 0; this.hold = true; this.slide = null; for (const e of [this.obj, this.ghost, ...Object.values(this.v3).map((s) => s.canvas)]) e.style.opacity = "0"; return; }
     // Read now, while the page transition that revealed the view is still running.
     if (entering) this.rise = document.documentElement.dataset.routeTransition === "backward" ? -1 : 1;
-    this.w = r.width; this.h = r.height; const dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.w = r.width; this.h = r.height; const dpr = Math.min(perf.level ? 1 : 2, window.devicePixelRatio || 1);
     this.canvas.width = this.w * dpr; this.canvas.height = this.h * dpr;
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (this.started) return this.show(this.idx, true, entering ? 1 : 0);
     this.started = true;
     PROJECTS.forEach((p) => loadImg(p.img));
-    for (const slug in ADAPTERS) { const s = this.v3[slug]; s.ready = ADAPTERS[slug](s.canvas).then((v) => { s.view = v; v.resize(this.w || 1280, this.ch || 600); }).catch((e) => console.warn("3D load failed", slug, e)); }
+    if (perf.level < perf.MAX) {
+      for (const slug in ADAPTERS) {
+        const s = this.v3[slug];
+        s.ready = ADAPTERS[slug](s.canvas).then((v) => {
+          if (perf.level >= perf.MAX) return this.release(s.canvas);
+          s.view = v;
+          const w = this.w || 1280, h = this.ch || 600;
+          v.resize(w, h, this.pixelRatio(w, h));
+        }).catch((e) => console.warn("3D load failed", slug, e));
+      }
+      // Loading stutters; that mustn't count as a slow computer.
+      perf.hold(Promise.allSettled(Object.values(this.v3).map((s) => s.ready)));
+    }
     this.show(this.idx, true, 1);
+  }
+  // Pixels per CSS pixel for a live view of w × h at the current level.
+  pixelRatio(w, h) {
+    const level = Math.min(perf.level, VIEW_PIXELS.length - 1);
+    return Math.min(window.devicePixelRatio || 1, perf.level ? 1 : 2, Math.sqrt(VIEW_PIXELS[level] / Math.max(1, w * h)));
+  }
+  release(canvas) { canvas.getContext("webgl2")?.getExtension("WEBGL_lose_context")?.loseContext(); }
+  // A step down in quality: redraw at fewer pixels, and at the lightest level hand over to the project pictures.
+  degrade(level) {
+    if (level >= perf.MAX) for (const s of Object.values(this.v3)) {
+      if (s.view) this.release(s.canvas);
+      s.view = null; s.canvas.style.opacity = "0";
+    }
+    this.ch = null; // makes the next layout() resize the live views at their new pixel ratio
+    if (this.w) this.resize();
   }
   select(slug) { const i = PROJECTS.findIndex((p) => p.slug === slug); if (i >= 0 && i !== this.idx) this.started ? this.show(i, false, i > this.idx ? 1 : -1) : this.idx = i; }
   step(d) { this.show((this.idx + d + PROJECTS.length) % PROJECTS.length, false, d); }
@@ -97,7 +130,7 @@ class ProjectStage extends HTMLElement {
     const ch = Math.round(this.band * 1.2), ctop = Math.round(this.line - ch / 2);
     if (ch === this.ch && ctop === this.ctop && this.w === this.cw) return;
     this.ch = ch; this.ctop = ctop; this.cw = this.w;
-    for (const k in this.v3) { const s = this.v3[k]; Object.assign(s.canvas.style, { top: ctop + "px", height: ch + "px" }); s.view && s.view.resize(this.w, ch); }
+    for (const k in this.v3) { const s = this.v3[k]; Object.assign(s.canvas.style, { top: ctop + "px", height: ch + "px" }); s.view && s.view.resize(this.w, ch, this.pixelRatio(this.w, ch)); }
   }
   async show(i, instant, dir) {
     this.idx = i;
@@ -124,13 +157,17 @@ class ProjectStage extends HTMLElement {
     this.solids.forEach((s) => { s.out ||= now; });
     // Centre the inked glyphs, not the em box, on the line.
     this.ctx.font = font; const m = this.ctx.measureText(p.title), base = this.line + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
-    if (p.solid) { this.solids.push({ text: p.title, font, base, color: p.ink, born: now }); return; }
+    if (p.solid || perf.level >= perf.MAX) { this.solids.push({ text: p.title, font, base, color: p.ink, born: now }); return; }
     const W = Math.ceil(this.w), H = Math.ceil(this.h), c = document.createElement("canvas"); c.width = W; c.height = H;
     const x = c.getContext("2d"); x.font = font; x.textAlign = "center"; x.fillStyle = "#000";
     x.fillText(p.title, W / 2, base);
-    const d = x.getImageData(0, 0, W, H).data, step = 3, cx = W / 2, cy = this.line;
+    const d = x.getImageData(0, 0, W, H).data, cx = W / 2, cy = this.line, inked = (px, py) => d[(Math.floor(py) * W + Math.floor(px)) * 4 + 3] >= 128;
+    // Particles every 3 px, spaced wider (and drawn bigger) when that would pass this level's particle budget.
+    let count = 0;
+    for (let y = 0; y < H; y += 3) for (let xx = 0; xx < W; xx += 3) if (inked(xx, y)) count++;
+    const step = Math.max(3, 3 * Math.sqrt(count / TITLE_PARTICLES[Math.min(perf.level, TITLE_PARTICLES.length - 1)]));
     for (let y = 0; y < H; y += step) for (let xx = 0; xx < W; xx += step) {
-      if (d[(y * W + xx) * 4 + 3] < 128) continue;
+      if (!inked(xx, y)) continue;
       const ang = rnd(0, Math.PI * 2), rad = rnd(300, 900);
       this.parts.push({ tx: xx, ty: y, x: cx + Math.cos(ang) * rad * (instant ? .5 : 1), y: cy + Math.sin(ang) * rad * .6 - rnd(0, 150), vx: 0, vy: 0, s: step * rnd(.75, 1), c: p.ink, delay: now + rnd(0, 700) + Math.abs(xx - cx) * .9, a: 0 });
     }
@@ -221,7 +258,8 @@ class ProjectStage extends HTMLElement {
     let r = yaw % 360; if (r < 0) r += 360;
     const back = r > 90 && r < 270;
     img.style.transform = `translate(${x}px, ${y}px) rotateX(${this.tiltX + lean}deg) rotateY(${yaw + this.tiltY}deg) ${back ? "scaleX(-1)" : ""}`;
-    img.style.filter = `drop-shadow(0 30px 40px rgba(0,0,0,.28)) brightness(${back ? .82 : 1})`;
+    // The soft drop shadow is redrawn every frame as the picture moves, so slower computers go without it.
+    img.style.filter = perf.level >= 2 ? `brightness(${back ? .82 : 1})` : `drop-shadow(0 30px 40px rgba(0,0,0,.28)) brightness(${back ? .82 : 1})`;
   }
 }
 if (!customElements.get("project-stage")) customElements.define("project-stage", ProjectStage);
