@@ -19,9 +19,9 @@ const ADAPTERS = {
     const v = create(canvas, window.AERO_ROBOT_DATA);
     return { resize: (w, h) => v.resize(w, h), draw: (yaw, tilt) => v.draw({ yaw: -.7 + yaw * Math.PI / 180, pitch: Math.max(.04, .22 + tilt * Math.PI / 180), zoom: .8, top: false }, false, false) };
   },
-  rigby: async (canvas) => (await module("assets/js/rigby-view.js")).createRigbyView(canvas),
+  rigby: async (canvas) => (await module("assets/js/rigby-view.js?v=20261112-2")).createRigbyView(canvas),
   "kraftwerk-bot": async (canvas) => (await module("assets/js/kraftwerk-view.js")).createKraftwerkView(canvas),
-  chessbot: async (canvas) => (await module("assets/js/chess-view.js")).createChessView(canvas),
+  chessbot: async (canvas) => (await module("assets/js/chess-view.js?v=20261112-1")).createChessView(canvas),
   "market-making-algorithm": async (canvas) => (await module("assets/js/vol-surface.js")).createVolSurface(canvas)
 };
 const imgCache = {};

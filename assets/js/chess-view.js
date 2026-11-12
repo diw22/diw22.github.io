@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from '../vendor/three/RoomEnvironment.js';
+import { loadPacked } from './packed-mesh.js';
 
 // ChessBot on the projects stage: an OpenManipulator-X (ROBOTIS's model, assets/models/openmanipulator-x) playing the
 // team's recorded game, Scholar's Mate in the Qf3 line, square by square from their board layout and move routine:
@@ -37,24 +38,7 @@ function solve(tip, q) {
   return q;
 }
 
-async function loadModel(base) {
-  const [desc, blob] = await Promise.all([
-    fetch(new URL(MODEL + 'omx.json', base)).then((r) => { if (!r.ok) throw new Error('model'); return r.json(); }),
-    fetch(new URL(MODEL + 'omx.bin', base)).then((r) => { if (!r.ok) throw new Error('model'); return r.arrayBuffer(); })
-  ]);
-  const geometries = desc.meshes.map((m) => {
-    const n = m.vertices, packed = new Int16Array(blob, m.offset, n * 3), positions = new Float32Array(n * 3);
-    for (let i = 0; i < n * 3; i++) positions[i] = m.min[i % 3] + (packed[i] + 32768) / 65535 * (m.max[i % 3] - m.min[i % 3]);
-    let at = m.offset + n * 9;
-    at += at % 2;
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    g.setAttribute('normal', new THREE.BufferAttribute(new Int8Array(blob, m.offset + n * 6, n * 3), 3, true));
-    g.setIndex(new THREE.BufferAttribute(new Uint16Array(blob, at, m.faces * 3), 1));
-    return g;
-  });
-  return { desc, geometries };
-}
+const loadModel = (base) => loadPacked(new URL(MODEL + 'omx.json', base), new URL(MODEL + 'omx.bin', base));
 
 // The team's printed fingers (report-005.png) in place of ROBOTIS's palms: a mounting plate on each slider and a
 // tapered fin with a small lip at its tip. In a palm's frame x runs to the fingertip and the inner face sits where

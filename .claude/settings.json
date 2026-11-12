@@ -30,7 +30,24 @@
       "Bash(python range_server.py \"C:/Users/dylan/Documents/Quant/Portfolio/diw22.github.io\" 5180)",
       "Bash(python cdp.py 'http://127.0.0.1:5180/#project/tflbot' __TRACKED_VAR__/shots 1440x900 __TRACKED_VAR__/scripts/fs5.json)",
       "Bash(sed -i 's/main\\\\.js?v=20261112-3/main.js?v=20261112-4/; s/styles\\\\.css?v=20261112-5/styles.css?v=20261112-6/' index.html)",
-      "Bash(node --check assets/js/main.js)"
+      "Bash(node --check assets/js/main.js)",
+      "Bash(python -c \"import open3d, numpy; print\\('open3d', open3d.__version__\\)\")",
+      "Bash(time python assets/models/rigby/build.py)",
+      "Bash(node --check assets/js/rigby-view.js)",
+      "Bash(node --check assets/js/chess-view.js)",
+      "Bash(node --check assets/js/packed-mesh.js)",
+      "Bash(sed -i 's#module\\(\"assets/js/rigby-view.js\"\\)#module\\(\"assets/js/rigby-view.js?v=20261112-1\"\\)#; s#module\\(\"assets/js/chess-view.js\"\\)#module\\(\"assets/js/chess-view.js?v=20261112-1\"\\)#' assets/js/project-stage.js)",
+      "Bash(sed -i 's/project-stage\\\\.js?v=20261112-3/project-stage.js?v=20261112-4/; s/main\\\\.js?v=20261112-5/main.js?v=20261112-6/; s/styles\\\\.css?v=20261112-6/styles.css?v=20261112-7/' index.html)",
+      "Bash(python -c \"import sys,json; d=json.loads\\(json.loads\\(sys.stdin.read\\(\\)[6:]\\)\\); print\\('go', d['go']\\); print\\(d['ev']\\); print\\('\\\\n'.join\\(d['bigDownloads']\\)\\)\")",
+      "Bash(curl -sS -o assets/fonts/geist/Geist-Latin-Variable.woff2 \"https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFU.woff2\")",
+      "Bash(curl -sS -o assets/fonts/geist/GeistMono-Latin-Variable.woff2 \"https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2\")",
+      "Bash(curl -sS -o assets/fonts/geist/OFL.txt \"https://raw.githubusercontent.com/google/fonts/main/ofl/geist/OFL.txt\")",
+      "Bash(node -e ' *)",
+      "Bash(node -e 'require\\(\"./market-making/simulation.js\"\\); const s = new MarketSimulation\\(\\); for \\(let i = 0; i < 2400; i++\\) s.step\\(\\); console.log\\(s.pnl.toFixed\\(2\\), s.tradeCount, s.history.length, s.tape.length\\)')",
+      "Bash(python \"C:/Users/dylan/AppData/Local/Temp/claude/c3afee8b16b1a486/40647342-5067-469d-828d-f5dc2bee84b0/scratchpad/scripts/mm_type_colour.py\")",
+      "Bash(node --check market-making/app.js)",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 5180 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { $p = Get-Process -Id $_.OwningProcess; \"$\\($p.Id\\) $\\($p.ProcessName\\) $\\($p.Path\\)\" } } else { \"nothing listening on 5180\" })",
+      "Bash(rm assets/fonts/ibm-plex/IBMPlexMono-Latin-400.woff2 assets/fonts/ibm-plex/IBMPlexMono-Latin-500.woff2)"
     ]
   }
 }

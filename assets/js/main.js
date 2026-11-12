@@ -1,6 +1,6 @@
 "use strict";
 
-const state = { projects: [], route: "", scroll: new Map() };
+const state = { projects: [], route: "", scroll: new Map(), sound: false };
 const $ = (selector) => document.querySelector(selector);
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -107,13 +107,31 @@ function renderFilm(project) {
     : `<img class="media-contain" src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt)}" fetchpriority="high" decoding="async">`;
   const video = mount.querySelector("video");
   if (!video) return;
-  video.muted = true;
+  video.muted = !state.sound;
+  video.addEventListener("volumechange", () => setSound(!video.muted));
   if (item.start) {
     const toStart = () => { video.currentTime = item.start; };
     if (video.readyState >= 1) toStart(); else video.addEventListener("loadedmetadata", toStart, { once: true });
     video.addEventListener("ended", () => { toStart(); video.play().catch(() => {}); });
   }
-  if (!reducedMotion.matches) video.play().catch(() => {});
+  if (!reducedMotion.matches) startFilm(video);
+  setSound(state.sound);
+}
+
+// Browsers can refuse to play with sound until the visitor has clicked on the site; then it plays muted instead.
+function startFilm(video) {
+  video.play().catch(() => {
+    if (video.muted) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  });
+}
+
+// Sound stays as the visitor last set it while they move between project films.
+function setSound(on) {
+  state.sound = on;
+  const button = $("[data-film-sound]");
+  if (button) button.setAttribute("aria-pressed", String(on));
 }
 
 function projectNavigation(project) {
@@ -140,6 +158,9 @@ function renderExperience(project) {
     <nav class="experience-actions" aria-label="More about ${escapeHtml(project.title)}">
       <a class="experience-button" href="${projectUrl(project, true)}">Project details</a>
       ${links.map((link) => `<a class="experience-button" href="${escapeHtml(link.href)}" ${externalLink(link.href) ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`).join("")}
+      ${project.heroVideo ? `<button class="experience-button experience-sound" type="button" data-film-sound aria-pressed="false" aria-label="Sound" title="Sound">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="sound-on" d="M15.5 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/><path class="sound-off" d="m16 9.5 5 5m0-5-5 5"/></svg>
+      </button>` : ""}
     </nav>
   </section>`;
 }
@@ -240,6 +261,14 @@ function navigateRoute() {
 
 function bindInteractions() {
   document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-film-sound]")) {
+      const video = $("#projectMedia video");
+      setSound(!state.sound);
+      if (video) {
+        video.muted = !state.sound;
+        if (video.paused && !reducedMotion.matches) startFilm(video);
+      }
+    }
     const chapter = event.target.closest("[data-section]");
     if (chapter) {
       const section = document.getElementById(chapter.dataset.section);

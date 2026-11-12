@@ -1,5 +1,23 @@
 import * as THREE from 'three';
-import { loadRobot } from '../../rigby/urdf.js';
+import { loadPacked } from './packed-mesh.js';
+
+// RIGBY at its default pose, from a lighter copy of the RIGBY page's parts (assets/models/rigby/build.py): 1.2 MB
+// rather than the 38 MB of full-resolution meshes, which otherwise held up anything opened from the carousel.
+const MODEL = 'assets/models/rigby/';
+
+async function loadRigby() {
+  const { desc, geometries } = await loadPacked(new URL(MODEL + 'rigby.json', document.baseURI), new URL(MODEL + 'rigby.bin', document.baseURI));
+  const materials = desc.materials.map(([r, g, b, a]) => new THREE.MeshStandardMaterial({
+    color: new THREE.Color().setRGB(r, g, b, THREE.SRGBColorSpace), roughness: .56, metalness: .12, opacity: a, transparent: a < 1
+  }));
+  const root = new THREE.Group(), placement = new THREE.Matrix4();
+  for (const visual of desc.visuals) {
+    const mesh = new THREE.Mesh(geometries[visual.mesh], materials[visual.material]);
+    placement.set(...visual.matrix, 0, 0, 0, 1).decompose(mesh.position, mesh.quaternion, mesh.scale);
+    root.add(mesh);
+  }
+  return { root };
+}
 
 export async function createRigbyView(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -15,7 +33,7 @@ export async function createRigbyView(canvas) {
   const key = new THREE.DirectionalLight(0xfff9eb, 3.3); key.position.set(3, -4, 5); scene.add(key);
   const fill = new THREE.DirectionalLight(0xe6f0ff, 2); fill.position.set(-2, 2, 3); scene.add(fill);
   const spin = new THREE.Group(); scene.add(spin);
-  const robot = await loadRobot(new URL('rigby/urdf/rigby.urdf', document.baseURI), new URL('rigby/', document.baseURI));
+  const robot = await loadRigby();
   spin.add(robot.root);
   const box = new THREE.Box3().setFromObject(robot.root), centre = box.getCenter(new THREE.Vector3());
   robot.root.position.sub(new THREE.Vector3(centre.x, centre.y, centre.z));

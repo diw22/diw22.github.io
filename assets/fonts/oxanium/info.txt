@@ -1,0 +1,4 @@
+Oxanium by Severin Meyer, SIL Open Font License 1.1 (OFL.txt).
+source: https://github.com/google/fonts/tree/main/ofl/oxanium, served by Google Fonts
+Latin subset, variable weight 200–800, WOFF2 as Google Fonts serves it.
+Used by market-making/.
